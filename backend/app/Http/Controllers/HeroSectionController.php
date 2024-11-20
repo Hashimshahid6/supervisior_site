@@ -13,7 +13,7 @@ class HeroSectionController extends Controller
     public function index()
     {
         $heroSections = HeroSection::getHeroSection();
-        return response()->json($heroSections);
+        return view('hero_sections.list', compact('heroSections'));
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HeroSectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,9 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'root']);
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+
+Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
+    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('hero_sections', HeroSectionController::class);
+});
