@@ -31,4 +31,8 @@ class HeroSection extends Model
     {
         return self::all();
     }
+    public static function getHeroSectionFrontend()
+    {
+        return self::where('status','Active')->all();
+    }
 }

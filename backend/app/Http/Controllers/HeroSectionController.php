@@ -60,7 +60,7 @@ class HeroSectionController extends Controller
      */
     public function show(string $id)
     {
-        //
+      //
     }
 
     /**
@@ -118,5 +118,5 @@ class HeroSectionController extends Controller
         $heroSection->save();
 
         return response()->json(['message' => 'Hero section deleted successfully.']);
-    }
+    }		
 }
