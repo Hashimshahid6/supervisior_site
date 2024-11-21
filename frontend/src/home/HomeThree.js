@@ -5,9 +5,9 @@ import FeatureIconText from '../components/FeatureIconText';
 import AboutText from '../components/AboutText';
 import ServiceTabTwo from '../components/ServiceTabTwo';
 import TestimonialSlider from '../components/TestimonialSlider';
-// import ProjectImageGallery from '../components/ProjectImageGallery'
-// import BlogGridTwo from '../components/BlogGridTwo';
-// import BrandLogoSlider from '../components/BrandLogoSlider';
+import ProjectImageGallery from '../components/ProjectImageGallery'
+import BlogGridTwo from '../components/BlogGridTwo';
+import BrandLogoSlider from '../components/BrandLogoSlider';
 import Footer from '../components/Footer';
 import MobileMenu from '../components/MobileMenu';
 
@@ -36,13 +36,13 @@ class HomeThree extends Component{
                 <TestimonialSlider/>
 
                 {/* Project image gallery */}
-                {/* <ProjectImageGallery /> */}
+                <ProjectImageGallery />
                 
                 {/* Brand logo */}
-                {/* <BrandLogoSlider background="grey-bg" /> */}
+                <BrandLogoSlider background="grey-bg" />
                 
                 {/* Blog grid */}
-                {/* <BlogGridTwo /> */}
+                <BlogGridTwo />
 
                 {/* Footer */}
                 <Footer/>

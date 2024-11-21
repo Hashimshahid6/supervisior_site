@@ -1,9 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component,useEffect, useState} from 'react';
 import SwiperSlider, { SwiperSlide } from "./swiper";
 import { EffectFade } from "swiper";
+import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import axios from "axios";
 
-class HeroSliderThree extends Component{
-    render(){
+const HeroSliderThree = () =>{
+    // render(){
         const params = {
             slidesPerView : 1,
             loop: true,
@@ -15,32 +17,47 @@ class HeroSliderThree extends Component{
             },
             modules: [EffectFade]
         }
-
-        let data = [
-            {bgImg: 'slider4.jpg', sliderTitle: 'Build Your Dream With Passion', sliderSubtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusm tempor incididunt ut labore et dolore.', btnLink: 'contact-us'},
-            {bgImg: 'slider5.jpg', sliderTitle: 'Build Your Dream With Passion', sliderSubtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusm tempor incididunt ut labore et dolore.', btnLink: 'contact-us'}
-        ];
-
+				const [data, setData] = useState([]);
+				const [loading, setLoading] = useState(true);
+  			const [error, setError] = useState(null);
+        
+				useEffect(() => {
+					axios
+						.get(API_BASE_URL + "herosections",{
+							headers: {
+								Authorization: `Bearer ${API_TOKEN}`
+							}
+						}) // Laravel API endpoint
+						.then((response) => {
+							setData(response.data.data); // Set the fetched data
+							setLoading(false);
+						})
+						.catch((error) => {
+							setError(error.message);
+							setLoading(false);
+						});
+				}, []);
+				
         let DataList = data.map((val, i)=>{
-            return(
-                <SwiperSlide key={i}>
-                    <div className="hero-slider__single-item" style={{ backgroundImage: `url(assets/img/slider/${val.bgImg})` }}>
-                        <div className="hero-slider__content-wrapper">
-                            <div className="container">
-                            <div className="row">
-                                <div className="col-lg-12">
-                                <div className="hero-slider__content m-auto text-center">
-                                    <h2 className="hero-slider__title">{val.sliderTitle}</h2>
-                                    <p className="hero-slider__text">{val.sliderSubtitle}</p>
-                                    <a className="hero-slider__btn hero-slider__btn--style2" href={`${process.env.PUBLIC_URL}/${val.btnLink}`}> GET START</a>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-            )
+					return(
+							<SwiperSlide key={i}>
+									<div className="hero-slider__single-item" style={{ backgroundImage: `url(${BASE_URL}images/hero-section/${val.image})` }}>
+											<div className="hero-slider__content-wrapper">
+													<div className="container">
+													<div className="row">
+															<div className="col-lg-12">
+															<div className="hero-slider__content m-auto text-center">
+																	<h2 className="hero-slider__title">{val.title}</h2>
+																	<p className="hero-slider__text">{val.subtitle}</p>
+																	<a className="hero-slider__btn hero-slider__btn--style2" href={val.button_url}> {val.button_text}</a>
+															</div>
+															</div>
+													</div>
+													</div>
+											</div>
+									</div>
+							</SwiperSlide>
+					)
         });
 
         return(
@@ -55,7 +72,7 @@ class HeroSliderThree extends Component{
 
             </div>
         )
-    }
+    // }
 }
 
 export default HeroSliderThree;

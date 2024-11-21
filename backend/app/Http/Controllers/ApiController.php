@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\HeroSection;
+use App\Models\Services;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -12,5 +13,9 @@ class ApiController extends Controller
 			return response()->json([
 				'data' => $heroes
 				]);
-		} //
+	} //
+	public function getServicesFrontend(){
+			$services = Services::getServicesFrontend();
+			return response()->json($services);
+	} //
 }

@@ -30,4 +30,8 @@ class Services extends Model
     {
         return self::all();
     }
+
+		public static function getServicesFrontend(){
+			return self::where('status','Active')->take(4)->get(['id','title','description','icon','bgImage']);
+		} //
 }

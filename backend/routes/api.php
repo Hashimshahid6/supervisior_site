@@ -20,5 +20,6 @@ Route::post('authenticate', [AuthenticationController::class,'authenticate']);
 //     return $request->user();
 // });
 Route::group(['middleware'=>['auth:sanctum']], function () {
-	// Route::get('herosections', [ApiController::class,'getHeroSectionFrontend']);
+	Route::get('herosections', [ApiController::class,'getHeroSectionFrontend']);
+	Route::get('services', [ApiController::class,'getServicesFrontend']);
 });

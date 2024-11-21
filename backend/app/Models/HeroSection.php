@@ -33,6 +33,6 @@ class HeroSection extends Model
     }
     public static function getHeroSectionFrontend()
     {
-        return self::where('status','Active')->all();
+				return self::where('status','Active')->get(['id','title','subtitle','image','button_text','button_url']);
     }
 }

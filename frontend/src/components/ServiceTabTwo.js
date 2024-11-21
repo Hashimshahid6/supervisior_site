@@ -1,16 +1,45 @@
-import React, { Component } from 'react';
+import React, { Component,useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-class ServiceTabTwo extends Component{
+import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import axios from "axios";
 
-    render(){
-        
+const ServiceTabTwo = () =>{
+
+    // render(){
+      const [data, setData] = useState([]);
+			const [loading, setLoading] = useState(true);
+  			const [error, setError] = useState(null);
+			useEffect(() => {
+				axios
+					.get(API_BASE_URL + "services",{
+						headers: {
+							Authorization: `Bearer ${API_TOKEN}`
+						}
+					}) // Laravel API endpoint
+					.then((response) => {
+						setData(response.data); // Set the fetched data
+						setLoading(false);
+					})
+					.catch((error) => {
+						setError(error.message);
+						setLoading(false);
+					});
+			}, []);  
         /* service tab menu */
-        let serviceTabMenuData = [
-            {iconName: 'flaticon-002-welding', tabMenuName: 'Land Mining'},
-            {iconName: 'flaticon-004-walkie-talkie', tabMenuName: 'Work Management'},
-            {iconName: 'flaticon-015-cart', tabMenuName: 'Material Engineering'},
-            {iconName: 'flaticon-010-tank-1', tabMenuName: 'Power and Energy'}
-        ];
+				let serviceTabMenuData = [];
+				data.map((serv) => {
+					let eachServ = {
+						iconName: serv.icon,
+						tabMenuName: serv.title
+					}
+					serviceTabMenuData.push(eachServ);
+				})
+				// let serviceTabMenuData = [
+				// 	  {iconName: 'flaticon-002-welding', tabMenuName: 'Land Mining'},
+        //     {iconName: 'flaticon-004-walkie-talkie', tabMenuName: 'Work Management'},
+        //     {iconName: 'flaticon-015-cart', tabMenuName: 'Material Engineering'},
+        //     {iconName: 'flaticon-010-tank-1', tabMenuName: 'Power and Energy'}
+        // ];
 
         let serviceTabMenuDatalist = serviceTabMenuData.map((val, i)=>{
             return(
@@ -21,21 +50,21 @@ class ServiceTabTwo extends Component{
         
         /* service tab content */
         
-        let serviceTabContentData = [
-            {bgUrl: "service-tab1.jpg", contentTitle: 'Land Mining', contentDesc: 'Lorem ipsum dolor sit amet, consectet adipisicin elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', serviceLink: 'service-details-left-sidebar'},
-            {bgUrl: "service-tab1.jpg", contentTitle: 'Work Management', contentDesc: 'Lorem ipsum dolor sit amet, consectet adipisicin elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', serviceLink: 'service-details-left-sidebar'},
-            {bgUrl: "service-tab1.jpg", contentTitle: 'Material Engineering', contentDesc: 'Lorem ipsum dolor sit amet, consectet adipisicin elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', serviceLink: 'service-details-left-sidebar'},
-            {bgUrl: "service-tab1.jpg", contentTitle: 'Power and Energy', contentDesc: 'Lorem ipsum dolor sit amet, consectet adipisicin elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', serviceLink: 'service-details-left-sidebar'}
-        ];
+        // let serviceTabContentData = [
+        //     {bgUrl: "service-tab1.jpg", contentTitle: 'Land Mining', contentDesc: 'Lorem ipsum dolor sit amet, consectet adipisicin elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', serviceLink: 'service-details-left-sidebar'},
+        //     {bgUrl: "service-tab1.jpg", contentTitle: 'Work Management', contentDesc: 'Lorem ipsum dolor sit amet, consectet adipisicin elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', serviceLink: 'service-details-left-sidebar'},
+        //     {bgUrl: "service-tab1.jpg", contentTitle: 'Material Engineering', contentDesc: 'Lorem ipsum dolor sit amet, consectet adipisicin elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', serviceLink: 'service-details-left-sidebar'},
+        //     {bgUrl: "service-tab1.jpg", contentTitle: 'Power and Energy', contentDesc: 'Lorem ipsum dolor sit amet, consectet adipisicin elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', serviceLink: 'service-details-left-sidebar'}
+        // ];
 
-        let serviceTabContentDatalist = serviceTabContentData.map((val, i)=>{
+        let serviceTabContentDatalist = data.map((val, i)=>{
             return(
                 <TabPanel key={i}>
-                    <div className="service-tab__single-content-wrapper" style={{ backgroundImage: `url(assets/img/backgrounds/${val.bgUrl})` }}>
+                    <div className="service-tab__single-content-wrapper" style={{ backgroundImage: `url(${BASE_URL}images/services/${val.bgImage})` }}>
                         <div className="service-tab__single-content">
-                            <h3 className="service-tab__title">{val.contentTitle}</h3>
-                            <p className="service-tab__text">{val.contentDesc}</p>
-                            <a href={`${process.env.PUBLIC_URL}/${val.serviceLink}`} className="see-more-link">SEE MORE</a>
+                            <h3 className="service-tab__title">{val.title}</h3>
+                            <p className="service-tab__text">{val.description}</p>
+                            <a href={`${BASE_URL}/`} className="see-more-link">SEE MORE</a>
                         </div>
                     </div>
                 </TabPanel>
@@ -84,7 +113,7 @@ class ServiceTabTwo extends Component{
                 {/*====================  End of service tab area  ====================*/}
             </div>
         )
-    }
+    // }
 }
 
 export default ServiceTabTwo;
