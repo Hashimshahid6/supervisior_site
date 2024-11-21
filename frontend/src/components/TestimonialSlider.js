@@ -1,9 +1,11 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import SwiperSlider, { SwiperSlide } from "./swiper";
 import { EffectFade } from "swiper";
+import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import axios from "axios";
 
-class TestimonialSlider extends Component {
-  render() {
+const TestimonialSlider = () => {
+  // render() {
     const params = {
       slidesPerView: 1,
       loop: true,
@@ -16,47 +18,44 @@ class TestimonialSlider extends Component {
       },
       modules: [EffectFade]
     };
-    let data = [
-      {
-        testimonialImage: "1.jpg",
-        testimonialName: "Madison Black",
-        testimonialDesignation: "Founder",
-        testimonialText:
-          "Lorem ipsum dolor sit amet, consectetur adipisi elit sed do eiusmod tempor incididu ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
-      },
-      {
-        testimonialImage: "3.jpg",
-        testimonialName: "Jonathon Doe",
-        testimonialDesignation: "Engineer",
-        testimonialText:
-          "Ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco Lorem ipsum dolor sit amet."
-      },
-      {
-        testimonialImage: "2.jpg",
-        testimonialName: "John Doe",
-        testimonialDesignation: "CEO",
-        testimonialText:
-          "consectetur adipisi elit sed do eiusmod tempor incididu ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
-      }
-    ];
-
-    let DataList = data.map((val, i) => {
-      return (
+    const [data, setData] = useState([]);
+		const [loading, setLoading] = useState(true);
+		const [error, setError] = useState(null);
+		useEffect(() => {
+			axios
+				.get(API_BASE_URL + "testimonials",{
+					headers: {
+						Authorization: `Bearer ${API_TOKEN}`
+					}
+				}) // Laravel API endpoint
+				.then((response) => {
+					setData(response.data); // Set the fetched data
+					setLoading(false);
+				})
+				.catch((error) => {
+					setError(error.message);
+					setLoading(false);
+				});
+		}, []); 
+		let bgImage = ""; 
+		let DataList = data.map((val, i) => {
+			bgImage = val.bgImage;
+			return (
         <SwiperSlide key={i}>
           <div className="testimonial-slider__single-slide">
             <div className="author">
               <div className="author__image">
                 <img
-                  src={`assets/img/testimonial/${val.testimonialImage}`}
+                  src={`${BASE_URL}images/testimonials/${val.avatar}`}
                   alt=""
                 />
               </div>
               <div className="author__details">
-                <h4 className="name">{val.testimonialName}</h4>
-                <div className="designation">{val.testimonialDesignation}</div>
+                <h4 className="name">{val.name}</h4>
+                <div className="designation">{val.designation}</div>
               </div>
             </div>
-            <div className="content">{val.testimonialText}</div>
+            <div className="content">{val.description}</div>
           </div>
         </SwiperSlide>
       );
@@ -68,7 +67,7 @@ class TestimonialSlider extends Component {
         <div
           className="testimonial-slider-area testimonial-slider-area-bg section-space--inner--120"
           style={{
-            backgroundImage: `url(assets/img/backgrounds/testimonial.jpg)`
+            backgroundImage: `url(${BASE_URL}images/testimonials/${bgImage})`
           }}
         >
           <div className="container">
@@ -86,7 +85,7 @@ class TestimonialSlider extends Component {
         {/*====================  End of testimonial slider area  ====================*/}
       </div>
     );
-  }
+  // }
 }
 
 export default TestimonialSlider;
