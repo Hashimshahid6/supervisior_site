@@ -47,66 +47,13 @@
                 </li>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-store icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-ecommerce">Ecommerce</span>
+                        <i class="bx bx-image icon nav-icon"></i>
+                        <span class="menu-item">Hero Sections</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{route('hero_sections.index')}}" data-key="t-products">Products</a></li>
-                        <li><a href="ecommerce-product-detail" data-key="t-product-detail">Product Detail</a></li>
-                        <li><a href="ecommerce-orders" data-key="t-orders">Orders</a></li>
-                        <li><a href="ecommerce-customers" data-key="t-customers">Customers</a></li>
-                        <li><a href="ecommerce-cart" data-key="t-cart">Cart</a></li>
-                        <li><a href="ecommerce-checkout" data-key="t-checkout">Checkout</a></li>
-                        <li><a href="ecommerce-shops" data-key="t-shops">Shops</a></li>
-                        <li><a href="ecommerce-add-product" data-key="t-add-product">Add Product</a></li>
+                        <li><a href="{{route('hero_sections.index')}}">Sliders</a></li>
                     </ul>
                 </li>
-
-               
-
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-receipt icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-invoices">Invoices</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="invoices-list" data-key="t-invoice-list">Invoice List</a></li>
-                        <li><a href="invoices-detail" data-key="t-invoice-detail">Invoice Detail</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-user-circle icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-contacts">Contacts</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="contacts-grid" data-key="t-user-grid">User Grid</a></li>
-                        <li><a href="contacts-list" data-key="t-user-list">User List</a></li>
-                        <li><a href="contacts-profile" data-key="t-user-profile">Profile</a></li>
-                    </ul>
-                </li>
-
-                <li class="menu-title" data-key="t-pages">Pages</li>
-
-                <li>
-                    <a href="javascript: void(0);">
-                        <i class="bx bx-user-pin icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-authentication">Authentication</span>
-                        <span class="badge rounded-pill bg-info">8</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="auth-login" data-key="t-login">Login</a></li>
-                        <li><a href="auth-register" data-key="t-register">Register</a></li>
-                        <li><a href="auth-recoverpw" data-key="t-recover-password">Recover Password</a></li>
-                        <li><a href="auth-lock-screen" data-key="t-lock-screen">Lock Screen</a></li>
-                        <li><a href="auth-logout" data-key="t-logout">Logout</a></li>
-                        <li><a href="auth-confirm-mail" data-key="t-confirm-mail">Confirm Mail</a></li>
-                        <li><a href="auth-email-verification" data-key="t-email-verification">Email Verification</a></li>
-                        <li><a href="auth-two-step-verification" data-key="t-two-step-verification">Two Step Verification</a></li>
-                    </ul>
-                </li>
-
             </ul>
         </div>
         <!-- Sidebar -->

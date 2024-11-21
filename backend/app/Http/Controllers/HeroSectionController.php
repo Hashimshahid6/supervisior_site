@@ -21,7 +21,7 @@ class HeroSectionController extends Controller
      */
     public function create()
     {
-        //
+        return view('hero_sections.add');
     }
 
     /**
@@ -29,12 +29,13 @@ class HeroSectionController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
-            'title' => 'required',
-            'subtitle' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'button_text' => 'required',
-            'button_url' => 'required',
+            'title' => 'required|string|max:255',
+            'subtitle' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'button_text' => 'required|string',
+            'button_url' => 'required|url',
         ]);
 
         if ($request->hasFile('image')) {
@@ -52,7 +53,7 @@ class HeroSectionController extends Controller
             'button_url' => $request->button_url,
         ]);
 
-        return response()->json(['message' => 'Hero section created successfully.']);
+        return redirect()->route('hero_sections.index')->with('success', 'Hero section created successfully.');
     }
 
     /**
@@ -69,7 +70,7 @@ class HeroSectionController extends Controller
     public function edit(string $id)
     {
         $heroSection = HeroSection::find($id);
-        return response()->json($heroSection);
+        return view('hero_sections.edit', compact('heroSection'));
     }
 
     /**
@@ -105,7 +106,7 @@ class HeroSectionController extends Controller
             'status' => $request->status,
         ]);
 
-        return response()->json(['message' => 'Hero section updated successfully.']);
+        return redirect()->route('hero_sections.index')->with('success', 'Hero section updated successfully.');
     }
 
     /**
@@ -117,6 +118,6 @@ class HeroSectionController extends Controller
         $heroSection->status = 'Deleted';
         $heroSection->save();
 
-        return response()->json(['message' => 'Hero section deleted successfully.']);
+        return redirect()->route('hero_sections.index')->with('success', 'Hero section deleted successfully.');
     }		
 }
