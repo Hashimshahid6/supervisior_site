@@ -17,47 +17,6 @@ Hero Section
 <body>
     @endsection
     @section('content')
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <div class="card">
-                <div id="priceslider" class="mb-4"></div>
-                <div class="card-body py-5">
-                    <div class="swiper-container slider rounded overflow-hidden">
-                        <div class="swiper-wrapper" dir="ltr">
-                            @foreach($heroSections as $heroSection)
-                            <div class="swiper-slide rounded overflow-hidden ecommerce-slied-bg">
-                                <div class="row justify-content-center">
-                                    <div class="col-xl-11 col-lg-11">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-6">
-                                                <div class="p-4 p-xl-0 text-center">
-                                                    <img src="{{ URL::asset('images/hero-section/' . $heroSection->image) }}" class="img-fluid rounded shadow-sm" alt="" style="max-height: 300px; object-fit: cover;">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="p-4 p-xl-0">
-                                                    <h3 class="mb-2"><a href="javascript:void(0);">{{ $heroSection->title }}</a></h3>
-                                                    <h5 class="fw-normal font-size-16 mt-1">{{ $heroSection->subtitle }}</h5>
-                                                    <div class="mt-4">
-                                                        <a href="{{ $heroSection->button_url }}" class="btn btn-success w-lg waves-effect waves-light">{{ $heroSection->button_text }}</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                        <div class="d-none d-lg-block">
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="mb-3">
