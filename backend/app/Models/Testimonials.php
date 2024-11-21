@@ -24,4 +24,8 @@ class Testimonials extends Model
     {
         return self::all();
     }
+    public static function getTestimonialsFrontend()
+    {
+        return self::where('status', 'Active')->take(3)->get(['name','designation','avatar','bgImage','description']);
+    }
 }

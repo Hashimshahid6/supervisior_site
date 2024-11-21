@@ -1,25 +1,46 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState  } from 'react';
+import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import axios from "axios";
 
-class FeatureIconText extends Component {
-    render() {
-
-        let data = [
-            {featureIcon: "feature-4.png", featureTitle: "Land Mining", featureDescription: "Lorem ipsum dolor sit consect adipisicing elit, sed do eiusmo tempor incididu."},
-            {featureIcon: "feature-5.png", featureTitle: "Work Management", featureDescription: "Lorem ipsum dolor sit consect adipisicing elit, sed do eiusmo tempor incididu."},
-            {featureIcon: "feature-6.png", featureTitle: "Material Engineering", featureDescription: "Lorem ipsum dolor sit consect adipisicing elit, sed do eiusmo tempor incididu."},
-            {featureIcon: "feature-7.png", featureTitle: "Power & Energy", featureDescription: "Lorem ipsum dolor sit consect adipisicing elit, sed do eiusmo tempor incididu."}
-        ];
+const FeatureIconText = () => {
+    // render() {
+			const [data, setData] = useState([]);
+			const [loading, setLoading] = useState(true);
+			const [error, setError] = useState(null);
+			useEffect(() => {
+				axios
+					.get(API_BASE_URL + "services",{
+						headers: {
+							Authorization: `Bearer ${API_TOKEN}`
+						}
+					}) // Laravel API endpoint
+					.then((response) => {
+						setData(response.data); // Set the fetched data
+						setLoading(false);
+					})
+					.catch((error) => {
+						setError(error.message);
+						setLoading(false);
+					});
+			}, []); 
+        // let data = [
+        //     {featureIcon: "feature-4.png", featureTitle: "Land Mining", featureDescription: "Lorem ipsum dolor sit consect adipisicing elit, sed do eiusmo tempor incididu."},
+        //     {featureIcon: "feature-5.png", featureTitle: "Work Management", featureDescription: "Lorem ipsum dolor sit consect adipisicing elit, sed do eiusmo tempor incididu."},
+        //     {featureIcon: "feature-6.png", featureTitle: "Material Engineering", featureDescription: "Lorem ipsum dolor sit consect adipisicing elit, sed do eiusmo tempor incididu."},
+        //     {featureIcon: "feature-7.png", featureTitle: "Power & Energy", featureDescription: "Lorem ipsum dolor sit consect adipisicing elit, sed do eiusmo tempor incididu."}
+        // ];
 
         let Datalist = data.map((val, i)=>{
             return(
          
                 <div className="col-lg-3 col-md-6" key={i}>
-                    <div className="single-feature-icon">
+                    <div className="single-feature-icon text-center">
                         <div className="single-feature-icon__image">
-                            <img src={`assets/img/icons/${val.featureIcon}`} className="img-fluid" alt="" />
+                            {/* <img src={`${BASE_URL}images/services/${val.icon}`} className="img-fluid" alt="" /> */}
+														<i className={`${val.icon} fa-3x`}></i>
                         </div>
-                        <h3 className="single-feature-icon__title">{val.featureTitle}</h3>
-                        <p className="single-feature-icon__content">{val.featureDescription}</p>
+                        <h3 className="single-feature-icon__title">{val.title}</h3>
+                        <p className="single-feature-icon__content">{val.description}</p>
                     </div>
                 </div>
             )
@@ -44,7 +65,7 @@ class FeatureIconText extends Component {
                 {/*====================  End of feature icon area  ====================*/}
             </div>
         )
-    }
+    // }
 }
 
 export default FeatureIconText;
