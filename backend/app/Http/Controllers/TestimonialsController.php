@@ -13,7 +13,7 @@ class TestimonialsController extends Controller
     public function index()
     {
         $testimonials = Testimonials::getTestimonials();
-        return response()->json($testimonials);
+        return view('testimonials.list', compact('testimonials'));
     }
 
     /**
@@ -21,7 +21,7 @@ class TestimonialsController extends Controller
      */
     public function create()
     {
-        //
+        return view('testimonials.add');
     }
 
     /**
@@ -59,7 +59,7 @@ class TestimonialsController extends Controller
             'description' => $request->description,
         ]);
 
-        return response()->json(['message' => 'Testimonial created successfully.']);
+        return redirect()->route('testimonials.index')->with('success', 'Testimonial added successfully.');
     }
 
     /**
@@ -76,7 +76,7 @@ class TestimonialsController extends Controller
     public function edit(string $id)
     {
         $testimonial = Testimonials::find($id);
-        return response()->json($testimonial);
+        return view('testimonials.edit', compact('testimonial'));
     }
 
     /**
@@ -87,17 +87,20 @@ class TestimonialsController extends Controller
         $request->validate([
             'name' => 'required|string',
             'designation' => 'required|string',
-            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'bgImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'bgImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|string',
             'status' => 'required|in:Active,Inactive,Deleted',
         ]);
+
+        $testimonial = Testimonials::find($id);
 
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
             $destinationPath = public_path('/images/testimonials');
             $avatar->move($destinationPath, $avatarName);
+            $testimonial->avatar = $avatarName;
         }
 
         if ($request->hasFile('bgImage')) {
@@ -105,18 +108,19 @@ class TestimonialsController extends Controller
             $bgImageName = time() . '.' . $bgImage->getClientOriginalExtension();
             $destinationPath = public_path('/images/testimonials');
             $bgImage->move($destinationPath, $bgImageName);
+            $testimonial->bgImage = $bgImageName;
         }
 
         Testimonials::find($id)->update([
             'name' => $request->name,
             'designation' => $request->designation,
-            'avatar' => $avatarName ?? $request->avatar,
-            'bgImage' => $bgImageName ?? $request->bgImage,
+            'avatar' => $testimonial->avatar ?? $request->avatar,
+            'bgImage' => $testimonial->bgImage ?? $request->bgImage,
             'description' => $request->description,
             'status' => $request->status,
         ]);
 
-        return response()->json(['message' => 'Testimonial updated successfully.']);
+        return redirect()->route('testimonials.index')->with('success', 'Testimonial updated successfully.');
     }
 
     /**
@@ -128,6 +132,6 @@ class TestimonialsController extends Controller
         $testimonial->status = 'Deleted';
         $testimonial->save();
 
-        return response()->json(['message' => 'Testimonial deleted successfully.']);
+        return redirect()->route('testimonials.index')->with('success', 'Testimonial deleted successfully.');
     }
 }

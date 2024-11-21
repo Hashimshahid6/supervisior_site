@@ -13,7 +13,7 @@ class ServicesController extends Controller
     public function index()
     {
         $services = Services::getServices();
-        return response()->json($services);
+        return view('services.list', compact('services'));
     }
 
     /**
@@ -21,7 +21,7 @@ class ServicesController extends Controller
      */
     public function create()
     {
-        //
+        return view('services.add');
     }
 
     /**
@@ -32,6 +32,8 @@ class ServicesController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'button_text' => 'required|string',
+            'button_url' => 'required|url',
             'icon' => 'required | image | mimes:jpeg,png,jpg,gif,svg | max:2048',
             'bgImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -53,11 +55,13 @@ class ServicesController extends Controller
         Services::create([
             'title' => $request->title,
             'description' => $request->description,
+            'button_text' => $request->button_text,
+            'button_url' => $request->button_url,
             'icon' => $iconName ?? $request->icon,
             'bgImage' => $bgImageName ?? $request->bgImage,
         ]);
 
-        return response()->json(['message' => 'Service created successfully.']);
+        return redirect()->route('services.index')->with('success', 'Service created successfully.');
     }
 
     /**
@@ -74,7 +78,7 @@ class ServicesController extends Controller
     public function edit(string $id)
     {
         $service = Services::find($id);
-        return response()->json($service);
+        return view('services.edit', compact('service'));
     }
 
     /**
@@ -85,16 +89,21 @@ class ServicesController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'icon' => 'required | image | mimes:jpeg,png,jpg,gif,svg | max:2048',
-            'bgImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'button_text' => 'required|string',
+            'button_url' => 'required|url',
+            'icon' => 'nullable | image | mimes:jpeg,png,jpg,gif,svg | max:2048',
+            'bgImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|in:Active,Inactive,Deleted',
         ]);
+
+        $service = Services::find($id);
 
         if ($request->hasFile('icon')) {
             $icon = $request->file('icon');
             $iconName = time() . '.' . $icon->getClientOriginalExtension();
             $destinationPath = public_path('/images/services');
             $icon->move($destinationPath, $iconName);
+            $service->icon = $iconName;
         }
 
         if ($request->hasFile('bgImage')) {
@@ -102,17 +111,20 @@ class ServicesController extends Controller
             $bgImageName = time() . '.' . $bgImage->getClientOriginalExtension();
             $destinationPath = public_path('/images/services');
             $bgImage->move($destinationPath, $bgImageName);
+            $service->bgImage = $bgImageName;
         }
 
-        Services::find($id)->update([
+        $service->update([
             'title' => $request->title,
             'description' => $request->description,
-            'icon' => $iconName ?? $request->icon,
-            'bgImage' => $bgImageName ?? $request->bgImage,
+            'button_text' => $request->button_text,
+            'button_url' => $request->button_url,
+            'icon' => $service->icon ?? $request->icon,
+            'bgImage' => $service->bgImage ?? $request->bgImage,
             'status' => $request->status,
         ]);
 
-        return response()->json(['message' => 'Service updated successfully.']);
+        return redirect()->route('services.index')->with('success', 'Service updated successfully.');
     }
 
     /**
@@ -123,6 +135,6 @@ class ServicesController extends Controller
         $service = Services::find($id);
         $service->status = 'Deleted';
         $service->save();
-        return response()->json(['message' => 'Service deleted successfully.']);
+        return redirect()->route('services.index')->with('success', 'Service deleted successfully.');
     }
 }

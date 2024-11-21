@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HeroSectionController;
+use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\TestimonialsController;
+use App\Http\Controllers\WebsiteSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +26,16 @@ Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+
+    //Hero Sections
     Route::resource('hero_sections', HeroSectionController::class);
+
+    //Services
+    Route::resource('services', ServicesController::class);
+
+    //Testimonials
+    Route::resource('testimonials', TestimonialsController::class);
+
+    //Website Settings
+    Route::resource('website_settings', WebsiteSettingsController::class);
 });

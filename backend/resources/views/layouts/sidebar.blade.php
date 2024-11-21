@@ -54,6 +54,35 @@
                         <li><a href="{{route('hero_sections.index')}}">Sliders</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bx bx-wrench icon nav-icon"></i>
+                        <span class="menu-item">Services</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{route('services.index')}}">List</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bx bx-comment-dots icon nav-icon"></i>
+                        <span class="menu-item">Testimonials</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{route('testimonials.index')}}">List</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i class="bx bx-cog icon nav-icon"></i>
+                            <span class="menu-item">Settings</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="{{route('website_settings.index')}}">Website Setting</a></li>
+                        </ul>
+                    </li>
+                    <li>
             </ul>
         </div>
         <!-- Sidebar -->
