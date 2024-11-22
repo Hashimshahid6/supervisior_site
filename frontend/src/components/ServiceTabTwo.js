@@ -1,6 +1,6 @@
 import React, { Component,useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 
 const ServiceTabTwo = () =>{
@@ -11,7 +11,7 @@ const ServiceTabTwo = () =>{
 			const [error, setError] = useState(null);
 			useEffect(() => {
 				axios
-					.get(API_BASE_URL + "services",{
+					.get(API_BASE_URL + "homeservices",{
 						headers: {
 							Authorization: `Bearer ${API_TOKEN}`
 						}
@@ -60,11 +60,11 @@ const ServiceTabTwo = () =>{
         let serviceTabContentDatalist = data.map((val, i)=>{
             return(
                 <TabPanel key={i}>
-                    <div className="service-tab__single-content-wrapper" style={{ backgroundImage: `url(${BASE_URL}images/services/${val.bgImage})` }}>
+                    <div className="service-tab__single-content-wrapper" style={{ backgroundImage: `url(${IMAGES_URL}images/services/${val.bgImage})` }}>
                         <div className="service-tab__single-content">
                             <h3 className="service-tab__title">{val.title}</h3>
                             <p className="service-tab__text">{val.description}</p>
-                            <a href={`${BASE_URL}/`} className="see-more-link">SEE MORE</a>
+                            <a href={`/ServiceDetail/${val.id}`} className="see-more-link">SEE MORE</a>
                         </div>
                     </div>
                 </TabPanel>

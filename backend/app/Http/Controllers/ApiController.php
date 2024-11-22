@@ -16,8 +16,12 @@ class ApiController extends Controller
 				'data' => $heroes
 				]);
 	} //
-	public function getServicesFrontend(){
-			$services = Services::getServicesFrontend();
+	public function getHomeServices(){
+			$services = Services::getHomeServices();
+			return response()->json($services);
+	} //
+	public function getActiveServices(){
+			$services = Services::getActiveServices();
 			return response()->json($services);
 	} //
 	public function getTestimonialsFrontend(){
