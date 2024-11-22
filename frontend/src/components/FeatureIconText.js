@@ -1,4 +1,4 @@
-import React, { useEffect, useState  } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 
@@ -9,7 +9,7 @@ const FeatureIconText = () => {
 			const [error, setError] = useState(null);
 			useEffect(() => {
 				axios
-					.get(API_BASE_URL + "services",{
+					.get(API_BASE_URL + "homeservices",{
 						headers: {
 							Authorization: `Bearer ${API_TOKEN}`
 						}

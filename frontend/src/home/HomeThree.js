@@ -36,13 +36,13 @@ class HomeThree extends Component{
                 <TestimonialSlider/>
 
                 {/* Project image gallery */}
-                <ProjectImageGallery />
+                {/* <ProjectImageGallery /> */}
                 
                 {/* Brand logo */}
-                <BrandLogoSlider background="grey-bg" />
+                {/* <BrandLogoSlider background="grey-bg" /> */}
                 
                 {/* Blog grid */}
-                <BlogGridTwo />
+                {/* <BlogGridTwo /> */}
 
                 {/* Footer */}
                 <Footer/>

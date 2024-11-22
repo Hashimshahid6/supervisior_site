@@ -1,7 +1,7 @@
 import React, {Component,useEffect, useState} from 'react';
 import SwiperSlider, { SwiperSlide } from "./swiper";
 import { EffectFade } from "swiper";
-import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 
 const HeroSliderThree = () =>{
@@ -41,7 +41,7 @@ const HeroSliderThree = () =>{
         let DataList = data.map((val, i)=>{
 					return(
 							<SwiperSlide key={i}>
-									<div className="hero-slider__single-item" style={{ backgroundImage: `url(${BASE_URL}images/hero-section/${val.image})` }}>
+									<div className="hero-slider__single-item" style={{ backgroundImage: `url(${IMAGES_URL}images/hero-section/${val.image})` }}>
 											<div className="hero-slider__content-wrapper">
 													<div className="container">
 													<div className="row">

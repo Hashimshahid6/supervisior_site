@@ -1,60 +1,81 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import BrandLogoSlider from "../components/BrandLogoSlider";
 import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
-class Services extends Component {
-  render() {
-    let data = [
-      {
-        pageLink: "service-details-left-sidebar",
-        img: "service1.jpg",
-        iconClass: "flaticon-002-welding",
-        serviceTitle: "Land Minning",
-        serviceSubtitle:
-          "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
-      },
-      {
-        pageLink: "service-details-left-sidebar",
-        img: "service2.jpg",
-        iconClass: "flaticon-004-walkie-talkie",
-        serviceTitle: "Work Management",
-        serviceSubtitle:
-          "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
-      },
-      {
-        pageLink: "service-details-left-sidebar",
-        img: "service3.jpg",
-        iconClass: "flaticon-015-cart",
-        serviceTitle: "Material Engineering",
-        serviceSubtitle:
-          "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
-      },
-      {
-        pageLink: "service-details-left-sidebar",
-        img: "service-3.jpg",
-        iconClass: "flaticon-010-tank-1",
-        serviceTitle: "Power and Energy",
-        serviceSubtitle:
-          "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
-      },
-      {
-        pageLink: "service-details-left-sidebar",
-        img: "service-2.jpg",
-        iconClass: "flaticon-004-walkie-talkie",
-        serviceTitle: "Land Minning",
-        serviceSubtitle:
-          "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
-      },
-      {
-        pageLink: "service-details-left-sidebar",
-        img: "service-1.jpg",
-        iconClass: "flaticon-002-welding",
-        serviceTitle: "Work Management",
-        serviceSubtitle:
-          "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
-      }
-    ];
+import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import axios from "axios";
+const Services = () => {
+  // render() {
+		const [data, setData] = useState([]);
+		const [loading, setLoading] = useState(true);
+		const [error, setError] = useState(null);
+		useEffect(() => {
+			axios
+				.get(API_BASE_URL + "allservices",{
+					headers: {
+						Authorization: `Bearer ${API_TOKEN}`
+					}
+				}) // Laravel API endpoint
+				.then((response) => {
+					setData(response.data); // Set the fetched data
+					setLoading(false);
+				})
+				.catch((error) => {
+					setError(error.message);
+					setLoading(false);
+				});
+		}, []); 
+    // let data = [
+    //   {
+    //     pageLink: "service-details-left-sidebar",
+    //     img: "service1.jpg",
+    //     iconClass: "flaticon-002-welding",
+    //     serviceTitle: "Land Minning",
+    //     serviceSubtitle:
+    //       "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
+    //   },
+    //   {
+    //     pageLink: "service-details-left-sidebar",
+    //     img: "service2.jpg",
+    //     iconClass: "flaticon-004-walkie-talkie",
+    //     serviceTitle: "Work Management",
+    //     serviceSubtitle:
+    //       "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
+    //   },
+    //   {
+    //     pageLink: "service-details-left-sidebar",
+    //     img: "service3.jpg",
+    //     iconClass: "flaticon-015-cart",
+    //     serviceTitle: "Material Engineering",
+    //     serviceSubtitle:
+    //       "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
+    //   },
+    //   {
+    //     pageLink: "service-details-left-sidebar",
+    //     img: "service-3.jpg",
+    //     iconClass: "flaticon-010-tank-1",
+    //     serviceTitle: "Power and Energy",
+    //     serviceSubtitle:
+    //       "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
+    //   },
+    //   {
+    //     pageLink: "service-details-left-sidebar",
+    //     img: "service-2.jpg",
+    //     iconClass: "flaticon-004-walkie-talkie",
+    //     serviceTitle: "Land Minning",
+    //     serviceSubtitle:
+    //       "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
+    //   },
+    //   {
+    //     pageLink: "service-details-left-sidebar",
+    //     img: "service-1.jpg",
+    //     iconClass: "flaticon-002-welding",
+    //     serviceTitle: "Work Management",
+    //     serviceSubtitle:
+    //       "Lorem ipsum dolor sit amet consect adipisi elit sed do eiusm tempor"
+    //   }
+    // ];
 
     let Datalist = data.map((val, i) => {
       return (
@@ -65,27 +86,27 @@ class Services extends Component {
           <div className="service-grid-item">
             <div className="service-grid-item__image">
               <div className="service-grid-item__image-wrapper">
-                <a href={`${process.env.PUBLIC_URL}/${val.pageLink}`}>
+                <a href={`/ServiceDetail/${val.id}`}>
                   <img
-                    src={`assets/img/service/${val.img}`}
+                    src={`${IMAGES_URL}images/services/${val.bgImage}`}
                     className="img-fluid"
                     alt="Service Grid"
                   />
                 </a>
               </div>
               <div className="icon">
-                <i className={val.iconClass} />
+                <i className={val.icon} />
               </div>
             </div>
             <div className="service-grid-item__content">
               <h3 className="title">
-                <a href={`${process.env.PUBLIC_URL}/${val.pageLink}`}>
-                  {val.serviceTitle}
+                <a href={`/ServiceDetail/${val.id}`}>
+                  {val.title}
                 </a>
               </h3>
-              <p className="subtitle">{val.serviceSubtitle}</p>
+              <p className="subtitle">{val.description}</p>
               <a
-                href={`${process.env.PUBLIC_URL}/${val.pageLink}`}
+                href={`/ServiceDetail/${val.id}`}
                 className="see-more-link"
               >
                 SEE MORE
@@ -156,7 +177,7 @@ class Services extends Component {
         <MobileMenu />
       </div>
     );
-  }
+  // }
 }
 
 export default Services;

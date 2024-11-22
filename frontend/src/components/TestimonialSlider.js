@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SwiperSlider, { SwiperSlide } from "./swiper";
 import { EffectFade } from "swiper";
-import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 
 const TestimonialSlider = () => {
@@ -46,7 +46,7 @@ const TestimonialSlider = () => {
             <div className="author">
               <div className="author__image">
                 <img
-                  src={`${BASE_URL}images/testimonials/${val.avatar}`}
+                  src={`${IMAGES_URL}images/testimonials/${val.avatar}`}
                   alt=""
                 />
               </div>
@@ -67,7 +67,7 @@ const TestimonialSlider = () => {
         <div
           className="testimonial-slider-area testimonial-slider-area-bg section-space--inner--120"
           style={{
-            backgroundImage: `url(${BASE_URL}images/testimonials/${bgImage})`
+            backgroundImage: `url(${IMAGES_URL}images/testimonials/${bgImage})`
           }}
         >
           <div className="container">
