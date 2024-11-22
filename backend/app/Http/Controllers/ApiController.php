@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\HeroSection;
 use App\Models\Services;
 use App\Models\Testimonials;
+use App\Models\WebsiteSettings;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -23,4 +24,9 @@ class ApiController extends Controller
 			$testimonials = Testimonials::getTestimonialsFrontend();
 			return response()->json($testimonials);
 	} //
+
+	public function getWebsiteSettings(){
+		$settings = WebsiteSettings::getWebsiteSettingsFrontend();
+		return response()->json($settings);
+	}
 }

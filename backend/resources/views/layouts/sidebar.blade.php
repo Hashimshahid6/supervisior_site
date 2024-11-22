@@ -34,7 +34,7 @@
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" data-key="t-menu">Dashboard</li>
 
-               <li>
+               {{-- <li>
                     <a href="javascript: void(0);">
                         <i class="bx bx-home-alt icon nav-icon"></i>
                         <span class="menu-item" data-key="t-dashboard">Dashboard</span>
@@ -44,7 +44,7 @@
                         <li><a href="index" data-key="t-ecommerce">Ecommerce</a></li>
                         <li><a href="dashboard-sales" data-key="t-sales">Sales</a></li>
                     </ul>
-                </li>
+                </li> --}}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="bx bx-image icon nav-icon"></i>

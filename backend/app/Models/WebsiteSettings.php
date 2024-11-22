@@ -41,5 +41,26 @@ class WebsiteSettings extends Model
     public static function getAllWebsiteSettings()
     {
         return self::all();
-    }
+    }//
+
+    public static function getWebsiteSettingsFrontend()
+    {
+        return self::where('status', 'Active')->get([
+            'site_name',
+            'site_url',
+            'site_email',
+            'site_phone',
+            'site_address',
+            'site_city',
+            'site_country',
+            'site_postal_code',
+            'site_logo',
+            'site_favicon',
+            'site_description',
+            'site_facebook',
+            'site_twitter',
+            'site_instagram',
+            'site_linkedin',
+        ]);
+    }//
 }
