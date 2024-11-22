@@ -49,7 +49,7 @@ class Footer extends Component {
                       {/* footer intro wrapper */}
                       <div className="footer-intro-wrapper">
                         <div className="footer-logo">
-                          <a href={`${process.env.PUBLIC_URL}/home-one`}>
+                          <a href={`${process.env.PUBLIC_URL}/`}>
                             <img
                               src="assets/img/logo/logo-light.png"
                               className="img-fluid"
@@ -67,26 +67,19 @@ class Footer extends Component {
                     <div className="col-xl-2 offset-xl-1 col-lg-3 col-md-4">
                       {/* footer widget */}
                       <div className="footer-widget">
-                        <h4 className="footer-widget__title">USEFUL LINKS</h4>
+                        <h4 className="footer-widget__title">Services</h4>
                         <ul className="footer-widget__navigation">
                           <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>Home</a>
+                            <a >Land Mining</a>
                           </li>
                           <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>
-                              Company News
-                            </a>
+                            <a >Work Management</a>
                           </li>
                           <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>Projects</a>
+                            <a >Material Engineering</a>
                           </li>
                           <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>Careers</a>
-                          </li>
-                          <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>
-                              Contact Us
-                            </a>
+                            <a >Power and Energy</a>
                           </li>
                         </ul>
                       </div>
@@ -94,28 +87,19 @@ class Footer extends Component {
                     <div className="col-xl-2 offset-xl-1 col-lg-3 col-md-4">
                       {/* footer widget */}
                       <div className="footer-widget">
-                        <h4 className="footer-widget__title">USEFUL LINKS</h4>
+                        <h4 className="footer-widget__title">Pages</h4>
                         <ul className="footer-widget__navigation">
                           <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>
-                              Our Services
-                            </a>
+                            <a href={`${process.env.PUBLIC_URL}/`}>Home</a>
                           </li>
                           <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>Showcase</a>
+                            <a href={`${process.env.PUBLIC_URL}/about-us`}>About Us</a>
                           </li>
                           <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>Affliates</a>
+                            <a href={`${process.env.PUBLIC_URL}/services`}>Services</a>
                           </li>
                           <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>
-                              Disclaimer
-                            </a>
-                          </li>
-                          <li>
-                            <a href={`${process.env.PUBLIC_URL}/`}>
-                              Privacy Policy
-                            </a>
+                            <a href={`${process.env.PUBLIC_URL}/contact-us`}>Contact Us</a>
                           </li>
                         </ul>
                       </div>

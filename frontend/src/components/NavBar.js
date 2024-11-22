@@ -134,12 +134,12 @@ class NavBar extends Component{
                                             <li>
                                                 <Link to={`${process.env.PUBLIC_URL}/services`}>SERVICE</Link>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                                 <Link to={`${process.env.PUBLIC_URL}/projects`} >PROJECTS</Link>
                                             </li>
                                             <li>
                                                 <Link to={`${process.env.PUBLIC_URL}/blog-left-sidebar`}>BLOGS</Link>
-                                            </li>
+                                            </li> */}
                                             <li><Link to={`${process.env.PUBLIC_URL}/contact-us`}>CONTACT</Link> </li>
                                             </ul>
                                         </nav>
