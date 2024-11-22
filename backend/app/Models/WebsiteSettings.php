@@ -36,12 +36,12 @@ class WebsiteSettings extends Model
         self::updating(function ($model) {
             $model->updated_by = auth()->id();
         });
-    }//
+    } //
 
     public static function getAllWebsiteSettings()
     {
         return self::all();
-    }//
+    } //
 
     public static function getWebsiteSettingsFrontend()
     {
@@ -62,5 +62,5 @@ class WebsiteSettings extends Model
             'site_instagram',
             'site_linkedin',
         ]);
-    }//
+    } //
 }
