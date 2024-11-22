@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 
 const FeatureIconText = () => {
@@ -36,8 +36,7 @@ const FeatureIconText = () => {
                 <div className="col-lg-3 col-md-6" key={i}>
                     <div className="single-feature-icon text-center">
                         <div className="single-feature-icon__image">
-                            {/* <img src={`${BASE_URL}images/services/${val.icon}`} className="img-fluid" alt="" /> */}
-														<i className={`${val.icon} fa-3x`}></i>
+                            <img src={`${IMAGES_URL}images/services/${val.icon}`} className="img-fluid" alt={val.title} />
                         </div>
                         <h3 className="single-feature-icon__title">{val.title}</h3>
                         <p className="single-feature-icon__content">{val.description}</p>

@@ -95,7 +95,7 @@ const Services = () => {
                 </a>
               </div>
               <div className="icon">
-                <i className={val.icon} />
+                <img src={`${IMAGES_URL}images/services/${val.icon}`} className="img-fluid" alt={val.title} />
               </div>
             </div>
             <div className="service-grid-item__content">

@@ -43,7 +43,9 @@ const ServiceTabTwo = () =>{
 
         let serviceTabMenuDatalist = serviceTabMenuData.map((val, i)=>{
             return(
-                <Tab key={i}>  <span className="icon"><i className={val.iconName} /></span> <span className="text">{val.tabMenuName}</span></Tab>
+                <Tab key={i}>  <span className="icon">
+									<img src={`${IMAGES_URL}images/services/${val.icon}`} className="img-fluid" alt={val.title} />
+									</span> <span className="text">{val.tabMenuName}</span></Tab>
             )
         });
 
