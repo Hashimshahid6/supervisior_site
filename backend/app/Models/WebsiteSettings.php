@@ -45,7 +45,7 @@ class WebsiteSettings extends Model
 
     public static function getWebsiteSettingsFrontend()
     {
-        return self::where('status', 'Active')->get([
+        return self::select([
             'site_name',
             'site_url',
             'site_email',
