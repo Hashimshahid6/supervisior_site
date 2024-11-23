@@ -25,4 +25,6 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
 	Route::get('allservices', [ApiController::class,'getActiveServices']);
 	Route::get('testimonials', [ApiController::class,'getTestimonialsFrontend']);
 	Route::get('settings', [ApiController::class,'getWebsiteSettings']);
+	Route::get('aboutsection', [ApiController::class,'getAboutSection']);
+	Route::get('servicesection', [ApiController::class,'getServiceSection']);
 });

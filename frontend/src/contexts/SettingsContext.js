@@ -17,7 +17,7 @@ export const SettingsProvider = ({ children }) => {
 					}
 				}) // Laravel API endpoint
 				.then((response) => {
-					setSettings(response.data); // Set the fetched data
+					setSettings(response.data[0]); // Set the fetched data
 					setLoading(false);
 				})
 				.catch((error) => {
@@ -41,3 +41,5 @@ export const SettingsProvider = ({ children }) => {
 };
 
 export const useSettings = () => React.useContext(SettingsContext);
+// Export the Context itself for use in Class Components
+export default SettingsContext;

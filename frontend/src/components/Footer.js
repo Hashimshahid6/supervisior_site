@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { animateScroll as scroll } from "react-scroll";
+import withSettings from "../contexts/withSettings";
+import { IMAGES_URL } from '../constants';
 class Footer extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +38,7 @@ class Footer extends Component {
   }
 
   render() {
+		const { settings } = this.props;
     return (
       <div>
         {/*====================  footer area ====================*/}
@@ -51,7 +54,7 @@ class Footer extends Component {
                         <div className="footer-logo">
                           <a href={`${process.env.PUBLIC_URL}/`}>
                             <img
-                              src="assets/img/logo/logo-light.png"
+                              src={`${IMAGES_URL}images/websiteimages/${settings.site_logo}`}
                               className="img-fluid"
                               alt=""
                             />
@@ -70,16 +73,16 @@ class Footer extends Component {
                         <h4 className="footer-widget__title">Services</h4>
                         <ul className="footer-widget__navigation">
                           <li>
-                            <a >Land Mining</a>
+                            <a href="#">Land Mining</a>
                           </li>
                           <li>
-                            <a >Work Management</a>
+                            <a href="#">Work Management</a>
                           </li>
                           <li>
-                            <a >Material Engineering</a>
+                            <a href="#">Material Engineering</a>
                           </li>
                           <li>
-                            <a >Power and Energy</a>
+                            <a href="#">Power and Energy</a>
                           </li>
                         </ul>
                       </div>
@@ -110,17 +113,17 @@ class Footer extends Component {
                         <h4 className="footer-widget__title">CONTACT US</h4>
                         <div className="footer-widget__content">
                           <p className="address">
-                            Your address goes here, street Crossroad123.
+                            {settings.site_address}
                           </p>
                           <ul className="contact-details">
                             <li>
-                              <span>P:</span>99 55 66 88 526
+                              <span>P:</span>{settings.site_phone}
                             </li>
                             <li>
-                              <span>F:</span>55 44 77 62
+                              <span>F:</span>{settings.site_phone2}
                             </li>
                             <li>
-                              <span>E:</span>cons@email.com
+                              <span>E:</span>{settings.site_email}
                             </li>
                           </ul>
                         </div>
@@ -134,8 +137,7 @@ class Footer extends Component {
           <div className="footer-copyright-wrapper">
             <div className="footer-copyright text-center">
               <p className="copyright-text">
-                &copy; Castro {new Date().getFullYear()} Made With <i className="fa fa-heart"></i> By
-                HasThemes
+                &copy; {settings.site_name} {new Date().getFullYear()} Made With <i className="fa fa-heart"></i>
               </p>
             </div>
           </div>
@@ -155,4 +157,4 @@ class Footer extends Component {
   }
 }
 
-export default Footer;
+export default withSettings(Footer);

@@ -7,6 +7,7 @@ import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 const Services = () => {
   // render() {
+		const [servicedata, setserviceData] = useState([]);
 		const [data, setData] = useState([]);
 		const [loading, setLoading] = useState(true);
 		const [error, setError] = useState(null);
@@ -19,6 +20,20 @@ const Services = () => {
 				}) // Laravel API endpoint
 				.then((response) => {
 					setData(response.data); // Set the fetched data
+					setLoading(false);
+				})
+				.catch((error) => {
+					setError(error.message);
+					setLoading(false);
+				});
+			axios
+				.get(API_BASE_URL + "getServiceSection",{
+					headers: {
+						Authorization: `Bearer ${API_TOKEN}`
+					}
+				}) // Laravel API endpoint
+				.then((response) => {
+					setserviceData(response.servicedata); // Set the fetched data
 					setLoading(false);
 				})
 				.catch((error) => {
@@ -127,7 +142,7 @@ const Services = () => {
         <div
           className="breadcrumb-area breadcrumb-bg"
           style={{
-            backgroundImage: `url(assets/img/backgrounds/funfact-bg.jpg)`
+            backgroundImage: `url(${IMAGES_URL}images/sections/${servicedata.image})`
           }}
         >
           <div className="container">
@@ -139,7 +154,7 @@ const Services = () => {
                     <li>
                       <a href="/">Home</a>
                     </li>
-                    <li>Service</li>
+                    <li>{servicedata.heading}</li>
                   </ul>
                 </div>
               </div>
@@ -168,7 +183,7 @@ const Services = () => {
         {/*====================  End of service page content  ====================*/}
 
         {/* Brand logo */}
-        <BrandLogoSlider background="grey-bg" />
+        {/* <BrandLogoSlider background="grey-bg" /> */}
 
         {/* Footer */}
         <Footer />

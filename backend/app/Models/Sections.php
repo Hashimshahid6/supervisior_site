@@ -35,4 +35,11 @@ class Sections extends Model
     {
         return self::all();
     }//
+
+		public static function getAboutSection(){
+			return self::where('id','1')->first();
+		} //
+		public static function getServiceSection(){
+			return self::where('id','2')->first();
+		} //
 }

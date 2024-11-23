@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
+import withSettings from "../contexts/withSettings";
+import { IMAGES_URL } from '../constants';
 class Contact extends Component {
   render() {
+		const { settings } = this.props;
     return (
       <div>
         {/* Navigation bar */}
@@ -62,8 +65,7 @@ class Contact extends Component {
                         </span>
                         <span className="text">
                           <span>
-                            Stock Building, 125 Main Street 1st Lane, San
-                            Francisco, USA
+                            {settings.site_address}
                           </span>
                         </span>
                       </li>
@@ -72,8 +74,8 @@ class Contact extends Component {
                           <i className="ion-ios-telephone-outline" />
                         </span>
                         <span className="text">
-                          <a href="tel:1234567890">(001) 24568 365 987</a>
-                          <a href="tel:1234567890">(001) 65897 569 784</a>
+                          <a href={`tel:${settings.site_phone}`}>{settings.site_phone}</a>
+                          <a href={`tel:${settings.site_phone2}`}>{settings.site_phone2}</a>
                         </span>
                       </li>
                       <li>
@@ -81,8 +83,8 @@ class Contact extends Component {
                           <i className="ion-ios-email-outline" />
                         </span>
                         <span className="text">
-                          <a href="mailto:info@example.com">info@example.com</a>
-                          <a href="mailto:info@example.com">info@example.com</a>
+                          <a href="mailto:info@example.com">{settings.site_email}</a>
+                          <a href="mailto:info@example.com">{settings.site_email2}</a>
                         </span>
                       </li>
                     </ul>
@@ -138,4 +140,4 @@ class Contact extends Component {
   }
 }
 
-export default Contact;
+export default withSettings(Contact);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\HeroSection;
+use App\Models\Sections;
 use App\Models\Services;
 use App\Models\Testimonials;
 use App\Models\WebsiteSettings;
@@ -31,6 +32,10 @@ class ApiController extends Controller
 
 	public function getWebsiteSettings(){
 		$settings = WebsiteSettings::getWebsiteSettingsFrontend();
+		return response()->json($settings);
+	}
+	public function getWebsiteSections(){
+		$settings = Sections::getSections();
 		return response()->json($settings);
 	}
 }

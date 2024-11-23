@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import MobileMenu from './MobileMenu';
+import withSettings from "../contexts/withSettings";
+import { IMAGES_URL } from '../constants';
 class NavBar extends Component{
 
     constructor(props){
@@ -40,7 +42,7 @@ class NavBar extends Component{
 
     render(){
 
-
+			const { settings } = this.props;
         return(
             <div>
                 {/*====================  header area ====================*/}
@@ -55,10 +57,10 @@ class NavBar extends Component{
                             <div className="top-bar-left-wrapper">
                                 <div className="social-links social-links--white-topbar d-inline-block">
                                 <ul>
-                                    <li><a href="//facebook.com"><i className="zmdi zmdi-facebook" /></a></li>
-                                    <li><a href="//twitter.com"><i className="zmdi zmdi-twitter" /></a></li>
-                                    <li><a href="//vimeo.com"><i className="zmdi zmdi-vimeo" /></a></li>
-                                    <li><a href="//linkedin.com"><i className="zmdi zmdi-linkedin-box" /></a></li>
+                                    <li><a href={`${settings.site_facebook}`}><i className="zmdi zmdi-facebook" /></a></li>
+                                    <li><a href={`${settings.site_twitter}`}><i className="zmdi zmdi-twitter" /></a></li>
+                                    <li><a href={`${settings.site_instagram}`}><i className="zmdi zmdi-vimeo" /></a></li>
+                                    <li><a href={`${settings.site_linkedin}`}><i className="zmdi zmdi-linkedin-box" /></a></li>
                                     <li><a href="//skype.com"><i className="zmdi zmdi-skype" /></a></li>
                                 </ul>
                                 </div>
@@ -83,7 +85,7 @@ class NavBar extends Component{
                                     {/* logo */}
                                     <div className="logo">
                                         <Link to = {`/`}>
-                                            <img src="assets/img/logo/logo.png" className="img-fluid" alt="Logo" />
+                                            <img src={`${IMAGES_URL}images/websiteimages/${settings.site_logo}`} className="img-fluid" alt="Logo" />
                                         </Link>
                                     </div>
                                     {/* header contact info */}
@@ -94,7 +96,7 @@ class NavBar extends Component{
                                         </div>
                                         <div className="header-info-single-item__content">
                                         <h6 className="header-info-single-item__title">Phone</h6>
-                                        <p className="header-info-single-item__subtitle">98 9875 5968 54</p>
+                                        <p className="header-info-single-item__subtitle">{settings.site_phone}</p>
                                         </div>
                                     </div>
                                     <div className="header-info-single-item">
@@ -103,7 +105,7 @@ class NavBar extends Component{
                                         </div>
                                         <div className="header-info-single-item__content">
                                         <h6 className="header-info-single-item__title">Address</h6>
-                                        <p className="header-info-single-item__subtitle">your address goes here</p>
+                                        <p className="header-info-single-item__subtitle">{settings.site_address}</p>
                                         </div>
                                     </div>
                                     </div>
@@ -163,4 +165,4 @@ class NavBar extends Component{
 }
 
 
-export default NavBar;
+export default withSettings(NavBar);
