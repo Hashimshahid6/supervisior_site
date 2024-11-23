@@ -14,7 +14,7 @@
     <body>
     @endsection
     @section('content')
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-xl-6">
                 <div class="card">
                     <div class="card-body pb-0">
@@ -249,10 +249,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- end row -->
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-xxl-8">
                 <div class="row">
                     <div class="col-xl-7">
@@ -646,10 +646,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- end row -->
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-xl-7">
                 <div class="card">
                     <div class="card-body">
@@ -1045,7 +1045,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- end row -->
     @endsection
     @section('scripts')
