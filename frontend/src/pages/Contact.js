@@ -49,7 +49,7 @@ const Contact = ({settings}) => {
                     <li>
                       <a href="/">Home</a>
                     </li>
-                    <li>Contact Us</li>
+                    <li>Contact s</li>
                   </ul>
                 </div>
               </div>

@@ -44,4 +44,16 @@ class Sections extends Model
     {
         return self::where('id', '2')->first();
     } //
+    public static function getAboutSectionone()
+    {
+        return self::where('display_on', 'About')->where('order', '1')->first();
+    } //
+    public static function getAboutSectiontwo()
+    {
+        return self::where('display_on', 'About')->where('order', '2')->first();
+    } //
+    public static function getAboutSectionthree()
+    {
+        return self::where('display_on', 'About')->where('order', '3')->first();
+    } //
 }

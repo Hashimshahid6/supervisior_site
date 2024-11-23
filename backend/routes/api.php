@@ -27,4 +27,8 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
 	Route::get('settings', [ApiController::class,'getWebsiteSettings']);
 	Route::get('aboutsection', [ApiController::class,'getAboutSection']);
 	Route::get('servicesection', [ApiController::class,'getServiceSection']);
+	Route::get('aboutsectionone', [ApiController::class,'getAboutSectionone']);
+	Route::get('aboutsectiontwo', [ApiController::class,'getAboutSectiontwo']);
+	Route::get('aboutsectionthree', [ApiController::class,'getAboutSectionthree']);
+	Route::get('getbanner/{id}', [ApiController::class,'getBannerId'])->where('id','[0-9]+');
 });

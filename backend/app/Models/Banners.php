@@ -29,4 +29,7 @@ class Banners extends Model
     {
         return self::all();
     }//
+    public static function getBannerId($id){
+        return self::where('id',$id)->first();
+    } //
 }

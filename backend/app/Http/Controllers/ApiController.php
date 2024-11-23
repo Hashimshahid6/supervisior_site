@@ -6,6 +6,7 @@ use App\Models\HeroSection;
 use App\Models\Sections;
 use App\Models\Services;
 use App\Models\Testimonials;
+use App\Models\Banners;
 use App\Models\WebsiteSettings;
 use Illuminate\Http\Request;
 
@@ -43,4 +44,24 @@ class ApiController extends Controller
 		$settings = Sections::getAboutSection();
 		return response()->json($settings);
 	}
+	public function getServiceSection(){
+		$settings = Sections::getServiceSection();
+		return response()->json($settings);
+	}
+	public function getAboutSectionone(){
+		$settings = Sections::getAboutSectionone();
+		return response()->json($settings);
+	}
+	public function getAboutSectiontwo(){
+		$settings = Sections::getAboutSectiontwo();
+		return response()->json($settings);
+	}
+	public function getAboutSectionthree(){
+		$settings = Sections::getAboutSectionthree();
+		return response()->json($settings);
+	}
+	public function getBannerId($id){
+	    $banner = Banners::getBannerId($id);
+		return response()->json($banner);
+	}//
 }
