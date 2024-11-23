@@ -7,12 +7,27 @@ import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 const Services = () => {
   // render() {
+	const [bannerdata, setbannerData] = useState([]);
   const [servicedata, setserviceData] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
     axios
+      .get(API_BASE_URL + "getbanner/2", {
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+        },
+      }) // Laravel API endpoint
+      .then((response) => {
+        setbannerData(response.data); // Set the fetched data
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
+		axios
       .get(API_BASE_URL + "allservices", {
         headers: {
           Authorization: `Bearer ${API_TOKEN}`,
@@ -102,7 +117,7 @@ const Services = () => {
       <div
         className="breadcrumb-area breadcrumb-bg"
         style={{
-          backgroundImage: `url(${IMAGES_URL}images/sections/${servicedata.image})`,
+          backgroundImage: `url(${IMAGES_URL}images/banners/${bannerdata.image})`,
         }}
       >
         <div className="container">

@@ -1,12 +1,30 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
 import withSettings from "../contexts/withSettings";
-import { IMAGES_URL } from '../constants';
-class Contact extends Component {
-  render() {
-		const { settings } = this.props;
+import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import axios from "axios";
+const Contact = ({settings}) => {
+  // render() {
+		// const { settings } = this.props;
+		const [bannerdata, setbannerData] = useState([]);
+		const [loading, setLoading] = useState(true);
+  	const [error, setError] = useState(null);
+		axios
+      .get(API_BASE_URL + "getbanner/3", {
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+        },
+      }) // Laravel API endpoint
+      .then((response) => {
+        setbannerData(response.data); // Set the fetched data
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
     return (
       <div>
         {/* Navigation bar */}
@@ -17,7 +35,7 @@ class Contact extends Component {
         <div
           className="breadcrumb-area breadcrumb-bg"
           style={{
-            backgroundImage: `url(assets/img/backgrounds/funfact-bg.jpg)`
+            backgroundImage: `url(${IMAGES_URL}images/banners/${bannerdata.image})`
           }}
         >
           <div className="container">
@@ -139,7 +157,7 @@ class Contact extends Component {
         <MobileMenu />
       </div>
     );
-  }
+  // }
 }
 
 export default withSettings(Contact);

@@ -61,9 +61,7 @@ class Footer extends Component {
                           </a>
                         </div>
                         <div className="footer-desc">
-                          Lorem ipsum dolor sit amet consect adipisici elit, sed
-                          do eiusmod tempor incididuk ut labore et dolore magna
-                          aliqua Ut enim
+                          {settings.site_description}
                         </div>
                       </div>
                     </div>

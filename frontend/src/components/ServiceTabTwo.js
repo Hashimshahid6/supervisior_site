@@ -7,6 +7,7 @@ const ServiceTabTwo = () =>{
 
     // render(){
       const [data, setData] = useState([]);
+      const [servicedata, setserviceData] = useState([]);
 			const [loading, setLoading] = useState(true);
 			const [error, setError] = useState(null);
 			useEffect(() => {
@@ -18,6 +19,20 @@ const ServiceTabTwo = () =>{
 					}) // Laravel API endpoint
 					.then((response) => {
 						setData(response.data); // Set the fetched data
+						setLoading(false);
+					})
+					.catch((error) => {
+						setError(error.message);
+						setLoading(false);
+					});
+				axios
+					.get(API_BASE_URL + "servicesection",{
+						headers: {
+							Authorization: `Bearer ${API_TOKEN}`
+						}
+					}) // Laravel API endpoint
+					.then((response) => {
+						setserviceData(response.data); // Set the fetched data
 						setLoading(false);
 					})
 					.catch((error) => {
@@ -44,7 +59,7 @@ const ServiceTabTwo = () =>{
         let serviceTabMenuDatalist = serviceTabMenuData.map((val, i)=>{
             return(
                 <Tab key={i}>  <span className="icon">
-									<img src={`${IMAGES_URL}images/services/${val.icon}`} className="img-fluid" alt={val.title} />
+									<img src={`${IMAGES_URL}images/services/${val.iconName}`} className="img-fluid" alt={val.iconName} />
 									</span> <span className="text">{val.tabMenuName}</span></Tab>
             )
         });
@@ -83,8 +98,9 @@ const ServiceTabTwo = () =>{
                             <div className="col-lg-12">
                                 {/* section title */}
                                 <div className="section-title-area text-center section-space--bottom--50">
-                                    <h2 className="section-title">Our Services</h2>
-                                    <p className="section-subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing</p>
+                                    <h2 className="section-title">{servicedata.heading}</h2>
+                                    <p className="section-subtitle">{servicedata.content}</p>
+																		<a href={servicedata.button_link} className="ht-btn--default ht-btn--default--dark-hover section-space--top--20">{servicedata.button_text}</a>
                                 </div>
 
                             </div>

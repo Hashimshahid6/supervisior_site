@@ -57,11 +57,10 @@ class NavBar extends Component{
                             <div className="top-bar-left-wrapper">
                                 <div className="social-links social-links--white-topbar d-inline-block">
                                 <ul>
-                                    <li><a href={`${settings.site_facebook}`}><i className="zmdi zmdi-facebook" /></a></li>
-                                    <li><a href={`${settings.site_twitter}`}><i className="zmdi zmdi-twitter" /></a></li>
-                                    <li><a href={`${settings.site_instagram}`}><i className="zmdi zmdi-vimeo" /></a></li>
-                                    <li><a href={`${settings.site_linkedin}`}><i className="zmdi zmdi-linkedin-box" /></a></li>
-                                    <li><a href="//skype.com"><i className="zmdi zmdi-skype" /></a></li>
+                                    <li><a href={`${settings.site_facebook}`}><i className="zmdi zmdi-facebook" title="Facebook" /></a></li>
+                                    <li><a href={`${settings.site_twitter}`}><i className="zmdi zmdi-twitter" title="Twitter" /></a></li>
+                                    <li><a href={`${settings.site_instagram}`}><i className="zmdi zmdi-instagram" title="Instagram" /></a></li>
+                                    <li><a href={`${settings.site_linkedin}`}><i className="zmdi zmdi-linkedin-box" title="LinkedIn"/></a></li>                                    
                                 </ul>
                                 </div>
                             </div>

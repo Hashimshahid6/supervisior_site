@@ -5,7 +5,6 @@ const AboutText = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-//   console.log('image2',data.image);
   useEffect(() => {
     axios
       .get(API_BASE_URL + "aboutsection", {
