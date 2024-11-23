@@ -61,6 +61,6 @@ class WebsiteSettings extends Model
             'site_twitter',
             'site_instagram',
             'site_linkedin',
-        ]);
+        ])->get();
     } //
 }
