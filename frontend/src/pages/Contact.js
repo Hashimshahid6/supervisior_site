@@ -11,6 +11,7 @@ const Contact = ({settings}) => {
 		const [bannerdata, setbannerData] = useState([]);
 		const [loading, setLoading] = useState(true);
   	const [error, setError] = useState(null);
+		useEffect(() => {
 		axios
       .get(API_BASE_URL + "getbanner/3", {
         headers: {
@@ -25,6 +26,7 @@ const Contact = ({settings}) => {
         setError(error.message);
         setLoading(false);
       });
+		}, []); // Empty array means effect will only run on mount
     return (
       <div>
         {/* Navigation bar */}
