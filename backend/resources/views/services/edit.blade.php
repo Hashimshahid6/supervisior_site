@@ -101,7 +101,7 @@ Edit Service
                                 <label class="form-label" for="image">Icon <span class="text-danger">*</span></label>
                                 <input type="file" id="icon" name="icon" class="form-control" />
                                 @if($service->icon)
-                                <img src="{{ asset('images/services/' . $service->icon) }}" alt="Current Image"
+                                <img src="{{ asset('public/images/services/' . $service->icon) }}" alt="Current Image"
                                     class="img-thumbnail mt-2" width="100">
                                 @endif
                                 @error('icon')
@@ -113,7 +113,7 @@ Edit Service
                                         class="text-danger">*</span></label>
                                 <input type="file" id="bgImage" name="bgImage" class="form-control" />
                                 @if($service->bgImage)
-                                <img src="{{ asset('images/services/' . $service->bgImage) }}" alt="Current Image"
+                                <img src="{{ asset('public/images/services/' . $service->bgImage) }}" alt="Current Image"
                                     class="img-thumbnail mt-2" width="150">
                                 @endif
                                 @error('bgImage')
@@ -122,7 +122,6 @@ Edit Service
                             </div>
                             <div class="row mb-4">
                                 <div class="col text-end">
-                                    <a href="#" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a>
                                     <button type="submit" class="btn btn-success"> <i class="bx bx-check me-1"></i>
                                         Save Changes </button>
                                 </div> <!-- end col -->

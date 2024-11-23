@@ -51,7 +51,25 @@
                 </li>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-wrench icon nav-icon"></i>
+                        <i class="bx bx-image icon nav-icon"></i>
+                        <span class="menu-item">Banners</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{route('banners.index')}}">List</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bx bx-image icon nav-icon"></i>
+                        <span class="menu-item">Sections</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{route('sections.index')}}">List</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bx bx-briefcase icon nav-icon"></i>
                         <span class="menu-item">Services</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">

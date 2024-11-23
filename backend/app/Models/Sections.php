@@ -4,13 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Banners extends Model
+class Sections extends Model
 {
-    protected $table = 'banners';
+    protected $table = 'sections';
     protected $fillable = [
         'heading',
         'subheading',
+        'content',
         'image',
+        'button_text',
+        'button_link',
+        'display_on',
+        'order',
         'status',
     ];
 
@@ -23,9 +28,10 @@ class Banners extends Model
         self::updating(function ($model) {
             $model->updated_by = auth()->id();
         });
-    }
+    }//
 
-    public static function getBanners()
+
+    public static function getSections()
     {
         return self::all();
     }//

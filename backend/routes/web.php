@@ -5,6 +5,8 @@ use App\Http\Controllers\HeroSectionController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\WebsiteSettingsController;
+use App\Http\Controllers\BannersController;
+use App\Http\Controllers\SectionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +40,10 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
     //Website Settings
     Route::resource('website_settings', WebsiteSettingsController::class);
+
+    //Banners
+    Route::resource('banners', BannersController::class);
+
+    //Sections
+    Route::resource('sections', SectionsController::class);
 });

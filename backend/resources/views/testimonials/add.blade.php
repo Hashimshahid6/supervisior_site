@@ -94,7 +94,6 @@ Testimonials
                             </div>
                             <div class="row mb-4">
                                 <div class="col text-end">
-                                    <a href="#" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a>
                                     <button type="submit" class="btn btn-success"> <i class="bx bx-check me-1"></i>
                                         Submit </button>
                                 </div> <!-- end col -->

@@ -58,7 +58,7 @@ Hero Section
                                 @foreach($heroSections as $heroSection)
                                 <tr>
                                     <td>
-                                        <a href="{{ URL::asset('images/hero-section/' . $heroSection->image) }}" target="_blank">
+                                        <a href="{{ URL::asset('public/images/hero-section/' . $heroSection->image) }}" target="_blank">
                                             <i class="bx bx-image" style="font-size: 24px;"></i>
                                         </a>
                                     </td>

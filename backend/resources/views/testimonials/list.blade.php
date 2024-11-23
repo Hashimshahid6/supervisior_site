@@ -62,12 +62,12 @@ Testimonials
                                         <span class="fw-bold">{{ $loop->iteration }}</span>
                                     </td>
                                     <td>
-                                        <a href="{{ URL::asset('images/testimonials/' . $testimonial->avatar) }}" target="_blank">
+                                        <a href="{{ URL::asset('public/images/testimonials/' . $testimonial->avatar) }}" target="_blank">
                                             <i class="bx bx-image" style="font-size: 24px;"></i>
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ URL::asset('images/testimonials/' . $testimonial->bgImage) }}" target="_blank">
+                                        <a href="{{ URL::asset('public/images/testimonials/' . $testimonial->bgImage) }}" target="_blank">
                                             <i class="bx bx-image" style="font-size: 24px;"></i>
                                         </a>
                                     </td>

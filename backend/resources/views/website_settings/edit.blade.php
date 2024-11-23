@@ -139,7 +139,7 @@ Edit Website Settings
                         <div class="mb-3">
                             <label class="form-label" for="site_logo">Logo <span class="text-danger">*</span></label>
                             <input type="file" id="site_logo" name="site_logo" class="form-control" />
-                            <img src="{{ URL::asset('images/websiteimages/' . $websiteSettings->site_logo) }}" alt="Logo" class="img-fluid" style="width: 100px; height: 100px;">
+                            <img src="{{ URL::asset('public/images/websiteimages/' . $websiteSettings->site_logo) }}" alt="Logo" class="img-fluid" style="width: 100px; height: 100px;">
                             @error('site_logo')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -148,7 +148,7 @@ Edit Website Settings
                             <label class="form-label" for="site_favicon">Favicon <span
                                     class="text-danger">*</span></label>
                             <input type="file" id="site_favicon" name="site_favicon" class="form-control" />
-                            <img src="{{ URL::asset('images/websiteimages/' . $websiteSettings->site_favicon) }}" alt="Favicon" class="img-fluid" style="width: 100px; height: 100px;">
+                            <img src="{{ URL::asset('public/images/websiteimages/' . $websiteSettings->site_favicon) }}" alt="Favicon" class="img-fluid" style="width: 100px; height: 100px;">
                             @error('site_favicon')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -195,9 +195,8 @@ Edit Website Settings
                         </div>
                         <div class="row mb-4">
                             <div class="col text-end">
-                                <a href="#" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a>
                                 <button type="submit" class="btn btn-success"> <i class="bx bx-check me-1"></i>
-                                    Submit </button>
+                                    Save Changes </button>
                             </div> <!-- end col -->
                         </div> <!-- end row-->
                     </form>

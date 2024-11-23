@@ -101,7 +101,7 @@ Edit Hero Section
                                 <label class="form-label" for="image">Image <span class="text-danger">*</span></label>
                                 <input type="file" id="image" name="image" class="form-control" />
                                 @if($heroSection->image)
-                                <img src="{{ asset('images/hero-section/' . $heroSection->image) }}" alt="Current Image"
+                                <img src="{{ asset('public/images/hero-section/' . $heroSection->image) }}" alt="Current Image"
                                     class="img-thumbnail mt-2" width="150">
                                 @endif
                                 @error('image')
@@ -110,7 +110,6 @@ Edit Hero Section
                             </div>
                             <div class="row mb-4">
                                 <div class="col text-end">
-                                    <a href="#" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a>
                                     <button type="submit" class="btn btn-success"> <i class="bx bx-check me-1"></i>
                                         Save Changes </button>
                                 </div> <!-- end col -->

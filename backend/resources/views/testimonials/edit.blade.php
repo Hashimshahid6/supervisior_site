@@ -35,12 +35,12 @@ Edit Testimonial
                         <div class="mb-3">
                             <label for="avatar" class="form-label">Avatar</label>
                             <input type="file" class="form-control" id="avatar" name="avatar">
-                            <img src="{{ URL::asset('images/testimonials/' . $testimonial->avatar) }}" alt="Avatar" class="img-thumbnail mt-2" width="150">
+                            <img src="{{ URL::asset('public/images/testimonials/' . $testimonial->avatar) }}" alt="Avatar" class="img-thumbnail mt-2" width="150">
                         </div>
                         <div class="mb-3">
                             <label for="bgImage" class="form-label">Background Image</label>
                             <input type="file" class="form-control" id="bgImage" name="bgImage">
-                            <img src="{{ URL::asset('images/testimonials/' . $testimonial->bgImage) }}" alt="Background Image" class="img-thumbnail mt-2" width="150">
+                            <img src="{{ URL::asset('public/images/testimonials/' . $testimonial->bgImage) }}" alt="Background Image" class="img-thumbnail mt-2" width="150">
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
@@ -52,7 +52,6 @@ Edit Testimonial
                         </div>
                         <div class="row mb-4">
                             <div class="col text-end">
-                                <a href="#" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a>
                                 <button type="submit" class="btn btn-success"> <i class="bx bx-check me-1"></i>
                                     Save Changes </button>
                             </div> <!-- end col -->

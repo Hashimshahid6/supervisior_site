@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-Services
+Banners
 @endsection
 @section('css')
 <!-- swiper css -->
@@ -10,7 +10,7 @@ Services
 <link rel="stylesheet" href="{{ URL::asset('build/libs/nouislider/nouislider.min.css') }}">
 @endsection
 @section('page-title')
-Services
+Banners
 @endsection
 @section('body')
 
@@ -20,7 +20,7 @@ Services
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="mb-3">
-                <h5 class="card-title">Services List <span class="text-muted fw-normal ms-2">( {{ $services->count()
+                <h5 class="card-title">Banners List <span class="text-muted fw-normal ms-2">( {{ $banners->count()
                         }} )</span>
             </div>
         </div>
@@ -28,7 +28,7 @@ Services
         <div class="col-md-6">
             <div>
                 <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
-                    <a href="{{route('services.create')}}" class="btn btn-primary"><i class="bx bx-plus me-1"></i>
+                    <a href="{{route('banners.create')}}" class="btn btn-primary"><i class="bx bx-plus me-1"></i>
                         Add New</a>
                 </div>
             </div>
@@ -45,45 +45,45 @@ Services
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col">S.No</th>
-                                    <th scope="col">Icon</th>
-                                    <th scope="col">BgImage</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Button Text</th>
-                                    <th scope="col">Button Url</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Heading</th>
+                                    <th scope="col">Sub Heading</th>
+                                    <th scope="col">Display On</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                @foreach($services as $service)
+                                @foreach($banners as $banner)
                                 <tr>
                                     <td>
                                         <span class="fw-bold">{{ $loop->iteration }}</span>
                                     </td>
                                     <td>
-                                        <a href="{{ URL::asset('public/images/services/' . $service->icon) }}" target="_blank">
+                                        <a href="{{ URL::asset('public/images/banners/' . $banner->image) }}" target="_blank">
                                             <i class="bx bx-image" style="font-size: 24px;"></i>
                                         </a>
                                     </td>
+                                    <td>{{ $banner->heading }}</td>
+                                    <td>{{ $banner->subheading }}</td>
                                     <td>
-                                        <a href="{{ URL::asset('images/services/' . $service->bgImage) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
-                                        </a>
+                                        @if($banner->display_on == 'Home')
+                                        <span class="badge bg-primary">Home</span>
+                                        @elseif($banner->display_on == 'About')
+                                        <span class="badge bg-info">About</span>
+                                        @elseif($banner->display_on == 'Services')
+                                        <span class="badge bg-warning">Services</span>
+                                        @elseif($banner->display_on == 'Contact')
+                                        <span class="badge bg-success">Contact</span>
+                                        @else
+                                        <span class="badge bg-danger">Other</span>
+                                        @endif
                                     </td>
-                                    <td>{{ $service->title }}</td>
-                                    <td>{{ $service->description }}</td>
-                                    <td>{{ $service->button_text }}</td>
                                     <td>
-                                        <a href="{{ $service->button_url }}" target="_blank">
-                                            <i class="bx bx-link-alt" style="font-size: 20px;"></i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        @if($service->status == 'Active')
+                                        @if($banner->status == 'Active')
                                         <span class="badge bg-success">Active</span>
-                                        @elseif($service->status == 'Inactive')
+                                        @elseif($banner->status == 'Inactive')
                                         <span class="badge bg-warning">Inactive</span>
                                         @else
                                         <span class="badge bg-danger">Deleted</span>
@@ -92,7 +92,7 @@ Services
                                     <td>
                                         <ul class="list-inline mb-0">
                                             <li class="list-inline-item">
-                                                <a href="{{ route('services.edit', $service->id) }}"
+                                                <a href="{{ route('banners.edit', $banner->id) }}"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
                                                     class="px-2 text-primary"><i
                                                         class="bx bx-pencil font-size-18"></i></a>
@@ -100,7 +100,7 @@ Services
                                             <li class="list-inline-item">
                                                 <a href="javascript:void(0);" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="Delete" class="px-2 text-danger"
-                                                    onclick="deleteHeroSection({{ $service->id }})"><i
+                                                    onclick="deleteHeroSection({{ $banner->id }})"><i
                                                         class="bx bx-trash-alt font-size-18"></i></a>
                                             </li>
                                         </ul>

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-Add Hero Section
+Services
 @endsection
 @section('css')
 <!-- choices css -->
@@ -11,7 +11,7 @@ Add Hero Section
 <link href="{{ URL::asset('build/libs/dropzone/dropzone.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page-title')
-Add Hero Section
+Services
 @endsection
 @section('body')
 
@@ -38,53 +38,45 @@ Add Hero Section
                         </div>
                     </div>
                     <div class="p-4 border-top">
-                        <form action="{{route('hero_sections.store')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('banners.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label class="form-label" for="productname">Title <span
-                                        class="text-danger">*</span></label>
-                                <input id="title" name="title" placeholder="Enter Title" type="text"
-                                    class="form-control">
-                                @error('title')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="subtitle">Subtitle/Description <span
-                                        class="text-danger">*</span></label>
-                                <textarea class="form-control" id="subtitle" name="subtitle"
-                                    placeholder="Enter Subtitle" rows="4"></textarea>
-                                @error('subtitle')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label class="form-label" for="button_text">Button Text <span
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <div>
+                                        <label class="form-label" for="heading">Heading <span
                                                 class="text-danger">*</span></label>
-                                        <input id="button_text" name="button_text" placeholder="Enter Button Text"
-                                            type="text" class="form-control">
-                                        @error('button_text')
+                                        <input id="heading" name="heading" placeholder="Enter Heading" type="text"
+                                            class="form-control">
+                                        @error('heading')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label class="form-label" for="button_url">Button URL <span
-                                                class="text-danger">*</span></label>
-                                        <input id="button_url" name="button_url" placeholder="Enter Button URL"
-                                            type="text" class="form-control">
-                                        @error('button_url')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                <div class="col-4">
+                                    <label class="form-label" for="description">Sub Heading</label>
+                                    <input id="subheading" name="subheading" placeholder="Enter Sub Heading" type="text"
+                                        class="form-control">
+                                    @error('subheading')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label" for="display_on">Display On <span
+                                            class="text-danger">*</span></label>
+                                    <select id="display_on" name="display_on" class="form-select">
+                                        <option value="">Select</option>
+                                        <option value="Home">Home</option>
+                                        <option value="About">About</option>
+                                        <option value="Services">Services</option>
+                                        <option value="Contact">Contact</option>
+                                    </select>
+                                    @error('display_on')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="image">Image <span
-                                        class="text-danger">*</span></label>
+                                <label class="form-label" for="image">Image <span class="text-danger">*</span></label>
                                 <input type="file" id="image" name="image" class="form-control" />
                                 @error('image')
                                 <span class="text-danger">{{ $message }}</span>
