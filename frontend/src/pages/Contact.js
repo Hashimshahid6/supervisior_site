@@ -75,7 +75,9 @@ class Contact extends Component {
                         </span>
                         <span className="text">
                           <a href={`tel:${settings.site_phone}`}>{settings.site_phone}</a>
-                          <a href={`tel:${settings.site_phone2}`}>{settings.site_phone2}</a>
+                          {settings.site_phone2 && (
+                            <a href={`tel:${settings.site_phone2}`}>{settings.site_phone2}</a>
+                          )}
                         </span>
                       </li>
                       <li>

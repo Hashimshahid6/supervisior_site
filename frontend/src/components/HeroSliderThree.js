@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import SwiperSlider, { SwiperSlide } from "./swiper";
 import { EffectFade } from "swiper";
-import { BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 
 const HeroSliderThree = () => {
@@ -20,7 +20,6 @@ const HeroSliderThree = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
     axios
       .get(API_BASE_URL + "herosections", {
@@ -44,14 +43,14 @@ const HeroSliderThree = () => {
         <div
           className="hero-slider__single-item"
           style={{
-            backgroundImage: `url(${BASE_URL}images/hero-section/${val.image})`,
+            backgroundImage: `url(${IMAGES_URL}images/hero-section/${val.image})`,
           }}
         >
           <div className="hero-slider__content-wrapper">
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
-                  <div className="hero-slider__content m-auto text-center">
+                  <div className="hero-slider__content m-auto text-center" style={{ height: '730px', width: '100%'}}>
                     <h2 className="hero-slider__title">{val.title}</h2>
                     <p className="hero-slider__text">{val.subtitle}</p>
                     <a

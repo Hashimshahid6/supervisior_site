@@ -28,18 +28,20 @@ class Sections extends Model
         self::updating(function ($model) {
             $model->updated_by = auth()->id();
         });
-    }//
+    } //
 
 
     public static function getSections()
     {
         return self::all();
-    }//
+    } //
 
-		public static function getAboutSection(){
-			return self::where('id','1')->first();
-		} //
-		public static function getServiceSection(){
-			return self::where('id','2')->first();
-		} //
+    public static function getAboutSection()
+    {
+        return self::where('display_on', 'Home')->where('order', '1')->first();
+    } //
+    public static function getServiceSection()
+    {
+        return self::where('id', '2')->first();
+    } //
 }

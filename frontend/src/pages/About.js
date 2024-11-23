@@ -94,7 +94,7 @@ class About extends Component {
           {/*About section end*/}
 
           {/* Feature Icon */}
-          {/* <FeatureIcon background="grey-bg" /> */}
+          <FeatureIcon background="grey-bg" />
 
           {/*About section start*/}
           <div className="about-section section-space--inner--120">
@@ -157,7 +157,7 @@ class About extends Component {
           <TestimonialSlider />
 
           {/* Brand logo */}
-          {/* <BrandLogoSlider background="" /> */}
+          <BrandLogoSlider background="" />
         </div>
 
         {/* Footer */}

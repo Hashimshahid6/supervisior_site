@@ -39,7 +39,7 @@ class HomeThree extends Component{
                 {/* <ProjectImageGallery /> */}
                 
                 {/* Brand logo */}
-                {/* <BrandLogoSlider background="grey-bg" /> */}
+                <BrandLogoSlider background="grey-bg" />
                 
                 {/* Blog grid */}
                 {/* <BlogGridTwo /> */}

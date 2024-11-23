@@ -37,6 +37,6 @@ class Services extends Model
 			return self::where('status','Active')->take(4)->get(['id','title','description','icon','bgImage']);
 		} //
 		public static function getActiveServices(){
-			return self::where('status','Active')->take(4)->get(['id','title','description','icon','bgImage']);
+			return self::where('status','Active')->get(['id','title','description','icon','bgImage']);
 		} //
 }

@@ -38,4 +38,9 @@ class ApiController extends Controller
 		$settings = Sections::getSections();
 		return response()->json($settings);
 	}
+
+	public function getAboutSection(){
+		$settings = Sections::getAboutSection();
+		return response()->json($settings);
+	}
 }

@@ -48,7 +48,9 @@ Website Settings
                                     <th scope="col">Favicon</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Email 2</th>
                                     <th scope="col">Phone</th>
+                                    <th scope="col">Phone 2</th>
                                     <th scope="col">City</th>
                                     <th scope="col">Country</th>
                                     <th scope="col">Postal Code</th>
@@ -80,7 +82,9 @@ Website Settings
                                     </td>
                                     <td>{{ $setting->site_name }}</td>
                                     <td>{{ $setting->site_email }}</td>
+                                    <td>{{ $setting->site_email2 }}</td>
                                     <td>{{ $setting->site_phone }}</td>
+                                    <td>{{ $setting->site_phone2 }}</td>
                                     <td>{{ $setting->site_city }}</td>
                                     <td>{{ $setting->site_country }}</td>
                                     <td>{{ $setting->site_postal_code }}</td>
