@@ -71,12 +71,12 @@ Website Settings
                                         <span class="fw-bold">{{ $loop->iteration }}</span>
                                     </td>
                                     <td>
-                                        <a href="{{ URL::asset('public/images/settings/' . $setting->logo) }}" target="_blank">
+                                        <a href="{{ URL::asset('public/images/settings/' . $setting->site_logo) }}" target="_blank">
                                             <i class="bx bx-image" style="font-size: 24px;"></i>
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ URL::asset('public/images/settings/' . $setting->favicon) }}" target="_blank">
+                                        <a href="{{ URL::asset('public/images/settings/' . $setting->site_favicon) }}" target="_blank">
                                             <i class="bx bx-image" style="font-size: 24px;"></i>
                                         </a>
                                     </td>

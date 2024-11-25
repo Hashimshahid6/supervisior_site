@@ -37,19 +37,8 @@ class TestimonialsController extends Controller
             'description' => 'required|string',
         ]);
 
-        if ($request->hasFile('avatar')) {
-            $avatar = $request->file('avatar');
-            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
-            $destinationPath = public_path('/images/testimonials');
-            $avatar->move($destinationPath, $avatarName);
-        }
-
-        if ($request->hasFile('bgImage')) {
-            $bgImage = $request->file('bgImage');
-            $bgImageName = time() . '.' . $bgImage->getClientOriginalExtension();
-            $destinationPath = public_path('/images/testimonials');
-            $bgImage->move($destinationPath, $bgImageName);
-        }
+        $avatarName = $this->handleImageUpload($request->file('avatar'), 'testimonials');
+        $bgImageName = $this->handleImageUpload($request->file('bgImage'), 'testimonials');
 
         Testimonials::create([
             'name' => $request->name,
@@ -96,19 +85,11 @@ class TestimonialsController extends Controller
         $testimonial = Testimonials::find($id);
 
         if ($request->hasFile('avatar')) {
-            $avatar = $request->file('avatar');
-            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
-            $destinationPath = public_path('/images/testimonials');
-            $avatar->move($destinationPath, $avatarName);
-            $testimonial->avatar = $avatarName;
+            $testimonial->avatar = $this->handleImageUpload($request->file('avatar'), 'testimonials');
         }
 
         if ($request->hasFile('bgImage')) {
-            $bgImage = $request->file('bgImage');
-            $bgImageName = time() . '.' . $bgImage->getClientOriginalExtension();
-            $destinationPath = public_path('/images/testimonials');
-            $bgImage->move($destinationPath, $bgImageName);
-            $testimonial->bgImage = $bgImageName;
+            $testimonial->bgImage = $this->handleImageUpload($request->file('bgImage'), 'testimonials');
         }
 
         Testimonials::find($id)->update([
@@ -133,5 +114,47 @@ class TestimonialsController extends Controller
         $testimonial->save();
 
         return redirect()->route('testimonials.index')->with('success', 'Testimonial deleted successfully.');
+    }//
+
+    private function handleImageUpload($image, $folder)
+    {
+        $originalName = time() . '.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('/images/' . $folder);
+
+        $image->move($destinationPath, $originalName);
+
+        $webpName = time() . '.webp';
+        $originalPath = $destinationPath . '/' . $originalName;
+        $webpPath = $destinationPath . '/' . $webpName;
+
+        try {
+            $imageType = mime_content_type($originalPath);
+
+            switch ($imageType) {
+                case 'image/jpeg':
+                    $sourceImage = imagecreatefromjpeg($originalPath);
+                    break;
+                case 'image/png':
+                    $sourceImage = imagecreatefrompng($originalPath);
+                    break;
+                case 'image/gif':
+                    $sourceImage = imagecreatefromgif($originalPath);
+                    break;
+                case 'image/jpg':
+                    $sourceImage = imagecreatefromjpeg($originalPath);
+                    break;
+                default:
+                    throw new \Exception('Unsupported image type');
+            }
+
+            imagewebp($sourceImage, $webpPath, 90);
+            imagedestroy($sourceImage);
+
+            unlink($originalPath);
+
+            return $webpName;
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

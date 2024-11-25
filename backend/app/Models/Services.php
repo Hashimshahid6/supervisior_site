@@ -34,7 +34,7 @@ class Services extends Model
     }
 
 		public static function getHomeServices(){
-			return self::where('status','Active')->take(4)->get(['id','title','description','icon','bgImage']);
+			return self::where('status','Active')->take(4)->get(['id','title','description','icon','bgImage', 'button_text', 'button_url']);
 		} //
 		public static function getActiveServices(){
 			return self::where('status','Active')->get(['id','title','description','icon','bgImage']);

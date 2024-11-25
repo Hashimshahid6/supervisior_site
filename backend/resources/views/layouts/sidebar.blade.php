@@ -12,7 +12,7 @@
                 <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_favicon) }}" alt="" height="26">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_logo) }}" alt="" height="28"> <h3>{{ $settings->site_name }}</h3>
+                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_logo) }}" alt="" height="50" width="50"><h4>{{ $settings->site_name }}</h4>
             </span>
         </a>
     </div>

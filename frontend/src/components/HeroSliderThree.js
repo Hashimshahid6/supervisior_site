@@ -1,11 +1,10 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SwiperSlider, { SwiperSlide } from "./swiper";
 import { EffectFade } from "swiper";
 import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 
 const HeroSliderThree = () => {
-  // render(){
   const params = {
     slidesPerView: 1,
     loop: true,
@@ -18,8 +17,10 @@ const HeroSliderThree = () => {
     modules: [EffectFade],
   };
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+
+  // Fetch data on component mount
   useEffect(() => {
     axios
       .get(API_BASE_URL + "herosections", {
@@ -29,15 +30,24 @@ const HeroSliderThree = () => {
       }) // Laravel API endpoint
       .then((response) => {
         setData(response.data.data); // Set the fetched data
-        setLoading(false);
+        // setLoading(false);
       })
       .catch((error) => {
-        setError(error.message);
-        setLoading(false);
+        // setError(error.message);
+        // setLoading(false);
       });
   }, []);
 
-  let DataList = data.map((val, i) => {
+  // Ensure Swiper reloads properly when the data changes
+  useEffect(() => {
+    if (data.length > 0) {
+      // Force a re-render by triggering a state update or reinitializing the slider
+      // setLoading(false);
+    }
+  }, [data]);
+
+  // Map through the fetched data and render the slides
+  const DataList = data.map((val, i) => {
     return (
       <SwiperSlide key={i}>
         <div
@@ -50,14 +60,21 @@ const HeroSliderThree = () => {
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
-                  <div className="hero-slider__content m-auto text-center" style={{ height: '730px', width: '100%'}}>
+                  <div
+                    className="hero-slider__content m-auto text-center"
+                    style={{
+                      height: "730px",
+                      width: "100%",
+                      ...(window.innerWidth <= 768 && { height: "400px" }),
+                    }}
+                  >
                     <h2 className="hero-slider__title">{val.title}</h2>
                     <p className="hero-slider__text">{val.subtitle}</p>
                     <a
                       className="hero-slider__btn hero-slider__btn--style2"
                       href={val.button_url}
+                      loading="lazy"
                     >
-                      {" "}
                       {val.button_text}
                     </a>
                   </div>
@@ -70,16 +87,23 @@ const HeroSliderThree = () => {
     );
   });
 
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (error) {
+  //   return <div>Error loading slider content: {error}</div>;
+  // }
+
   return (
     <div>
       {/*====================  hero slider area ====================*/}
-      <div className="hero-alider-area">
+      <div className="hero-slider-area">
         <SwiperSlider options={params}>{DataList}</SwiperSlider>
       </div>
       {/*====================  End of hero slider area  ====================*/}
     </div>
   );
-  // }
 };
 
 export default HeroSliderThree;

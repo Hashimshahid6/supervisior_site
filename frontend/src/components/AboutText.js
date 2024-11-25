@@ -3,7 +3,7 @@ import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
 const AboutText = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
     axios
@@ -14,18 +14,18 @@ const AboutText = () => {
       }) // Laravel API endpoint
       .then((response) => {
         setData(response.data); // Set the fetched data
-        setLoading(false);
+        // setLoading(false);
       })
       .catch((error) => {
         setError(error.message);
-        setLoading(false);
+        // setLoading(false);
       });
   }, []);
   // render(){
   return (
     <div>
       {/*====================  about text area ====================*/}
-      <div className="about-text-area grey-bg section-space--inner--120">
+      <div className="about-text-area grey-bg section-space--inner--60">
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-6 col-md-6">
@@ -46,6 +46,15 @@ const AboutText = () => {
                   src={`${IMAGES_URL}images/sections/${data.image}`}
                   className="img-fluid"
                   alt=""
+                  loading="lazy"
+                  style={{
+                    borderRadius: "10px",
+                    boxShadow: "0px 0px 35px #e3e3e3",
+                    width: "100%",
+                    objectFit: "cover",
+                    height: "600px",
+                    ...(window.innerWidth <= 768 && { height: "250px", width: "100%", borderRadius: "10px" }),
+                  }}
                 />
               </div>
             </div>

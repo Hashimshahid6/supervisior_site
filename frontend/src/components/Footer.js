@@ -51,13 +51,16 @@ class Footer extends Component {
                     <div className="col-xl-3 col-lg-3 col-md-12">
                       {/* footer intro wrapper */}
                       <div className="footer-intro-wrapper">
-                        <div className="footer-logo">
+                        <div className="footer-logo" style={{marginBottom: '20px'}}>
                           <a href={`${process.env.PUBLIC_URL}/`}>
                             <img
                               src={`${IMAGES_URL}images/websiteimages/${settings.site_logo}`}
                               className="img-fluid"
                               alt=""
+                              loading="lazy"
                             />
+                            <h3 className="site-name"
+                            style={{color: 'white', paddingTop: '10px'}}>{settings.site_name}</h3>
                           </a>
                         </div>
                         <div className="footer-desc">
@@ -71,16 +74,22 @@ class Footer extends Component {
                         <h4 className="footer-widget__title">Services</h4>
                         <ul className="footer-widget__navigation">
                           <li>
-                            <a href="#">Land Mining</a>
+                            <a href={`${process.env.PUBLIC_URL}/contact-us`}>Delivery Notes</a>
                           </li>
                           <li>
-                            <a href="#">Work Management</a>
+                            <a href={`${process.env.PUBLIC_URL}/contact-us`}>Risk Assessments</a>
                           </li>
                           <li>
-                            <a href="#">Material Engineering</a>
+                            <a href={`${process.env.PUBLIC_URL}/contact-us`}>Site Plans</a>
                           </li>
                           <li>
-                            <a href="#">Power and Energy</a>
+                            <a href={`${process.env.PUBLIC_URL}/contact-us`}>Toolbox Talks</a>
+                          </li>
+                          <li>
+                            <a href={`${process.env.PUBLIC_URL}/contact-us`}>To Do Lists</a>
+                          </li>
+                          <li>
+                            <a href={`${process.env.PUBLIC_URL}/contact-us`}>Vehicle & Plant Check Sheets</a>
                           </li>
                         </ul>
                       </div>
@@ -115,13 +124,12 @@ class Footer extends Component {
                           </p>
                           <ul className="contact-details">
                             <li>
-                              <span>P:</span>{settings.site_phone}
+                              <span>P:</span>{settings.site_phone},<br></br>
+                              {settings.site_phone2}
                             </li>
                             <li>
-                              <span>F:</span>{settings.site_phone2}
-                            </li>
-                            <li>
-                              <span>E:</span>{settings.site_email}
+                              <span>E:</span>{settings.site_email},<br></br>
+                              {settings.site_email2}
                             </li>
                           </ul>
                         </div>
@@ -135,7 +143,7 @@ class Footer extends Component {
           <div className="footer-copyright-wrapper">
             <div className="footer-copyright text-center">
               <p className="copyright-text">
-                &copy; {settings.site_name} {new Date().getFullYear()} Made With <i className="fa fa-heart"></i>
+                &copy; {settings.site_name} {new Date().getFullYear()} supervisesite, design by <a href="https://www.softgate.co.uk/">Softgate</a>
               </p>
             </div>
           </div>

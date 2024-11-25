@@ -112,19 +112,11 @@ class WebsiteSettingsController extends Controller
         $websiteSettings = WebsiteSettings::find($id);
 
         if ($request->hasFile('site_favicon')) {
-            $site_favicon = $request->file('site_favicon');
-            $faviconName = time() . '.' . $site_favicon->getClientOriginalExtension();
-            $destinationPath = public_path('/images/websiteimages');
-            $site_favicon->move($destinationPath, $faviconName);
-            $websiteSettings->site_favicon = $faviconName;
+            $websiteSettings->site_favicon = $this->handleImageUpload($request->file('site_favicon'), 'websiteimages');
         }
 
         if ($request->hasFile('site_logo')) {
-            $site_logo = $request->file('site_logo');
-            $logoName = time() . '.' . $site_logo->getClientOriginalExtension();
-            $destinationPath = public_path('/images/websiteimages');
-            $site_logo->move($destinationPath, $logoName);
-            $websiteSettings->site_logo = $logoName;
+            $websiteSettings->site_logo = $this->handleImageUpload($request->file('site_logo'), 'websiteimages');
         }
 
         WebsiteSettings::find($id)->update([
@@ -155,5 +147,47 @@ class WebsiteSettingsController extends Controller
      */
     public function destroy(string $id)
     {
+    }
+
+    private function handleImageUpload($image, $folder)
+    {
+        $originalName = time() . '.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('/images/' . $folder);
+
+        $image->move($destinationPath, $originalName);
+
+        $webpName = time() . '.webp';
+        $originalPath = $destinationPath . '/' . $originalName;
+        $webpPath = $destinationPath . '/' . $webpName;
+
+        try {
+            $imageType = mime_content_type($originalPath);
+
+            switch ($imageType) {
+                case 'image/jpeg':
+                    $sourceImage = imagecreatefromjpeg($originalPath);
+                    break;
+                case 'image/png':
+                    $sourceImage = imagecreatefrompng($originalPath);
+                    break;
+                case 'image/gif':
+                    $sourceImage = imagecreatefromgif($originalPath);
+                    break;
+                case 'image/jpg':
+                    $sourceImage = imagecreatefromjpeg($originalPath);
+                    break;
+                default:
+                    throw new \Exception('Unsupported image type');
+            }
+
+            imagewebp($sourceImage, $webpPath, 90);
+            imagedestroy($sourceImage);
+
+            unlink($originalPath);
+
+            return $webpName;
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

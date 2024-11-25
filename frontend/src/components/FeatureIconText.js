@@ -5,7 +5,7 @@ import axios from "axios";
 const FeatureIconText = () => {
     // render() {
 			const [data, setData] = useState([]);
-			const [loading, setLoading] = useState(true);
+			// const [loading, setLoading] = useState(true);
 			const [error, setError] = useState(null);
 			useEffect(() => {
 				axios
@@ -16,11 +16,11 @@ const FeatureIconText = () => {
 					}) // Laravel API endpoint
 					.then((response) => {
 						setData(response.data); // Set the fetched data
-						setLoading(false);
+						// setLoading(false);
 					})
 					.catch((error) => {
 						setError(error.message);
-						setLoading(false);
+						// setLoading(false);
 					});
 			}, []); 
         // let data = [
@@ -36,7 +36,8 @@ const FeatureIconText = () => {
                 <div className="col-lg-3 col-md-6" key={i}>
                     <div className="single-feature-icon text-center">
                         <div className="single-feature-icon__image">
-                            <img src={`${IMAGES_URL}images/services/${val.icon}`} className="img-fluid" alt={val.title} />
+                            <img src={`${IMAGES_URL}images/services/${val.icon}`} className="img-fluid" alt={val.title}
+                            loading="lazy" />
                         </div>
                         <h3 className="single-feature-icon__title">{val.title}</h3>
                         <p className="single-feature-icon__content">{val.description}</p>

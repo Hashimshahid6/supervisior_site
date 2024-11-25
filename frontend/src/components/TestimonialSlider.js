@@ -19,7 +19,7 @@ const TestimonialSlider = () => {
       modules: [EffectFade]
     };
     const [data, setData] = useState([]);
-		const [loading, setLoading] = useState(true);
+		// const [loading, setLoading] = useState(true);
 		const [error, setError] = useState(null);
 		useEffect(() => {
 			axios
@@ -30,11 +30,11 @@ const TestimonialSlider = () => {
 				}) // Laravel API endpoint
 				.then((response) => {
 					setData(response.data); // Set the fetched data
-					setLoading(false);
+					// setLoading(false);
 				})
 				.catch((error) => {
 					setError(error.message);
-					setLoading(false);
+					// setLoading(false);
 				});
 		}, []); 
 		let bgImage = ""; 
@@ -46,6 +46,7 @@ const TestimonialSlider = () => {
             <div className="author">
               <div className="author__image">
                 <img
+                loading="lazy"
                   src={`${IMAGES_URL}images/testimonials/${val.avatar}`}
                   alt=""
                 />
