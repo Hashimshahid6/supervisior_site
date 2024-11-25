@@ -13,7 +13,7 @@ const About = () => {
   const [data, setData] = useState(null);
   const [seconddata, setSecondData] = useState(null);
   const [thirddata, setThirdData] = useState(null);
-  // const [loading, setLoading] = useState(true);
+  const [pageloading, setpageLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -37,15 +37,17 @@ const About = () => {
         setData(sectionOneRes.data);
         setSecondData(sectionTwoRes.data);
         setThirdData(sectionThreeRes.data);
-        // setLoading(false);
+        setpageLoading(false);
       })
       .catch((err) => {
         setError(err.message);
-        // setLoading(false);
+        setpageLoading(false);
       });
   }, []);
 
-  // if (loading) return <p>Loading...</p>;
+  if (pageloading) {
+    return <div className="loader"></div>; // Show a loader while fetching settings
+  };
   // if (error) return <p>Error: {error}</p>;
 
   return (

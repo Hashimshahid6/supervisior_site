@@ -8,7 +8,7 @@ import axios from "axios";
 
 const Contact = ({ settings }) => {
   const [bannerData, setBannerData] = useState(null);
-  // const [loading, setLoading] = useState(true);
+  const [pageloading, setpageLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch banner data
@@ -22,13 +22,15 @@ const Contact = ({ settings }) => {
       } catch (err) {
         setError("Failed to load banner data");
       } finally {
-        // setLoading(false);
+        setpageLoading(false);
       }
     };
     fetchBanner();
   }, []);
 
-  // if (loading) return <p>Loading...</p>;
+  if (pageloading) {
+    return <div className="loader"></div>; // Show a loader while fetching settings
+  };
   if (error) return <p>Error: {error}</p>;
 
   return (

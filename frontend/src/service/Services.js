@@ -9,7 +9,7 @@ import axios from "axios";
 const Services = () => {
   const [bannerData, setBannerData] = useState(null);
   const [serviceData, setServiceData] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const [pageloading, setpageLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch banner and service data
@@ -30,14 +30,16 @@ const Services = () => {
       } catch (err) {
         setError(err.message);
       } finally {
-        // setLoading(false);
+        setpageLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  // if (loading) return <p>Loading...</p>;
+  if (pageloading) {
+    return <div className="loader"></div>; // Show a loader while fetching settings
+  };
   // if (error) return <p>Error: {error}</p>;
 
   return (

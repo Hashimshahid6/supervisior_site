@@ -30,7 +30,7 @@ export const SettingsProvider = ({ children }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loader while fetching settings
+    return <div className="loader"></div>; // Show a loader while fetching settings
   }
 
   return (
