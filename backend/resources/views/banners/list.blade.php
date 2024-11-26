@@ -76,6 +76,8 @@ Banners
                                         <span class="badge bg-warning">Services</span>
                                         @elseif($banner->display_on == 'Contact')
                                         <span class="badge bg-success">Contact</span>
+                                        @elseif($banner->display_on == 'Pricing')
+                                        <span class="badge bg-danger">Pricing</span>
                                         @else
                                         <span class="badge bg-danger">Other</span>
                                         @endif

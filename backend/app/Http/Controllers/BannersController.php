@@ -31,7 +31,7 @@ class BannersController extends Controller
     {
         $request->validate([
             'heading' => 'required',
-            'display_on' => 'required|in:Home,About,Services,Contact',
+            'display_on' => 'required|in:Home,About,Services,Contact,Pricing',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if ($request->hasFile('image')) {
@@ -119,6 +119,7 @@ class BannersController extends Controller
         $request->validate([
             'heading' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'display_on' => 'required|in:Home,About,Services,Contact,Pricing',
             'status' => 'required|in:Active,Inactive,Deleted',
         ]);
 
@@ -180,6 +181,7 @@ class BannersController extends Controller
             'heading' => $request->heading,
             'subheading' => $request->subheading,
             'image' => $banner->image ?? $request->image,
+            'display_on' => $request->display_on,
             'status' => $request->status,
         ]);
 

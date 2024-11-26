@@ -48,7 +48,7 @@ const About = () => {
   if (pageloading) {
     return <div className="loader"></div>; // Show a loader while fetching settings
   };
-  // if (error) return <p>Error: {error}</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
@@ -81,7 +81,7 @@ const About = () => {
 
       <div className="page-wrapper section-space--inner--top--120">
         {/* About Section 1 */}
-        <div className="about-section section-space--inner--bottom--120">
+        <div className="about-section section-space--inner--bottom--60">
           <div className="container">
             <div className="row row-25 align-items-center">
               <div className="col-lg-6 col-12 mb-30">
@@ -111,7 +111,7 @@ const About = () => {
         </div>
 
         {/* About Section 2 & 3 */}
-        <div className="about-section section-space--inner--120">
+        <div className="about-section section-space--inner--60">
           <div className="container">
             <div className="about-wrapper row">
               <div className="col-sm-6 col-12 order-1 order-lg-2">

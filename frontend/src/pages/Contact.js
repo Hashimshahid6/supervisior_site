@@ -63,7 +63,7 @@ const Contact = ({ settings }) => {
       </div>
 
       {/* Contact Section */}
-      <div className="page-wrapper section-space--inner--120">
+      <div className="page-wrapper section-space--inner--60">
         <div className="contact-section">
           <div className="container">
             <div className="row section-space--bottom--50">

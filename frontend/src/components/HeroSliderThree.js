@@ -49,41 +49,42 @@ const HeroSliderThree = () => {
   // Map through the fetched data and render the slides
   const DataList = data.map((val, i) => {
     return (
-      <SwiperSlide key={i}>
-        <div
-          className="hero-slider__single-item"
-          style={{
-            backgroundImage: `url(${IMAGES_URL}images/hero-section/${val.image})`,
-          }}
-        >
-          <div className="hero-slider__content-wrapper">
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-12">
-                  <div
-                    className="hero-slider__content m-auto text-center"
-                    style={{
-                      height: "730px",
-                      width: "100%",
-                      ...(window.innerWidth <= 768 && { height: "400px" }),
-                    }}
-                  >
-                    <h2 className="hero-slider__title">{val.title}</h2>
-                    <p className="hero-slider__text">{val.subtitle}</p>
-                    <a
-                      className="hero-slider__btn hero-slider__btn--style2"
-                      href={val.button_url}
-                      loading="lazy"
-                    >
-                      {val.button_text}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div
+      className="hero-slider__single-item"
+      style={{
+        backgroundImage: `url(${IMAGES_URL}images/hero-section/${val.image})`,
+        backgroundPosition: "center center",
+        backgroundSize: "cover",
+      }}
+      >
+      <div className="hero-slider__content-wrapper">
+        <div className="container">
+        <div className="row">
+          <div className="col-lg-12">
+          <div
+            className="hero-slider__content"
+            style={{
+            height: "730px",
+            ...(window.innerWidth <= 768 && { height: "400px" }),
+            }}
+          >
+            <h2 className="hero-slider__title"
+            style={{marginBottom:"10px"}}>{val.title}</h2>
+            <p className="hero-slider__text"
+            style={{fontSize:'24px'}}>{val.subtitle}</p>
+            <a
+            className="hero-slider__btn"
+            href={val.button_url}
+            loading="lazy"
+            >
+            {val.button_text}
+            </a>
+          </div>
           </div>
         </div>
-      </SwiperSlide>
+        </div>
+      </div>
+      </div>
     );
   });
 

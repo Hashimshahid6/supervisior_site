@@ -50,66 +50,6 @@ class NavBar extends Component {
           }`}
         >
           <div className="header-area__desktop header-area__desktop--default">
-            {/*=======  header top bar  =======*/}
-            <div className="header-top-bar">
-              <div className="container">
-                <div className="row align-items-center">
-                  <div className="col-lg-4">
-                    {/* top bar left */}
-                    <div className="top-bar-left-wrapper">
-                      <div className="social-links social-links--white-topbar d-inline-block">
-                        <ul>
-                          <li>
-                            <a href={`${settings.site_facebook}`}>
-                              <i
-                                className="zmdi zmdi-facebook"
-                                title="Facebook"
-                              />
-                            </a>
-                          </li>
-                          <li>
-                            <a href={`${settings.site_twitter}`}>
-                              <i
-                                className="zmdi zmdi-twitter"
-                                title="Twitter"
-                              />
-                            </a>
-                          </li>
-                          <li>
-                            <a href={`${settings.site_instagram}`}>
-                              <i
-                                className="zmdi zmdi-instagram"
-                                title="Instagram"
-                              />
-                            </a>
-                          </li>
-                          <li>
-                            <a href={`${settings.site_linkedin}`}>
-                              <i
-                                className="zmdi zmdi-linkedin-box"
-                                title="LinkedIn"
-                              />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-8">
-                    {/* top bar right */}
-                    <div className="top-bar-right-wrapper">
-                      <a
-                        href={`${process.env.PUBLIC_URL}/contact-us`}
-                        className="ht-btn ht-btn--default d-inline-block"
-                      >
-                        GET A QUOTE
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/*=======  End of header top bar  =======*/}
             {/*=======  header info area  =======*/}
             <div className="header-info-area" style={{padding: '0px'}}>
               <div className="container">
@@ -198,14 +138,19 @@ class NavBar extends Component {
                               </Link>
                             </li>
                             {/* <li>
-                                                <Link to={`${process.env.PUBLIC_URL}/projects`} >PROJECTS</Link>
-                                            </li>
-                                            <li>
-                                                <Link to={`${process.env.PUBLIC_URL}/blog-left-sidebar`}>BLOGS</Link>
-                                            </li> */}
+                                <Link to={`${process.env.PUBLIC_URL}/projects`} >PROJECTS</Link>
+                            </li>
+                            <li>
+                                <Link to={`${process.env.PUBLIC_URL}/blog-left-sidebar`}>BLOGS</Link>
+                            </li> */}
                             <li>
                               <Link to={`${process.env.PUBLIC_URL}/contact-us`}>
                                 CONTACT
+                              </Link>{" "}
+                            </li>
+                            <li>
+                              <Link to={`${process.env.PUBLIC_URL}/pricing`}>
+                                PRICING
                               </Link>{" "}
                             </li>
                           </ul>

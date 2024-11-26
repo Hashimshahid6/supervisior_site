@@ -40,7 +40,7 @@ const Services = () => {
   if (pageloading) {
     return <div className="loader"></div>; // Show a loader while fetching settings
   };
-  // if (error) return <p>Error: {error}</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
@@ -72,7 +72,7 @@ const Services = () => {
       </div>
 
       {/* Services Section */}
-      <div className="page-wrapper section-space--inner--120">
+      <div className="page-wrapper section-space--inner--60">
         <div className="service-section">
           <div className="container">
             <div className="row">

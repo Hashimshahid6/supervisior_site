@@ -34,7 +34,7 @@ class SectionsController extends Controller
             'content' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'button_link' => 'nullable|url',
-            'display_on' => 'required|in:Home,About,Services,Contact',
+            'display_on' => 'required|in:Home,About,Services,Contact,Pricing',
         ]);
 
         if ($request->hasFile('image')) {
@@ -135,7 +135,7 @@ class SectionsController extends Controller
             'content' => 'required|string',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'button_link' => 'nullable|url',
-            'display_on' => 'required|in:Home,About,Services,Contact',
+            'display_on' => 'required|in:Home,About,Services,Contact,Pricing',
         ]);
 
         $section = Sections::find($id);

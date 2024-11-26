@@ -52,7 +52,6 @@ const AboutText = () => {
                     boxShadow: "0px 0px 35px #e3e3e3",
                     width: "100%",
                     objectFit: "cover",
-                    height: "600px",
                     ...(window.innerWidth <= 768 && { height: "250px", width: "100%", borderRadius: "10px" }),
                   }}
                 />

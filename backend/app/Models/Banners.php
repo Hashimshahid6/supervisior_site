@@ -10,6 +10,7 @@ class Banners extends Model
     protected $fillable = [
         'heading',
         'subheading',
+        'display_on',
         'image',
         'status',
     ];

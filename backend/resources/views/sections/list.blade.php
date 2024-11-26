@@ -87,6 +87,8 @@ Sections
                                         <span class="badge bg-warning">Services</span>
                                         @elseif($section->display_on == 'Contact')
                                         <span class="badge bg-success">Contact</span>
+                                        @elseif($section->display_on == 'Pricing')
+                                        <span class="badge bg-danger">Pricing</span>
                                         @else
                                         <span class="badge bg-danger">Other</span>
                                         @endif

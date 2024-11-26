@@ -69,6 +69,7 @@ Services
                                         <option value="About">About</option>
                                         <option value="Services">Services</option>
                                         <option value="Contact">Contact</option>
+                                        <option value="Pricing">Pricing</option>
                                     </select>
                                     @error('display_on')
                                     <span class="text-danger">{{ $message }}</span>

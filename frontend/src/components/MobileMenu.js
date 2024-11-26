@@ -84,15 +84,18 @@ class MobileMenu extends Component {
                     </Link>
                   </li>
                   {/* <li>
-                                                <Link to={`${process.env.PUBLIC_URL}/projects`} >PROJECTS</Link>
-                                            </li>
-                                            <li>
-                                                <Link to={`${process.env.PUBLIC_URL}/blog-left-sidebar`}>BLOGS</Link>
-                                            </li> */}
+                      <Link to={`${process.env.PUBLIC_URL}/projects`} >PROJECTS</Link>
+                  </li>
+                  <li>
+                      <Link to={`${process.env.PUBLIC_URL}/blog-left-sidebar`}>BLOGS</Link>
+                  </li> */}
                   <li>
                     <Link to={`${process.env.PUBLIC_URL}/contact-us`}>
                       CONTACT
-                    </Link>{" "}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={`${process.env.PUBLIC_URL}/pricing`}>Pricing</Link>
                   </li>
                 </ul>
               </nav>

@@ -46,7 +46,7 @@ class Footer extends Component {
           <div className="container">
             <div className="row">
               <div className="col-lg-12">
-                <div className="footer-content-wrapper section-space--inner--100">
+                <div className="footer-content-wrapper section-space--inner--60">
                   <div className="row">
                     <div className="col-xl-3 col-lg-3 col-md-12">
                       {/* footer intro wrapper */}
@@ -110,6 +110,9 @@ class Footer extends Component {
                           </li>
                           <li>
                             <a href={`${process.env.PUBLIC_URL}/contact-us`}>Contact Us</a>
+                          </li>
+                          <li>
+                            <a href={`${process.env.PUBLIC_URL}/pricing`}>Pricing</a>
                           </li>
                         </ul>
                       </div>

@@ -76,6 +76,8 @@ Edit Banner
                                             }}>Services</option>
                                         <option value="Contact" {{ $banner->display_on == 'Contact' ? 'selected' : ''
                                             }}>Contact</option>
+                                        <option value="Pricing" {{ $banner->display_on == 'Pricing' ? 'selected' : ''
+                                            }}>Pricing</option>
                                     </select>
                                     @error('display_on')
                                     <span class="text-danger">{{ $message }}</span>

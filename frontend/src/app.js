@@ -16,6 +16,7 @@ const BlogDetailsLeftSidebar = lazy(() => import("./blog/BlogDetailsLeftSidebar"
 const BlogDetailsRightSidebar = lazy(() => import("./blog/BlogDetailsRightSidebar"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NoMAtch = lazy(() => import("./pages/404"));
+const Pricing = lazy(() => import("./pages/Pricing"));
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
                 <Route path="/blog-details-left-sidebar" element={<BlogDetailsLeftSidebar />} />
                 <Route path="/blog-details-right-sidebar" element={<BlogDetailsRightSidebar />} />
                 <Route path="/contact-us" element={<Contact />} />
+                <Route path="/pricing" element={<Pricing />} />
                 <Route path="*" element={<NoMAtch />} />
             </Routes>
         </Suspense>
