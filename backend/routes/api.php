@@ -31,4 +31,5 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
 	Route::get('aboutsectiontwo', [ApiController::class,'getAboutSectiontwo']);
 	Route::get('aboutsectionthree', [ApiController::class,'getAboutSectionthree']);
 	Route::get('getbanner/{id}', [ApiController::class,'getBannerId'])->where('id','[0-9]+');
+	Route::post('contactus_form', [ApiController::class,'contactus_form']);
 });

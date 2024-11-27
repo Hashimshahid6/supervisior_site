@@ -28,6 +28,38 @@ const Contact = ({ settings }) => {
     fetchBanner();
   }, []);
 
+	const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+  //
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log("ddd", JSON.stringify(formData));
+    try {
+      const response = axios.post(
+        API_BASE_URL+"contactus_form",
+        formData, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` }
+				}
+      );
+      console.log("Form Submitted Successfully");
+      setSubmitted(true);
+    } catch {
+      console.log("Error in Form Submission");
+    }
+  }; //
+
   if (pageloading) {
     return <div className="loader"></div>; // Show a loader while fetching settings
   };
@@ -128,26 +160,36 @@ const Contact = ({ settings }) => {
               <div className="col-lg-8 col-12">
                 <div className="contact-form">
                   <h3>Leave Your Message</h3>
-                  <form id="contact-form">
+									{ !submitted ?
+                  <form id="contact-form" onSubmit={handleSubmit}>
                     <div className="row row-10">
                       <div className="col-md-6 col-12 section-space--bottom--20">
                         <input
-                          name="con_name"
+                          name="name"
                           type="text"
                           placeholder="Your Name"
+													value={formData.name}
+													required
+													onChange={handleChange}
                         />
                       </div>
                       <div className="col-md-6 col-12 section-space--bottom--20">
                         <input
-                          name="con_email"
+                          name="email"
                           type="email"
                           placeholder="Your Email"
+													value={formData.email}
+													required
+													onChange={handleChange}
                         />
                       </div>
                       <div className="col-12">
                         <textarea
-                          name="con_message"
+                          name="message"
                           placeholder="Your Message"
+													value={formData.message}
+													required
+													onChange={handleChange}
                         ></textarea>
                       </div>
                       <div className="col-12">
@@ -155,6 +197,7 @@ const Contact = ({ settings }) => {
                       </div>
                     </div>
                   </form>
+									: <div className="alert alert-success">Contact Message Submitted Successfully.</div>}
                 </div>
               </div>
             </div>
