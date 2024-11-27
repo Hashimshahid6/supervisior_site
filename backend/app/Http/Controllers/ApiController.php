@@ -8,6 +8,7 @@ use App\Models\Services;
 use App\Models\Testimonials;
 use App\Models\Banners;
 use App\Models\WebsiteSettings;
+use App\Models\ContactUs;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -64,4 +65,8 @@ class ApiController extends Controller
 	    $banner = Banners::getBannerId($id);
 		return response()->json($banner);
 	}//
+	public function contactus_form(){
+        $save = ContactUs::save_contact_form();
+		return response()->json($save);
+	} //
 }
