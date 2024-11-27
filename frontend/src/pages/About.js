@@ -79,9 +79,9 @@ const About = () => {
         </div>
       </div>
 
-      <div className="page-wrapper section-space--inner--top--120">
+      <div className="page-wrapper section-space--bottom--60">
         {/* About Section 1 */}
-        <div className="about-section section-space--inner--bottom--60">
+        <div className="about-section section-space--inner--60">
           <div className="container">
             <div className="row row-25 align-items-center">
               <div className="col-lg-6 col-12 mb-30">
@@ -97,7 +97,7 @@ const About = () => {
                 <div className="about-content-two">
                   <h3>{data?.heading}</h3>
                   <h1>{data?.subheading}</h1>
-                  <p>{data?.content}</p>
+                  <p style={{fontSize:"18px"}}>{data?.content}</p>
                   <a
                     href={data?.button_link || "#"}
                     className="ht-btn--default ht-btn--default--dark-hover section-space--top--20"
@@ -110,43 +110,23 @@ const About = () => {
           </div>
         </div>
 
-        {/* About Section 2 & 3 */}
-        <div className="about-section section-space--inner--60">
+        <div className="about-section section-space--inner--60 grey-bg">
           <div className="container">
-            <div className="about-wrapper row">
-              <div className="col-sm-6 col-12 order-1 order-lg-2">
-                <div className="about-image about-image-1">
+            <div className="row row-25 align-items-center">
+              <div className="col-lg-6 col-12 mb-30">
+                <div className="about-content-two">
+                  <h3>{seconddata?.heading}</h3>
+                  <h1>{seconddata?.subheading}</h1>
+                  <p style={{fontSize:"18px"}}>{seconddata?.content}</p>
+                </div>
+              </div>
+              <div className="col-lg-6 col-12 mb-30">
+                <div className="about-image-two">
                   <img
                   loading="lazy"
                     src={`${IMAGES_URL}images/sections/${seconddata?.image}`}
-                    alt={seconddata?.heading || "Section Two"}
+                    alt={seconddata?.heading || "About Section"}
                   />
-                </div>
-              </div>
-              <div className="col-sm-6 col-12 order-2 order-lg-3">
-                <div className="about-image about-image-2">
-                  <img
-                  loading="lazy"
-                    src={`${IMAGES_URL}images/sections/${thirddata?.image}`}
-                    alt="Section Three"
-                  />
-                </div>
-              </div>
-              <div className="col-lg-6 col-12 order-3 order-lg-1">
-                <div className="about-content about-content-1">
-                  <h1>{seconddata?.heading}</h1>
-                  <p>{seconddata?.content}</p>
-                </div>
-              </div>
-              <div className="col-lg-6 col-12 order-4">
-                <div className="about-content about-content-2">
-                  <p>{thirddata?.content}</p>
-                  <a
-                    href="/contact-us"
-                    className="ht-btn--default ht-btn--default--dark-hover section-space--top--20"
-                  >
-                    Contact us
-                  </a>
                 </div>
               </div>
             </div>
@@ -154,7 +134,7 @@ const About = () => {
         </div>
 
         {/* Feature Icon */}
-        <FeatureIcon background="grey-bg" />
+        <FeatureIcon />
 
         {/* Testimonial Slider */}
         <TestimonialSlider />
