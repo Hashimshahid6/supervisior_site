@@ -4,9 +4,9 @@ class FeatureIcon extends Component{
     render(){
 
         let data = [
-            {featureIcon: "feature-1.png", featureTitle: "Top Rated", featureDescription: "Lorem ipsum dolor sit amet, consec tetur adipisicing elit. Officia odio eum corporis consequatur."},
-            {featureIcon: "feature-2.png", featureTitle: "Best Quality", featureDescription: "Lorem ipsum dolor sit amet, consec tetur adipisicing elit. Officia odio eum corporis consequatur."},
-            {featureIcon: "feature-3.png", featureTitle: "Low Cost", featureDescription: "Lorem ipsum dolor sit amet, consec tetur adipisicing elit. Officia odio eum corporis consequatur."}
+            {featureIcon: "feature-1.png", featureTitle: "Top Rated", featureDescription: "We take pride in being top-rated by our customers for exceptional service and reliable results."},
+            {featureIcon: "feature-2.png", featureTitle: "Best Quality", featureDescription: "Delivering unmatched quality, we ensure every detail meets the highest standards for your peace of mind."},
+            {featureIcon: "feature-3.png", featureTitle: "Low Cost", featureDescription: "Affordable solutions without compromising on quality. Get the best value for your investment!"}
         ];
 
         let Datalist = data.map((val, i)=>{
