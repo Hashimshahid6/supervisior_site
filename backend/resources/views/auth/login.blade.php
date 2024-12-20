@@ -22,13 +22,13 @@ Login
                         <div class="mb-4 d-flex justify-content-center align-items-center">
                             <div>
                                 <a href="index" class="d-block auth-logo">
-                                    <img src="{{ URL::asset('images/websiteimages/'. $settings->site_logo) }}" alt=""
-                                        height="30" class="auth-logo-dark me-start">
+                                    <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_logo) }}" alt="{{ $settings->site_name }}"
+                                        height="50" width="50" style="border-radius: 50%">
                                 </a>
                             </div>
                             <div class="ms-3">
                                 <!-- Added margin class here -->
-                                <h4>{{ $settings->site_name }}</h4>
+                                <h4 style="font-size:30px; font-weight:bold">{{ $settings->site_name }}</h4>
                             </div>
                         </div>
                         <div class="card">

@@ -16,16 +16,21 @@
                 <div class="d-flex flex-column min-vh-100 px-3 pt-4">
                     <div class="row justify-content-center my-auto">
                         <div class="col-md-8 col-lg-6 col-xl-5">
-
-                            <div class="mb-4 pb-2">
-                                <a href="index" class="d-block auth-logo">
-                                    <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="30"
-                                        class="auth-logo-dark me-start">
-                                    <img src="{{ URL::asset('build/images/logo-light.png') }}" alt="" height="30"
-                                        class="auth-logo-light me-start">
-                                </a>
+                            @php
+                            $settings = \App\Models\WebsiteSettings::first();
+                            @endphp
+                            <div class="mb-4 d-flex justify-content-center align-items-center">
+                                <div>
+                                    <a href="index" class="d-block auth-logo">
+                                        <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_logo) }}" alt="{{ $settings->site_name }}"
+                                            height="50" width="50" style="border-radius: 50%">
+                                    </a>
+                                </div>
+                                <div class="ms-3">
+                                    <!-- Added margin class here -->
+                                    <h4 style="font-size:30px; font-weight:bold">{{ $settings->site_name }}</h4>
+                                </div>
                             </div>
-
                             <div class="card">
                                 <div class="card-body p-4">
                                     <div class="text-center mt-2">
@@ -36,7 +41,7 @@
                                         <form method="POST" action="{{ route('register') }}" class="auth-input">
                                             @csrf
                                             <div class="mb-2">
-                                                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                                                <label for="name" class="form-label">Company Name <span class="text-danger">*</span></label>
                                                 <input id="name" type="text"
                                                     class="form-control @error('name') is-invalid @enderror" name="name"
                                                     value="{{ old('name') }}" required autocomplete="name" autofocus
@@ -61,7 +66,18 @@
                                                 @enderror
                                             </div>
 
-
+                                            <div class="mb-2">
+                                                <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
+                                                <input id="phone" type="text"
+                                                    class="form-control @error('phone') is-invalid @enderror" name="phone"
+                                                    value="{{ old('phone') }}" required autocomplete="phone"
+                                                    placeholder="Enter phone">
+                                                @error('phone')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
                                             <div class="mb-3">
                                                 <label class="form-label" for="password-input">Password <span class="text-danger">*</span></label>
                                                 <input type="password"
@@ -84,43 +100,9 @@
                                                     placeholder="Enter confirm password">
                                             </div>
 
-                                            <div>
-                                                <p class="mb-0">By registering you agree to the Reactly <a href="#"
-                                                        class="text-primary">Terms of Use</a></p>
-                                            </div>
-
                                             <div class="mt-4">
                                                 <button class="btn btn-primary w-100" type="submit">Register</button>
                                             </div>
-
-
-                                            <div class="mt-4 text-center">
-                                                <div class="signin-other-title">
-                                                    <h5 class="font-size-14 mb-3 mt-2 title"> Sign in with </h5>
-                                                </div>
-
-                                                <ul class="list-inline mt-2">
-                                                    <li class="list-inline-item">
-                                                        <a href="javascript:void()"
-                                                            class="social-list-item bg-primary text-white border-primary">
-                                                            <i class="bx bxl-facebook"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a href="javascript:void()"
-                                                            class="social-list-item bg-info text-white border-info">
-                                                            <i class="bx bxl-linkedin"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a href="javascript:void()"
-                                                            class="social-list-item bg-danger text-white border-danger">
-                                                            <i class="bx bxl-google"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-
                                             <div class="mt-4 text-center">
                                                 <p class="mb-0">Already have an account ? <a href="{{ route('login') }}"
                                                         class="fw-medium text-primary"> Login</a></p>
@@ -137,11 +119,14 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="text-center p-4">
-                                <p>©
+                                <p>
+                                    &copy;
                                     <script>
-                                        document.write(new Date().getFullYear())
-                                    </script> webadmin. Crafted with <i
-                                        class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                        document.write(new Date().getFullYear());
+                                    </script>
+                                    supervisesite, design by
+                                    <a href="https://www.softgate.co.uk" target="_blank"
+                                        rel="noopener noreferrer">Softgate</a>
                                 </p>
                             </div>
                         </div>

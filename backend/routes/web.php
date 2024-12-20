@@ -7,6 +7,8 @@ use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\WebsiteSettingsController;
 use App\Http\Controllers\BannersController;
 use App\Http\Controllers\SectionsController;
+use App\Http\Controllers\PackagesController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +30,6 @@ Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-
     //Hero Sections
     Route::resource('hero_sections', HeroSectionController::class);
 
@@ -46,4 +47,10 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
     //Sections
     Route::resource('sections', SectionsController::class);
+
+    //Packages
+    Route::resource('packages', PackagesController::class);
+
+    //users
+    Route::resource('users', UsersController::class);
 });

@@ -41,46 +41,40 @@ Testimonials
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-nowrap align-middle">
+                        <table class="table align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col">S.No</th>
-                                    <th scope="col">Avatar</th>
-                                    <th scope="col">BgImage</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Designation</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col">Testimonial Details</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach($testimonials as $testimonial)
                                 <tr>
                                     <td>
-                                        <span class="fw-bold">{{ $loop->iteration }}</span>
+                                        <div class="d-flex align-items-start text-start">
+                                            <!-- Icon -->
+                                            <img src="{{ URL::asset('public/images/testimonials/' . $testimonial->avatar) }}" 
+                                                 alt="Icon" 
+                                                 class="me-3 img-fluid rounded" 
+                                                 style="width: 50px; height: 50px;">
+                    
+                                            <!-- Title and Description -->
+                                            <div>
+                                                <h6 class="mb-1">{{ $testimonial->name }}</h6>
+                                                <p class="font-bold mb-0">{{ $testimonial->designation }}</p>
+                                                <p class="text-muted mb-0">{{$testimonial->description}}</p>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td>
-                                        <a href="{{ URL::asset('public/images/testimonials/' . $testimonial->avatar) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ URL::asset('public/images/testimonials/' . $testimonial->bgImage) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
-                                        </a>
-                                    </td>
-                                    <td>{{ $testimonial->name }}</td>
-                                    <td>{{ $testimonial->designation }}</td>
-                                    <td>{{ $testimonial->description }}</td>
                                     <td>
                                         @if($testimonial->status == 'Active')
-                                        <span class="badge bg-success">Active</span>
+                                        <span class="btn btn-sm btn-success">Active</span>
                                         @elseif($testimonial->status == 'Inactive')
-                                        <span class="badge bg-warning">Inactive</span>
+                                        <span class="btn btn-sm btn-danger">Inactive</span>
                                         @else
-                                        <span class="badge bg-danger">Deleted</span>
+                                        <span class="btn btn-sm btn-warning">Unknown</span>
                                         @endif
                                     </td>
                                     <td>

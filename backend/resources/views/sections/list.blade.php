@@ -41,89 +41,94 @@ Sections
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-nowrap align-middle">
+                        <table class="table align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col">S.No</th>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Heading</th>
-                                    <th scope="col">Sub Heading</th>
-                                    <th scope="col">Content</th>
-                                    <th scope="col">Button Text</th>
-                                    <th scope="col">Button Link</th>
+                                    <th scope="col">Section Details</th>
+                                    <th scope="col">Button</th>
                                     <th scope="col">Display On</th>
                                     <th scope="col">Order</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
-
+                    
                             <tbody>
                                 @foreach($sections as $section)
                                 <tr>
+                                    <!-- Section Details -->
                                     <td>
-                                        <span class="fw-bold">{{ $loop->iteration }}</span>
+                                        <div class="d-flex align-items-start text-start">
+                                            <!-- Image -->
+                                            <img src="{{ URL::asset('public/images/sections/' . $section->image) }}" 
+                                                 alt="Section Image" 
+                                                 class="me-3 rounded" 
+                                                 style="width: 100px; height: 80px; object-fit: cover;">
+                    
+                                            <!-- Details -->
+                                            <div>
+                                                <h5 class="mb-1">{{ $section->heading }}</h5>
+                                                <h6 class="text-muted mb-1">{{ $section->subheading }}</h6>
+                                                <p class="text-muted mb-0" style="max-width:500px">{{$section->content}}</p>
+                                            </div>
+                                        </div>
                                     </td>
+                    
+                                    <!-- Button Text -->
                                     <td>
-                                        <a href="{{ URL::asset('public/images/sections/' . $section->image) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
+                                        <a href="{{ $section->button_link }}" target="_blank" class="btn btn-sm btn-primary">
+                                            {{ $section->button_text }}
                                         </a>
                                     </td>
-                                    <td>{{ $section->heading }}</td>
-                                    <td>{{ $section->subheading }}</td>
-                                    <td>{{ $section->content }}</td>
-                                    <td>{{ $section->button_text }}</td>
-                                    <td>
-                                        <a href="{{ $section->button_link }}" target="_blank">
-                                            <i class="bx bx-link-alt" style="font-size: 20px;"></i>
-                                        </a>
-                                    </td>
+                    
+                                    <!-- Display On -->
                                     <td>
                                         @if($section->display_on == 'Home')
-                                        <span class="badge bg-primary">Home</span>
+                                            <span class="btn btn-sm btn-primary">Home</span>
                                         @elseif($section->display_on == 'About')
-                                        <span class="badge bg-info">About</span>
+                                            <span class="btn btn-sm btn-info">About</span>
                                         @elseif($section->display_on == 'Services')
-                                        <span class="badge bg-warning">Services</span>
+                                            <span class="btn btn-sm btn-warning">Services</span>
                                         @elseif($section->display_on == 'Contact')
-                                        <span class="badge bg-success">Contact</span>
+                                            <span class="btn btn-sm btn-success">Contact</span>
                                         @elseif($section->display_on == 'Pricing')
-                                        <span class="badge bg-danger">Pricing</span>
+                                            <span class="btn btn-sm btn-danger">Pricing</span>
                                         @else
-                                        <span class="badge bg-danger">Other</span>
+                                            <span class="btn btn-sm btn-secondary">Other</span>
                                         @endif
                                     </td>
-                                    <td>{{ $section->order }}</td>
+                    
+                                    <!-- Order -->
+                                    <td><span class="btn btn-sm btn-info"> {{$section->order }}</span></td>
+                    
+                                    <!-- Status -->
                                     <td>
                                         @if($section->status == 'Active')
-                                        <span class="badge bg-success">Active</span>
+                                            <span class="btn btn-sm btn-success">Active</span>
                                         @elseif($section->status == 'Inactive')
-                                        <span class="badge bg-warning">Inactive</span>
+                                            <span class="btn btn-sm btn-warning">Inactive</span>
                                         @else
-                                        <span class="badge bg-danger">Deleted</span>
+                                            <span class="btn btn-sm btn-danger">Deleted</span>
                                         @endif
                                     </td>
+                    
+                                    <!-- Actions -->
                                     <td>
-                                        <ul class="list-inline mb-0">
-                                            <li class="list-inline-item">
-                                                <a href="{{ route('sections.edit', $section->id) }}"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
-                                                    class="px-2 text-primary"><i
-                                                        class="bx bx-pencil font-size-18"></i></a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a href="javascript:void(0);" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="Delete" class="px-2 text-danger"
-                                                    onclick="deleteHeroSection({{ $section->id }})"><i
-                                                        class="bx bx-trash-alt font-size-18"></i></a>
-                                            </li>
-                                        </ul>
+                                        <a href="{{ route('sections.edit', $section->id) }}" 
+                                           class="text-primary me-2" data-bs-toggle="tooltip" title="Edit">
+                                            <i class="bx bx-pencil font-size-18"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" class="text-danger" 
+                                           onclick="deleteHeroSection({{ $section->id }})" 
+                                           data-bs-toggle="tooltip" title="Delete">
+                                            <i class="bx bx-trash-alt font-size-18"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
+                    </div>                    
                 </div>
             </div>
         </div>

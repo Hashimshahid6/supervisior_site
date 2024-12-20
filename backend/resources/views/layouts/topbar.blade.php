@@ -36,64 +36,6 @@
 
         <div class="d-flex">
 
-            <div class="dropdown d-inline-block language-switch ms-2">
-                <button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    <img class="header-lang-img" src="{{ URL::asset('build/images/flags/us.jpg') }}"
-                        alt="Header Language" height="18">
-                </button>
-                <div class="dropdown-menu dropdown-menu-end">
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="eng">
-                        <img src="{{ URL::asset('build/images/flags/us.jpg') }}" alt="user-image" class="me-1"
-                            height="12"> <span class="align-middle">English</span>
-                    </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp">
-                        <img src="{{ URL::asset('build/images/flags/spain.jpg') }}" alt="user-image" class="me-1"
-                            height="12"> <span class="align-middle">Spanish</span>
-                    </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="gr">
-                        <img src="{{ URL::asset('build/images/flags/germany.jpg') }}" alt="user-image" class="me-1"
-                            height="12"> <span class="align-middle">German</span>
-                    </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="it">
-                        <img src="{{ URL::asset('build/images/flags/italy.jpg') }}" alt="user-image" class="me-1"
-                            height="12"> <span class="align-middle">Italian</span>
-                    </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ru">
-                        <img src="{{ URL::asset('build/images/flags/russia.jpg') }}" alt="user-image" class="me-1"
-                            height="12"> <span class="align-middle">Russian</span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="dropdown d-inline-block">
-                <button type="button" class="btn header-item noti-icon" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    <i class="bx bx-search icon-sm align-middle"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
-                    <form class="p-2">
-                        <div class="search-box">
-                            <div class="position-relative">
-                                <input type="text" class="form-control rounded bg-light border-0"
-                                    placeholder="Search...">
-                                <i class="bx bx-search search-icon"></i>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon" id="page-header-notifications-dropdown-v"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

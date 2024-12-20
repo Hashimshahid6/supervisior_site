@@ -38,13 +38,6 @@ class SectionsController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/images/sections');
-            $image->move($destinationPath, $name);
-        } //
-
-        if ($request->hasFile('image')) {
             // Step 1: Upload original image
             $image = $request->file('image');
             $originalName = time() . '.' . $image->getClientOriginalExtension();

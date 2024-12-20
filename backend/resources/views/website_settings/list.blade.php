@@ -43,78 +43,64 @@ Website Settings
                         <table class="table table-nowrap align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col">S.No</th>
-                                    <th scope="col">Logo</th>
-                                    <th scope="col">Favicon</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Email 2</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Phone 2</th>
-                                    <th scope="col">City</th>
-                                    <th scope="col">Country</th>
-                                    <th scope="col">Postal Code</th>
-                                    <th scope="col">Address</th>
+                                    <th scope="col">Logo/Favicon</th>
+                                    <th scope="col">Name & Email</th>
+                                    <th scope="col">Phone(s)</th>
+                                    <th scope="col">Location</th>
                                     <th scope="col">Description</th>
-                                    <th scope="col">Facebook</th>
-                                    <th scope="col">Twitter</th>
-                                    <th scope="col">Instagram</th>
-                                    <th scope="col">Linkedin</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col">Social Links</th>
+                                    <th scope="col">Actions</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach($websiteSettings as $setting)
                                 <tr>
                                     <td>
-                                        <span class="fw-bold">{{ $loop->iteration }}</span>
-                                    </td>
-                                    <td>
-                                        <a href="{{ URL::asset('public/images/settings/' . $setting->site_logo) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
+                                        <a href="{{ URL::asset('public/images/websiteimages/' . $setting->site_logo) }}" target="_blank">
+                                            <img src="{{ URL::asset('public/images/websiteimages/' . $setting->site_logo) }}" alt="Logo" 
+                                            height="50" width="50" class="img-fluid rounded">
+                                        </a>
+                                        </a>
+                                        /
+                                        <a href="{{ URL::asset('public/images/websiteimages/' . $setting->site_favicon) }}" target="_blank">
+                                            <img src="{{ URL::asset('public/images/websiteimages/' . $setting->site_favicon) }}" alt="Favicon" 
+                                            height="50" width="50" class="img-fluid rounded">
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ URL::asset('public/images/settings/' . $setting->site_favicon) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
-                                        </a>
+                                        <strong>{{ $setting->site_name }}</strong><br>
+                                        {{ $setting->site_email }}<br>
+                                        {{ $setting->site_email2 }}
                                     </td>
-                                    <td>{{ $setting->site_name }}</td>
-                                    <td>{{ $setting->site_email }}</td>
-                                    <td>{{ $setting->site_email2 }}</td>
-                                    <td>{{ $setting->site_phone }}</td>
-                                    <td>{{ $setting->site_phone2 }}</td>
-                                    <td>{{ $setting->site_city }}</td>
-                                    <td>{{ $setting->site_country }}</td>
-                                    <td>{{ $setting->site_postal_code }}</td>
-                                    <td>{{ $setting->site_address }}</td>
-                                    <td>{{ $setting->site_description }}</td>
-                                    <td>{{ $setting->site_facebook }}</td>
-                                    <td>{{ $setting->site_twitter }}</td>
-                                    <td>{{ $setting->site_instagram }}</td>
-                                    <td>{{ $setting->site_linkedin }}</td>
                                     <td>
-                                        <ul class="list-inline mb-0">
-                                            <li class="list-inline-item">
-                                                <a href="{{ route('website_settings.edit', $setting->id) }}"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
-                                                    class="px-2 text-primary"><i
-                                                        class="bx bx-pencil font-size-18"></i></a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a href="javascript:void(0);" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="Delete" class="px-2 text-danger"
-                                                    onclick="deleteWebsiteSetting({{ $setting->id }})"><i
-                                                        class="bx bx-trash-alt font-size-18"></i></a>
-                                            </li>
-                                        </ul>
+                                        {{ $setting->site_phone }}<br>
+                                        {{ $setting->site_phone2 }}
+                                    </td>
+                                    <td>
+                                        <strong>{{ $setting->site_city }}, {{ $setting->site_country }}</strong><br>
+                                        {{ $setting->site_address }}, ({{ $setting->site_postal_code }})
+                                    </td>
+                                    <td>{{ \Illuminate\Support\Str::limit($setting->site_description, 50, '...') }}</td>
+                                    <td>
+                                        <a href="{{ $setting->site_facebook }}" target="_blank" class="text-primary me-2"><i class="bx bxl-facebook-circle"></i></a>
+                                        <a href="{{ $setting->site_twitter }}" target="_blank" class="text-info me-2"><i class="bx bxl-twitter"></i></a>
+                                        <a href="{{ $setting->site_instagram }}" target="_blank" class="text-danger me-2"><i class="bx bxl-instagram"></i></a>
+                                        <a href="{{ $setting->site_linkedin }}" target="_blank" class="text-primary"><i class="bx bxl-linkedin"></i></a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('website_settings.edit', $setting->id) }}" class="text-primary me-2" title="Edit">
+                                            <i class="bx bx-pencil font-size-18"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" class="text-danger" title="Delete" onclick="deleteWebsiteSetting({{ $setting->id }})">
+                                            <i class="bx bx-trash-alt font-size-18"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+                    
                 </div>
             </div>
         </div>

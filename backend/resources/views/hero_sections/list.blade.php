@@ -41,42 +41,44 @@ Hero Section
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-nowrap align-middle">
+                        <table class="table align-middle">
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col">Image</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Subtitle</th>
-                                    <th scope="col">Button Text</th>
-                                    <th scope="col">Button Url</th>
+                                    <th scope="col">Content</th>
+                                    <th scope="col">Button</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach($heroSections as $heroSection)
                                 <tr>
                                     <td>
-                                        <a href="{{ URL::asset('public/images/hero-section/' . $heroSection->image) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
-                                        </a>
+                                        <img src="{{ URL::asset('public/images/hero-section/' . $heroSection->image) }}" 
+                                        alt="Hero Image"
+                                        class="rounded" style="width: 100px; height: auto;">
                                     </td>
-                                    <td>{{ $heroSection->title }}</td>
-                                    <td>{{ $heroSection->subtitle }}</td>
-                                    <td>{{ $heroSection->button_text }}</td>
                                     <td>
-                                        <a href="{{ $heroSection->button_url }}" target="_blank">
-                                            <i class="bx bx-link-alt" style="font-size: 20px;"></i>
+                                        <div class="d-flex align-items-start text-start">
+                                            <div>
+                                                <h6 class="mb-1">{{ $heroSection->title }}</h6>
+                                                <h6 class="text-muted mb-1" style="max-width:600px">{{ $heroSection->subtitle }}</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ $heroSection->button_link }}" target="_blank" class="btn btn-sm btn-primary">
+                                            {{ $heroSection->button_text }}
                                         </a>
                                     </td>
                                     <td>
                                         @if($heroSection->status == 'Active')
-                                        <span class="badge bg-success">Active</span>
+                                        <span class="btn btn-sm btn-success">Active</span>
                                         @elseif($heroSection->status == 'Inactive')
-                                        <span class="badge bg-warning">Inactive</span>
+                                        <span class="btn btn-sm btn-warning">Inactive</span>
                                         @else
-                                        <span class="badge bg-danger">Deleted</span>
+                                        <span class="btn btn-sm btn-danger">Deleted</span>
                                         @endif
                                     </td>
                                     <td>

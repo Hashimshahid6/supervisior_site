@@ -40,62 +40,57 @@
                         <li><a href="dashboard-sales" data-key="t-sales">Sales</a></li>
                     </ul>
                 </li> --}}
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
+                <li class="{{ request()->routeIs('users.*') ? 'mm-active' : '' }}">
+                    <a href={{route('users.index')}}>
+                        <i class="bx bx-user"></i>
+                        <span class="menu-item">Users</span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('hero_sections.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('hero_sections.index')}}">
                         <i class="bx bx-image icon nav-icon"></i>
                         <span class="menu-item">Hero Sections</span>
                     </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{route('hero_sections.index')}}">Sliders</a></li>
-                    </ul>
                 </li>
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
+                <li class="{{ request()->routeIs('banners.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('banners.index')}}">
                         <i class="bx bx-image icon nav-icon"></i>
                         <span class="menu-item">Banners</span>
                     </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{route('banners.index')}}">List</a></li>
-                    </ul>
                 </li>
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
+                <li class="{{ request()->routeIs('sections.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('sections.index')}}">
                         <i class="bx bx-image icon nav-icon"></i>
                         <span class="menu-item">Sections</span>
                     </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{route('sections.index')}}">List</a></li>
-                    </ul>
                 </li>
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
+                <li class="{{ request()->routeIs('services.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('services.index')}}">
                         <i class="bx bx-briefcase icon nav-icon"></i>
                         <span class="menu-item">Services</span>
                     </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{route('services.index')}}">List</a></li>
-                    </ul>
                 </li>
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
+                <li class="{{ request()->routeIs('testimonials.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('testimonials.index')}}">
                         <i class="bx bx-comment-dots icon nav-icon"></i>
                         <span class="menu-item">Testimonials</span>
                     </a>
+                </li>
+                <li class="{{ request()->routeIs('packages.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('packages.index')}}">
+                        <i class="bx bx-package icon nav-icon"></i>
+                        <span class="menu-item">Packages</span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('website_settings.*') ? 'mm-active' : '' }}">
+                    <a href="javascript: void(0);" class="has-arrow {{ request()->routeIs('website_settings.*') ? 'mm-active' : '' }}">
+                        <i class="bx bx-cog icon nav-icon"></i>
+                        <span class="menu-item">Settings</span>
+                    </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{route('testimonials.index')}}">List</a></li>
+                        <li><a href="{{route('website_settings.index')}}">Website Setting</a></li>
                     </ul>
                 </li>
-                <li>
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow">
-                            <i class="bx bx-cog icon nav-icon"></i>
-                            <span class="menu-item">Settings</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="false">
-                            <li><a href="{{route('website_settings.index')}}">Website Setting</a></li>
-                        </ul>
-                    </li>
-                    <li>
             </ul>
         </div>
         <!-- Sidebar -->

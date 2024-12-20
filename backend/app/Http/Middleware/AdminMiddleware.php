@@ -17,7 +17,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         #1 for admin and 0 for user
-        if(!empty(Auth::check() && Auth::user()->type == 'Admin')){
+        if(!empty(Auth::check() && Auth::user()->role == 'Admin')){
             return $next($request);
         }else{
             Auth::logout();

@@ -44,7 +44,6 @@ Banners
                         <table class="table table-nowrap align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col">S.No</th>
                                     <th scope="col">Image</th>
                                     <th scope="col">Heading</th>
                                     <th scope="col">Sub Heading</th>
@@ -58,37 +57,34 @@ Banners
                                 @foreach($banners as $banner)
                                 <tr>
                                     <td>
-                                        <span class="fw-bold">{{ $loop->iteration }}</span>
-                                    </td>
-                                    <td>
-                                        <a href="{{ URL::asset('public/images/banners/' . $banner->image) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
-                                        </a>
+                                        <img src="{{ URL::asset('public/images/banners/' . $banner->image) }}" 
+                                        alt="Banner Image"
+                                        class="img-thumbnail" style="width: 120px; height: auto;">
                                     </td>
                                     <td>{{ $banner->heading }}</td>
                                     <td>{{ $banner->subheading }}</td>
                                     <td>
                                         @if($banner->display_on == 'Home')
-                                        <span class="badge bg-primary">Home</span>
+                                            <span class="btn btn-sm btn-primary">Home</span>
                                         @elseif($banner->display_on == 'About')
-                                        <span class="badge bg-info">About</span>
+                                            <span class="btn btn-sm btn-info">About</span>
                                         @elseif($banner->display_on == 'Services')
-                                        <span class="badge bg-warning">Services</span>
+                                            <span class="btn btn-sm btn-warning">Services</span>
                                         @elseif($banner->display_on == 'Contact')
-                                        <span class="badge bg-success">Contact</span>
+                                            <span class="btn btn-sm btn-success">Contact</span>
                                         @elseif($banner->display_on == 'Pricing')
-                                        <span class="badge bg-danger">Pricing</span>
+                                            <span class="btn btn-sm btn-danger">Pricing</span>
                                         @else
-                                        <span class="badge bg-danger">Other</span>
+                                            <span class="btn btn-sm btn-secondary">Other</span>
                                         @endif
                                     </td>
                                     <td>
                                         @if($banner->status == 'Active')
-                                        <span class="badge bg-success">Active</span>
+                                        <span class="btn btn-sm btn-success">Active</span>
                                         @elseif($banner->status == 'Inactive')
-                                        <span class="badge bg-warning">Inactive</span>
+                                        <span class="btn btn-sm btn-warning">Inactive</span>
                                         @else
-                                        <span class="badge bg-danger">Deleted</span>
+                                        <span class="btn btn-sm btn-danger">Unknown</span>
                                         @endif
                                     </td>
                                     <td>

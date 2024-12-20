@@ -41,75 +41,82 @@ Services
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-nowrap align-middle">
+                        <table class="table align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col">S.No</th>
-                                    <th scope="col">Icon</th>
-                                    <th scope="col">BgImage</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Button Text</th>
-                                    <th scope="col">Button Url</th>
+                                    <th scope="col">Background Image</th>
+                                    <th scope="col">Service Details</th>
+                                    <th scope="col">Button</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
-
+                    
                             <tbody>
                                 @foreach($services as $service)
                                 <tr>
+                                    <!-- Background Image -->
                                     <td>
-                                        <span class="fw-bold">{{ $loop->iteration }}</span>
+                                        <img src="{{ URL::asset('public/images/services/' . $service->bgImage) }}" 
+                                             alt="Background Image" 
+                                             class="img-thumbnail" style="width: 120px; height: auto;">
                                     </td>
+                    
+                                    <!-- Service Details -->
                                     <td>
-                                        <a href="{{ URL::asset('public/images/services/' . $service->icon) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
+                                        <div class="d-flex align-items-start text-start">
+                                            <!-- Icon -->
+                                            <img src="{{ URL::asset('public/images/services/' . $service->icon) }}" 
+                                                 alt="Icon" 
+                                                 class="me-3 img-fluid rounded" 
+                                                 style="width: 50px; height: 50px;">
+                    
+                                            <!-- Title and Description -->
+                                            <div>
+                                                <h6 class="mb-1">{{ $service->title }}</h6>
+                                                <p class="text-muted mb-0" style="max-width: 350px;">
+                                                    {{ \Illuminate\Support\Str::limit($service->description, 80, '...') }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                    
+                                    <!-- Button Text -->
+                                    <td>
+                                        <a href="{{ $service->button_url }}" target="_blank" class="btn btn-sm btn-primary">
+                                            {{ $service->button_text }}
                                         </a>
                                     </td>
-                                    <td>
-                                        <a href="{{ URL::asset('images/services/' . $service->bgImage) }}" target="_blank">
-                                            <i class="bx bx-image" style="font-size: 24px;"></i>
-                                        </a>
-                                    </td>
-                                    <td>{{ $service->title }}</td>
-                                    <td>{{ $service->description }}</td>
-                                    <td>{{ $service->button_text }}</td>
-                                    <td>
-                                        <a href="{{ $service->button_url }}" target="_blank">
-                                            <i class="bx bx-link-alt" style="font-size: 20px;"></i>
-                                        </a>
-                                    </td>
+                    
+                                    <!-- Status -->
                                     <td>
                                         @if($service->status == 'Active')
-                                        <span class="badge bg-success">Active</span>
+                                            <span class="btn btn-sm btn-success">Active</span>
                                         @elseif($service->status == 'Inactive')
-                                        <span class="badge bg-warning">Inactive</span>
+                                            <span class="btn btn-sm btn-danger">Inactive</span>
                                         @else
-                                        <span class="badge bg-danger">Deleted</span>
+                                            <span class="btn btn-sm btn-warning">Deleted</span>
                                         @endif
                                     </td>
+                    
+                                    <!-- Actions -->
                                     <td>
-                                        <ul class="list-inline mb-0">
-                                            <li class="list-inline-item">
-                                                <a href="{{ route('services.edit', $service->id) }}"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
-                                                    class="px-2 text-primary"><i
-                                                        class="bx bx-pencil font-size-18"></i></a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a href="javascript:void(0);" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="Delete" class="px-2 text-danger"
-                                                    onclick="deleteHeroSection({{ $service->id }})"><i
-                                                        class="bx bx-trash-alt font-size-18"></i></a>
-                                            </li>
-                                        </ul>
+                                        <a href="{{ route('services.edit', $service->id) }}" 
+                                           class="text-primary me-2" data-bs-toggle="tooltip" title="Edit">
+                                            <i class="bx bx-pencil font-size-18"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" class="text-danger" 
+                                           onclick="deleteHeroSection({{ $service->id }})" 
+                                           data-bs-toggle="tooltip" title="Delete">
+                                            <i class="bx bx-trash-alt font-size-18"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+                    
                 </div>
             </div>
         </div>
