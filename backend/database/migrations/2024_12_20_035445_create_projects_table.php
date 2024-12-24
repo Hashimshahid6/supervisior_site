@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->integer('company_id');
+            $table->string('name');
+            $table->text('description');
+            $table->string('file');
+            $table->enum('status', ['Active', 'Inactive', 'Deleted'])->default('Active');
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

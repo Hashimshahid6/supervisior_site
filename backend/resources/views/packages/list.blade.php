@@ -35,7 +35,7 @@ Packages
 
         </div>
     </div>
-
+    @include('components.flash_messages')
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -45,6 +45,7 @@ Packages
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col">Package Details</th>
+                                    <th>Upload Limit</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -62,6 +63,9 @@ Packages
                                                 <p class="text-muted mb-0">{{ $package->description }}</p>
                                             </div>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <span class="btn btn-sm btn-primary">{{ $package->project_limit }}</span>
                                     </td>
                                     <td>
                                         @if($package->status == 'Active')
@@ -94,15 +98,6 @@ Packages
     <!-- end row -->
     @endsection
     @section('scripts')
-    <!-- swiper js -->
-    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
-
-    <!-- nouisliderribute js -->
-    <script src="{{ URL::asset('build/libs/nouislider/nouislider.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/wnumb/wNumb.min.js') }}"></script>
-
-    <!-- init js -->
-    <script src="{{ URL::asset('build/js/pages/product-filter-range.init.js') }}"></script>
     <!-- App js -->
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
     @endsection

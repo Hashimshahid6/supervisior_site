@@ -9,6 +9,8 @@ use App\Http\Controllers\BannersController;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\MessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,4 +55,10 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
     //users
     Route::resource('users', UsersController::class);
+
+    //projects
+    Route::resource('projects', ProjectsController::class);
+
+    //messages
+    Route::resource('messages', MessagesController::class);
 });

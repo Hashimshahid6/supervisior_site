@@ -40,12 +40,20 @@
                         <li><a href="dashboard-sales" data-key="t-sales">Sales</a></li>
                     </ul>
                 </li> --}}
+                <li class="menu-title" data-key="t-applications">Members Area</li>
+                <li class="{{ request()->routeIs('projects.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('projects.index')}}">
+                        <i class="bx bx-buildings icon nav-icon"></i>
+                        <span class="menu-item">Projects</span>
+                    </a>
+                </li>
                 <li class="{{ request()->routeIs('users.*') ? 'mm-active' : '' }}">
                     <a href={{route('users.index')}}>
                         <i class="bx bx-user"></i>
                         <span class="menu-item">Users</span>
                     </a>
                 </li>
+                <li class="menu-title" data-key="t-applications">Website Admin</li>
                 <li class="{{ request()->routeIs('hero_sections.*') ? 'mm-active' : '' }}">
                     <a href="{{route('hero_sections.index')}}">
                         <i class="bx bx-image icon nav-icon"></i>

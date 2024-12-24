@@ -20,6 +20,11 @@ class Packages extends Model
         });
     } //
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    } //
+
     public static function getAllPackages(){
         return self::all();
     }

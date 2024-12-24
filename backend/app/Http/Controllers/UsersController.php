@@ -42,10 +42,13 @@ class UsersController extends Controller
             'password' => 'required|min:8',
         ]);
 
+        $avatarNumber = rand(1, 4).'.jpg';
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'avatar' => 'avatar-'.$avatarNumber,
             'password' => bcrypt($request->password),
             'type' => 'Employee',
         ]);
@@ -79,12 +82,15 @@ class UsersController extends Controller
             'name' => 'required|string',
             'email' => 'required|email',
             'phone' => 'required|numeric',
+            'avatar' => 'nullable|file|mimes:jpeg,jpg,png,gif',
         ]);
 
+        $avatarNumber = rand(1, 4).'.jpg';
         User::find($id)->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'avatar' => 'avatar-'.$avatarNumber,
         ]);
 
         return redirect()->route('users.index')->with('success', 'Employee updated successfully.');

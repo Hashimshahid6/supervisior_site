@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Projects extends Model
+class Messages extends Model
 {
-    protected $table = 'projects';
-    protected $fillable = ['user_id', 'name', 'description', 'file', 'status'];
+    protected $table = 'messages';
+    protected $fillable = ['projects_id', 'user_id', 'message', 'image'];
+
 
     public static function boot()
     {
@@ -19,19 +20,19 @@ class Projects extends Model
             $model->updated_by = auth()->id();
         });
     } //
+    
+    public function project()
+    {
+        return $this->belongsTo(Projects::class);
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }//
-
-    public function messages()
-    {
-        return $this->hasMany(Messages::class)->with('user');
     }
 
-    public static function getAllProjects()
+    public static function getAllMessages($project_id)
     {
-        return Projects::with('user', 'messages')->where('status', 'Active')->get();
+        return Messages::with('user')->where('projects_id', $project_id)->get();
     }
 }

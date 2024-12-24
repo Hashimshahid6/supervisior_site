@@ -44,8 +44,34 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->created_by = auth()->id();
+        });
+        self::updating(function ($model) {
+            $model->updated_by = auth()->id();
+        });
+    }//
+
     public static function getAllUsers()
     {
         return User::all();
+    }//
+
+    public function packages()
+    {
+        return $this->hasMany(Packages::class);
+    }//
+
+    public function projects()
+    {
+        return $this->hasMany(Projects::class);
+    }//
+
+    public function messages()
+    {
+        return $this->hasMany(Messages::class);
     }//
 }
