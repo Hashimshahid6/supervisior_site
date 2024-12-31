@@ -17,12 +17,12 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         #1 for admin and 0 for user
-        if(!empty(Auth::check() && Auth::user()->role == 'Admin')){
+        if (!empty(Auth::check() && (Auth::user()->role == 'Admin' || Auth::user()->role == 'Company' || Auth::user()->role == 'Employee'))) {
             return $next($request);
         }else{
             Auth::logout();
             session()->flash('error', 'You are not authorized to access this page only admin can access');
-            // return redirect()->route('auth-login.index');
+            return redirect()->route('login');
         }
     }
 }

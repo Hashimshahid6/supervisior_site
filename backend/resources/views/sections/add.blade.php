@@ -127,7 +127,3 @@ Services
     </div>
     <!-- end row -->
     @endsection
-    @section('scripts')
-    <!-- App js -->
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    @endsection

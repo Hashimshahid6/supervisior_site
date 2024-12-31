@@ -35,10 +35,10 @@
                                 <div class="card-body p-4">
                                     <div class="text-center mt-2">
                                         <h5>Register Account</h5>
-                                        <p class="text-muted">Get your free webadmin account now.</p>
+                                        <p class="text-muted">Get access to members area.</p>
                                     </div>
                                     <div class="p-2 mt-4">
-                                        <form method="POST" action="{{ route('register') }}" class="auth-input">
+                                        <form method="POST" action="{{ route('register.post') }}" class="auth-input">
                                             @csrf
                                             <div class="mb-2">
                                                 <label for="name" class="form-label">Company Name <span class="text-danger">*</span></label>
@@ -124,9 +124,7 @@
                                     <script>
                                         document.write(new Date().getFullYear());
                                     </script>
-                                    supervisesite, design by
-                                    <a href="https://www.softgate.co.uk" target="_blank"
-                                        rel="noopener noreferrer">Softgate</a>
+                                    supervisesite.co.uk, All Rights Reserved.
                                 </p>
                             </div>
                         </div>

@@ -2,14 +2,6 @@
 @section('title')
 Users
 @endsection
-@section('css')
-<!-- choices css -->
-<link href="{{ URL::asset('build/libs/choices.js/public/assets/styles/choices.min.css') }}" rel="stylesheet"
-    type="text/css" />
-
-<!-- dropzone css -->
-<link href="{{ URL::asset('build/libs/dropzone/dropzone.css') }}" rel="stylesheet" type="text/css" />
-@endsection
 @section('page-title')
 Users
 @endsection
@@ -99,8 +91,4 @@ Users
         </div>
     </div>
     <!-- end row -->
-    @endsection
-    @section('scripts')
-    <!-- App js -->
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
     @endsection

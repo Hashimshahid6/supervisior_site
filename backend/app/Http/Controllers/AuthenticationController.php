@@ -26,16 +26,14 @@ class AuthenticationController extends Controller
 		if(\Auth::attempt($credentials)){
 			$user = User::find(\Auth::user()->id);
 			$token = $user->createToken('token')->plainTextToken;
-			return response()->json([
-				'status'=> true,
-				'token'=> $token,
-				'user'=> $user	
-				]);
+			if($user->role == 'Employee'){
+				return redirect()->route('projects.index');
+			}else{
+				return redirect()->route('dashboard');
+			}
 		}else{
-			return response()->json([
-				'status'=> false,
-				'errors'=> 'Email or Password incorrect'
-			]);
+            session()->flash('error', 'Invalid email or password');
+            return redirect()->route('login');
 		}
-	}//
+	}
 }

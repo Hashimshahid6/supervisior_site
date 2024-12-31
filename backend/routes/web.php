@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\AuthenticationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HeroSectionController;
 use App\Http\Controllers\ServicesController;
@@ -11,6 +14,11 @@ use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PlantChecklistController;
+use App\Http\Controllers\VehicleChecklistController;
+use App\Http\Controllers\ToolboxTalkController;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,14 +31,20 @@ use App\Http\Controllers\MessagesController;
 |
 */
 
+Route::get('/admin/login', [LoginController::class, 'index'])->name('login');
+Route::post('/admin/login', [AuthenticationController::class, 'authenticate'])->name('login.post');
+Route::get('/admin/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/admin/register', [RegisterController::class, 'register'])->name('register.post');
+Route::get('/admin/update-password', [LoginController::class, 'updatePassword'])->name('password.update');
+Route::post('/admin/update-password', [LoginController::class, 'updatePasswordPost'])->name('password.update.post');
+Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout');
 
-Auth::routes();
-
-Route::get('/', [App\Http\Controllers\HomeController::class, 'root']);
-Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-
+Route::get('/admin/cache-clear', function () {
+    Artisan::call('route:clear');
+    return "Cache is cleared";
+});
 Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
-    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //Hero Sections
     Route::resource('hero_sections', HeroSectionController::class);
@@ -61,4 +75,13 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
     //messages
     Route::resource('messages', MessagesController::class);
+
+    //Plant Checklist
+    Route::resource('plant_checklists', PlantChecklistController::class);
+
+    //Vehicle Checklist
+    Route::resource('vehicle_checklists', VehicleChecklistController::class);
+
+    //Toolbox Talk Template
+    Route::resource('toolbox_talks', ToolboxTalkController::class);
 });

@@ -41,18 +41,17 @@ class WebsiteSettingsController extends Controller
             'site_description' => 'required|string',
         ]);
 
+        $siteFavicon = null;
+        $siteLogo = null;
+
+        $destinationPath = public_path('/images/websiteimages');
+
         if ($request->hasFile('site_favicon')) {
-            $site_favicon = $request->file('site_favicon');
-            $faviconName = time() . '.' . $site_favicon->getClientOriginalExtension();
-            $destinationPath = public_path('/images/websiteimages');
-            $site_favicon->move($destinationPath, $faviconName);
+            $siteFavicon = $this->processImage($request->file('site_favicon'), $destinationPath);
         }
 
         if ($request->hasFile('site_logo')) {
-            $site_logo = $request->file('site_logo');
-            $logoName = time() . '.' . $site_logo->getClientOriginalExtension();
-            $destinationPath = public_path('/images/websiteimages');
-            $site_logo->move($destinationPath, $logoName);
+            $siteLogo = $this->processImage($request->file('site_logo'), $destinationPath);
         }
 
         WebsiteSettings::create([
@@ -64,8 +63,8 @@ class WebsiteSettingsController extends Controller
             'site_city' => $request->site_city,
             'site_country' => $request->site_country,
             'site_postal_code' => $request->site_postal_code,
-            'site_logo' => $logoName ?? $request->site_logo,
-            'site_favicon' => $faviconName ?? $request->site_favicon,
+            'site_logo' => $siteLogo,
+            'site_favicon' => $siteFavicon,
             'site_description' => $request->site_description,
             'site_facebook' => $request->site_facebook,
             'site_twitter' => $request->site_twitter,
@@ -111,13 +110,20 @@ class WebsiteSettingsController extends Controller
 
         $websiteSettings = WebsiteSettings::find($id);
 
+        $siteFavicon = $websiteSettings->site_favicon;
+        $siteLogo = $websiteSettings->site_logo;
+
+        $destinationPath = public_path('/images/websiteimages');
+
         if ($request->hasFile('site_favicon')) {
-            $websiteSettings->site_favicon = $this->handleImageUpload($request->file('site_favicon'), 'websiteimages');
+            $siteFavicon = $this->processImage($request->file('site_favicon'), $destinationPath);
         }
 
         if ($request->hasFile('site_logo')) {
-            $websiteSettings->site_logo = $this->handleImageUpload($request->file('site_logo'), 'websiteimages');
+            $siteLogo = $this->processImage($request->file('site_logo'), $destinationPath);
         }
+
+
 
         WebsiteSettings::find($id)->update([
             'site_name' => $request->site_name,
@@ -130,8 +136,8 @@ class WebsiteSettingsController extends Controller
             'site_city' => $request->site_city,
             'site_country' => $request->site_country,
             'site_postal_code' => $request->site_postal_code,
-            'site_logo' => $websiteSettings->site_logo ?? $request->site_logo,
-            'site_favicon' => $websiteSettings->site_favicon ?? $request->site_favicon,
+            'site_logo' => $siteLogo,
+            'site_favicon' => $siteFavicon,
             'site_description' => $request->site_description,
             'site_facebook' => $request->site_facebook,
             'site_twitter' => $request->site_twitter,
@@ -149,17 +155,30 @@ class WebsiteSettingsController extends Controller
     {
     }
 
-    private function handleImageUpload($image, $folder)
+    private function processImage($image, $destinationPath)
     {
-        $originalName = time() . '.' . $image->getClientOriginalExtension();
-        $destinationPath = public_path('/images/' . $folder);
+        $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $image->getClientOriginalExtension();
+        $webpName = $originalName . '.webp';
+        $counter = 1;
 
-        $image->move($destinationPath, $originalName);
+        // Check for duplicate names for both original and WebP files
+        while (
+            file_exists($destinationPath . '/' . $originalName . '.' . $extension) ||
+            file_exists($destinationPath . '/' . $webpName)
+        ) {
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . '-' . $counter;
+            $webpName = $originalName . '.webp';
+            $counter++;
+        }
 
-        $webpName = time() . '.webp';
-        $originalPath = $destinationPath . '/' . $originalName;
+        $originalPath = $destinationPath . '/' . $originalName . '.' . $extension;
         $webpPath = $destinationPath . '/' . $webpName;
 
+        // Move original image
+        $image->move($destinationPath, $originalName . '.' . $extension);
+
+        // Convert to WebP
         try {
             $imageType = mime_content_type($originalPath);
 
@@ -173,21 +192,19 @@ class WebsiteSettingsController extends Controller
                 case 'image/gif':
                     $sourceImage = imagecreatefromgif($originalPath);
                     break;
-                case 'image/jpg':
-                    $sourceImage = imagecreatefromjpeg($originalPath);
-                    break;
                 default:
                     throw new \Exception('Unsupported image type');
             }
 
-            imagewebp($sourceImage, $webpPath, 90);
+            imagewebp($sourceImage, $webpPath, 90); // Save as WebP
             imagedestroy($sourceImage);
 
+            // Delete original image
             unlink($originalPath);
 
             return $webpName;
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            throw new \Exception('Failed to process image: ' . $e->getMessage());
         }
     }
 }

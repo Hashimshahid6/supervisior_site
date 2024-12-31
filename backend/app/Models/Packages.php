@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Packages extends Model
 {
     protected $table = 'packages';
-    protected $fillable = ['name', 'description', 'price', 'trial_text', 'status'];
+    protected $fillable = ['name', 'description', 'price', 'trial_text', 'status', 'project_limit'];
 
     public static function boot()
     {
@@ -27,5 +27,5 @@ class Packages extends Model
 
     public static function getAllPackages(){
         return self::all();
-    }
+    }//
 }

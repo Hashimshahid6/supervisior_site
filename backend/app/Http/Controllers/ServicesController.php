@@ -38,8 +38,17 @@ class ServicesController extends Controller
             'bgImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $iconName = $this->handleImageUpload($request->file('icon'), 'services');
-        $bgImageName = $this->handleImageUpload($request->file('bgImage'), 'services');
+        $iconName = null;
+        $bgImageName = null;
+        $destinationPath = public_path('images/services');
+
+        if ($request->hasFile('icon')) {
+            $iconName = $this->processImage($request->file('icon'), $destinationPath);
+        }
+
+        if ($request->hasFile('bgImage')) {
+            $bgImageName = $this->processImage($request->file('bgImage'), $destinationPath);
+        }
 
         Services::create([
             'title' => $request->title,
@@ -87,12 +96,17 @@ class ServicesController extends Controller
 
         $service = Services::find($id);
 
-        if ($request->hasFile('icon')) {
-            $service->icon = $this->handleImageUpload($request->file('icon'), 'services');
+        $iconName = $service->icon;
+        $bgImageName = $service->bgImage;
+
+        $destinationPath = public_path('images/services');
+
+        if($request->hasFile('icon')) {
+            $iconName = $this->processImage($request->file('icon'), $destinationPath);
         }
 
-        if ($request->hasFile('bgImage')) {
-            $service->bgImage = $this->handleImageUpload($request->file('bgImage'), 'services');
+        if($request->hasFile('bgImage')) {
+            $bgImageName = $this->processImage($request->file('bgImage'), $destinationPath);
         }
 
         $service->update([
@@ -100,8 +114,8 @@ class ServicesController extends Controller
             'description' => $request->description,
             'button_text' => $request->button_text,
             'button_url' => $request->button_url,
-            'icon' => $service->icon ?? $request->icon,
-            'bgImage' => $service->bgImage ?? $request->bgImage,
+            'icon' => $iconName,
+            'bgImage' => $bgImageName,
             'status' => $request->status,
         ]);
 
@@ -119,17 +133,30 @@ class ServicesController extends Controller
         return redirect()->route('services.index')->with('success', 'Service deleted successfully.');
     }
 
-    private function handleImageUpload($image, $folder)
+    private function processImage($image, $destinationPath)
     {
-        $originalName = time() . '.' . $image->getClientOriginalExtension();
-        $destinationPath = public_path('/images/' . $folder);
+        $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $image->getClientOriginalExtension();
+        $webpName = $originalName . '.webp';
+        $counter = 1;
 
-        $image->move($destinationPath, $originalName);
+        // Check for duplicate names for both original and WebP files
+        while (
+            file_exists($destinationPath . '/' . $originalName . '.' . $extension) ||
+            file_exists($destinationPath . '/' . $webpName)
+        ) {
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . '-' . $counter;
+            $webpName = $originalName . '.webp';
+            $counter++;
+        }
 
-        $webpName = time() . '.webp';
-        $originalPath = $destinationPath . '/' . $originalName;
+        $originalPath = $destinationPath . '/' . $originalName . '.' . $extension;
         $webpPath = $destinationPath . '/' . $webpName;
 
+        // Move original image
+        $image->move($destinationPath, $originalName . '.' . $extension);
+
+        // Convert to WebP
         try {
             $imageType = mime_content_type($originalPath);
 
@@ -143,21 +170,19 @@ class ServicesController extends Controller
                 case 'image/gif':
                     $sourceImage = imagecreatefromgif($originalPath);
                     break;
-                case 'image/jpg':
-                    $sourceImage = imagecreatefromjpeg($originalPath);
-                    break;
                 default:
                     throw new \Exception('Unsupported image type');
             }
 
-            imagewebp($sourceImage, $webpPath, 90);
+            imagewebp($sourceImage, $webpPath, 90); // Save as WebP
             imagedestroy($sourceImage);
 
+            // Delete original image
             unlink($originalPath);
 
             return $webpName;
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            throw new \Exception('Failed to process image: ' . $e->getMessage());
         }
     }
 }

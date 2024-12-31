@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-Users
+Employees
 @endsection
 @section('css')
 <!-- swiper css -->
@@ -10,7 +10,7 @@ Users
 <link rel="stylesheet" href="{{ URL::asset('build/libs/nouislider/nouislider.min.css') }}">
 @endsection
 @section('page-title')
-Users
+Employees
 @endsection
 @section('body')
 
@@ -20,7 +20,7 @@ Users
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="mb-3">
-                <h5 class="card-title">Users List <span class="text-muted fw-normal ms-2">( {{ $users->count()}}
+                <h5 class="card-title">Employees List <span class="text-muted fw-normal ms-2">( {{ $users->count()}}
                         )</span></h5>
             </div>
         </div>
@@ -66,20 +66,20 @@ Users
                                     </td>
                                     <td>
                                         @if($user->role == 'Admin')
-                                        <span class="badge bg-success-subtle text-success mb-0">Admin</span>
+                                        <span class="badge bg-success text-white">Admin</span>
                                         @elseif($user->role == 'Company')
-                                        <span class="badge bg-primary-subtle text-primary mb-0">Company</span>
+                                        <span class="badge bg-primary text-white">Company</span>
                                         @elseif($user->role == 'Employee')
-                                        <span class="badge bg-warning-subtle text-warning mb-0">Employee</span>
+                                        <span class="badge bg-success text-white">Employee</span>
                                         @endif
                                     </td>
                                     <td>
                                         @if($user->status == 'Active')
-                                        <span class="badge bg-success-subtle text-success mb-0">Active</span>
+                                        <span class="badge bg-success text-white">Active</span>
                                         @elseif($user->status == 'Inactive')
-                                        <span class="badge bg-warning-subtle text-warning mb-0">Inactive</span>
+                                        <span class="badge bg-warning text-white">Inactive</span>
                                         @else
-                                        <span class="badge bg-danger-subtle text-danger mb-0">Deleted</span>
+                                        <span class="badge bg-danger text-dark">Deleted</span>
                                         @endif
                                     </td>
                                     <td>
@@ -101,8 +101,4 @@ Users
         </div>
     </div>
     <!-- end row -->
-    @endsection
-    @section('scripts')
-    <!-- App js -->
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
     @endsection

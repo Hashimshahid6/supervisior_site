@@ -25,3 +25,18 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            let alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function (alert) {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+                setTimeout(function () {
+                    alert.remove();
+                }, 150); // Bootstrap's fade transition duration
+            });
+        }, 4000); // 5000ms = 5 seconds
+    });
+</script>

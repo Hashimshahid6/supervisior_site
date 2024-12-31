@@ -1,23 +1,18 @@
+@php
+    $settings = \App\Models\WebsiteSettings::first();
+@endphp
+
 <header id="page-topbar" class="isvertical-topbar">
     <div class="navbar-header">
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box">
-                <a href="index" class="logo logo-dark">
+                <a href="{{route('dashboard')}}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ URL::asset('build/images/logo-dark-sm.png') }}" alt="" height="26">
+                        <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_favicon) }}" alt="" height="40" width="40">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ URL::asset('build/images/logo-dark-sm.png') }}" alt="" height="26">
-                    </span>
-                </a>
-
-                <a href="index" class="logo logo-light">
-                    <span class="logo-lg">
-                        <img src="{{ URL::asset('build/images/logo-light.png') }}" alt="" height="30">
-                    </span>
-                    <span class="logo-sm">
-                        <img src="{{ URL::asset('build/images/logo-light-sm.png') }}" alt="" height="26">
+                        <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_logo) }}" alt="" height="70" width="70">
                     </span>
                 </a>
             </div>
@@ -36,7 +31,7 @@
 
         <div class="d-flex">
 
-            <div class="dropdown d-inline-block">
+            {{-- <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon" id="page-header-notifications-dropdown-v"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="bx bx-bell icon-sm align-middle"></i>
@@ -127,45 +122,27 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item user text-start d-flex align-items-center"
                     id="page-header-user-dropdown-v" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     <img class="rounded-circle header-profile-user"
-                        src="{{ URL::asset('build/images/users/avatar-3.jpg') }}" alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-2 fw-medium font-size-15">Martin Gurley</span>
+                        src="{{ URL::asset('build/images/users/' . auth()->user()->avatar) }}" alt="Header Avatar">
+                    <span class="d-none d-xl-inline-block ms-2 fw-medium font-size-15">{{auth()->user()->name}}</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end pt-0">
                     <div class="p-3 border-bottom">
-                        <h6 class="mb-0">Martin Gurley</h6>
-                        <p class="mb-0 font-size-11 text-muted">martin.gurley@email.com</p>
+                        <h6 class="mb-0">{{auth()->user()->name}}</h6>
+                        <p class="mb-0 font-size-11 text-muted">{{auth()->user()->email}}</p>
                     </div>
-                    <a class="dropdown-item" href="contacts-profile"><i
+                    {{-- <a class="dropdown-item" href="javascript:void(0)"><i
                             class="mdi mdi-account-circle text-muted font-size-16 align-middle me-2"></i> <span
-                            class="align-middle">Profile</span></a>
-                    <a class="dropdown-item" href="apps-chat"><i
-                            class="mdi mdi-message-text-outline text-muted font-size-16 align-middle me-2"></i> <span
-                            class="align-middle">Messages</span></a>
-                    <a class="dropdown-item" href="pages-faqs"><i
-                            class="mdi mdi-lifebuoy text-muted font-size-16 align-middle me-2"></i> <span
-                            class="align-middle">Help</span></a>
-                    <a class="dropdown-item d-flex align-items-center" href="#"><i
-                            class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-2"></i> <span
-                            class="align-middle me-3">Settings</span><span
-                            class="badge bg-success-subtle text-success ms-auto">New</span></a>
-                    <a class="dropdown-item" href="auth-lock-screen"><i
-                            class="mdi mdi-lock text-muted font-size-16 align-middle me-2"></i> <span
-                            class="align-middle">Lock screen</span></a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="javascript:void();"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
+                            class="align-middle">Profile</span></a> --}}
+                    <a class="dropdown-item" href="{{route('logout')}}"><i
                             class="mdi mdi-logout text-muted font-size-16 align-middle me-2"></i> <span
                             class="align-middle">Logout</span></a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
                 </div>
             </div>
         </div>

@@ -1,18 +1,18 @@
 @php
     $settings = App\Models\WebsiteSettings::first();
+    $userRole = Auth::user()->role;
 @endphp
 
 <!-- ========== Left Sidebar Start ========== -->
 <div class="vertical-menu">
-
     <!-- LOGO -->
     <div class="navbar-brand-box">
-        <a href="index" class="logo logo-dark">
+        <a href="javascript:void(0)" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_favicon) }}" alt="" height="26">
+                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_favicon) }}" alt="" height="30" width="30">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_logo) }}" alt="" height="50" width="50"><h4>{{ $settings->site_name }}</h4>
+                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_logo) }}" alt="" height="70" width="70"><h4>{{ $settings->site_name }}</h4>
             </span>
         </a>
     </div>
@@ -27,32 +27,49 @@
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
-                <li class="menu-title" data-key="t-menu">Dashboard</li>
-
-               {{-- <li>
-                    <a href="javascript: void(0);">
-                        <i class="bx bx-home-alt icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-dashboard">Dashboard</span>
-                        <span class="badge rounded-pill bg-primary">2</span>
+                <li class="menu-title mt-4" data-key="t-applications">Members Area</li>
+                @if($userRole != 'Employee')
+                <li class="{{ request()->routeIs('dashboard') ? 'mm-active' : '' }}">
+                    <a href="{{route('dashboard')}}">
+                        <i class="bx bx-home icon nav-icon"></i>
+                        <span class="menu-item">Dashboard</span>
                     </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="index" data-key="t-ecommerce">Ecommerce</a></li>
-                        <li><a href="dashboard-sales" data-key="t-sales">Sales</a></li>
-                    </ul>
-                </li> --}}
-                <li class="menu-title" data-key="t-applications">Members Area</li>
+                </li>
+                @endif
                 <li class="{{ request()->routeIs('projects.*') ? 'mm-active' : '' }}">
                     <a href="{{route('projects.index')}}">
                         <i class="bx bx-buildings icon nav-icon"></i>
                         <span class="menu-item">Projects</span>
                     </a>
                 </li>
+                @if($userRole == 'Admin' || $userRole == 'Company')
                 <li class="{{ request()->routeIs('users.*') ? 'mm-active' : '' }}">
                     <a href={{route('users.index')}}>
-                        <i class="bx bx-user"></i>
-                        <span class="menu-item">Users</span>
+                        <i class="bx bx-user icon nav-icon"></i>
+                        <span class="menu-item">Employees</span>
                     </a>
                 </li>
+                @endif
+                <li class="menu-title" data-key="t-applications">Checklists</li>
+                <li class="{{ request()->routeIs('plant_checklists.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('plant_checklists.index')}}">
+                        <i class="bx bx-check icon nav-icon"></i>
+                        <span class="menu-item">Plant Checklists</span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('vehicle_checklists.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('vehicle_checklists.index')}}">
+                        <i class="bx bx-car icon nav-icon"></i>
+                        <span class="menu-item">Vehicle Checklists</span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('toolbox_talks.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('toolbox_talks.index')}}">
+                        <i class="bx bx-book icon nav-icon"></i>
+                        <span class="menu-item">Toolbox Talks</span>
+                    </a>
+                </li>
+                @if($userRole == 'Admin')
                 <li class="menu-title" data-key="t-applications">Website Admin</li>
                 <li class="{{ request()->routeIs('hero_sections.*') ? 'mm-active' : '' }}">
                     <a href="{{route('hero_sections.index')}}">
@@ -99,6 +116,7 @@
                         <li><a href="{{route('website_settings.index')}}">Website Setting</a></li>
                     </ul>
                 </li>
+                @endif
             </ul>
         </div>
         <!-- Sidebar -->

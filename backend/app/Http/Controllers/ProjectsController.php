@@ -12,11 +12,24 @@ class ProjectsController extends Controller
      */
     public function index()
     {
+        $user = auth()->user(); // Get the authenticated user
+        
+        // Fetch package project limit
+        $packageLimit = @$user->package->project_limit; 
+        
+        // Count user's uploaded projects
+        $uploadedProjects = $user->projects()->where('status', 'Active')->count(); 
+    
+        // Determine if the user can add more projects
+        $canAddProject = $uploadedProjects < $packageLimit;
+    
+        // Get all projects and deleted projects
         $projects = Projects::getAllProjects();
         $deletedProjects = Projects::with('user', 'messages')->where('status', 'Deleted')->get();
-        // dd($deletedProjects);
-        return view('projects.list', compact('projects', 'deletedProjects'));
-    }
+    
+        // Pass data to the view
+        return view('projects.list', compact('projects', 'deletedProjects', 'canAddProject', 'uploadedProjects', 'packageLimit'));
+    }    
 
     /**
      * Show the form for creating a new resource.

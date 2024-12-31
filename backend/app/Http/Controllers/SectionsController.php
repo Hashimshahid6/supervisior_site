@@ -37,61 +37,17 @@ class SectionsController extends Controller
             'display_on' => 'required|in:Home,About,Services,Contact,Pricing',
         ]);
 
+        $imageName = null;
+        $destinationPath = public_path('images/sections');
         if ($request->hasFile('image')) {
-            // Step 1: Upload original image
-            $image = $request->file('image');
-            $originalName = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/images/sections');
-
-            // Move the uploaded file to the destination
-            $image->move($destinationPath, $originalName);
-
-            // Step 2: Convert to WebP and Compress
-            $webpName = time() . '.webp';
-            $originalPath = $destinationPath . '/' . $originalName;
-            $webpPath = $destinationPath . '/' . $webpName;
-
-            // Create a WebP image using GD
-            try {
-                // Load the image
-                $imageType = mime_content_type($originalPath);
-
-                switch ($imageType) {
-                    case 'image/jpeg':
-                        $sourceImage = imagecreatefromjpeg($originalPath);
-                        break;
-                    case 'image/png':
-                        $sourceImage = imagecreatefrompng($originalPath);
-                        break;
-                    case 'image/gif':
-                        $sourceImage = imagecreatefromgif($originalPath);
-                        break;
-                    case 'image/jpg':
-                        $sourceImage = imagecreatefromjpeg($originalPath);
-                        break;
-                    default:
-                        throw new \Exception('Unsupported image type');
-                }
-
-                // Save as WebP with compression
-                imagewebp($sourceImage, $webpPath, 90); // 90 is the compression quality
-                imagedestroy($sourceImage);
-
-                // Step 3: Delete the original image
-                unlink($originalPath);
-
-                // Return or save the WebP file name
-                $name = $webpName;
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 500);
-            }
+            $imageName = $this->processImage($request->file('image'), $destinationPath);
         }
 
         Sections::create([
             'heading' => $request->heading,
             'subheading' => $request->subheading,
             'content' => $request->content,
-            'image' => $name,
+            'image' => $imageName,
             'button_text' => $request->button_text,
             'button_link' => $request->button_link,
             'display_on' => $request->display_on,
@@ -133,63 +89,18 @@ class SectionsController extends Controller
 
         $section = Sections::find($id);
 
+        $imageName = $section->image;
+        $destinationPath = public_path('images/sections');
+
         if ($request->hasFile('image')) {
-            // Step 1: Upload original image
-            $image = $request->file('image');
-            $originalName = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/images/sections');
-
-            // Move the uploaded file to the destination
-            $image->move($destinationPath, $originalName);
-
-            // Step 2: Convert to WebP and Compress
-            $webpName = time() . '.webp';
-            $originalPath = $destinationPath . '/' . $originalName;
-            $webpPath = $destinationPath . '/' . $webpName;
-
-            // Create a WebP image using GD
-            try {
-                // Load the image
-                $imageType = mime_content_type($originalPath);
-
-                switch ($imageType) {
-                    case 'image/jpeg':
-                        $sourceImage = imagecreatefromjpeg($originalPath);
-                        break;
-                    case 'image/png':
-                        $sourceImage = imagecreatefrompng($originalPath);
-                        break;
-                    case 'image/gif':
-                        $sourceImage = imagecreatefromgif($originalPath);
-                        break;
-                    case 'image/jpg':
-                        $sourceImage = imagecreatefromjpeg($originalPath);
-                        break;
-                    default:
-                        throw new \Exception('Unsupported image type');
-                }
-
-                // Save as WebP with compression
-                imagewebp($sourceImage, $webpPath, 90); // 90 is the compression quality
-                imagedestroy($sourceImage);
-
-                // Step 3: Delete the original image
-                unlink($originalPath);
-
-                // Return or save the WebP file name
-                $name = $webpName;
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 500);
-            }
-
-            $section->image = $name;
+            $imageName = $this->processImage($request->file('image'), $destinationPath);
         }
 
         $section->update([
             'heading' => $request->heading,
             'subheading' => $request->subheading,
             'content' => $request->content,
-            'image' => $section->image ?? $request->image,
+            'image' => $imageName,
             'button_text' => $request->button_text,
             'button_link' => $request->button_link,
             'display_on' => $request->display_on,
@@ -208,5 +119,58 @@ class SectionsController extends Controller
         $section->status = 'Deleted';
         $section->save();
         return redirect()->route('sections.index')->with('success', 'Section deleted successfully');
+    }//
+
+    private function processImage($image, $destinationPath)
+    {
+        $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $image->getClientOriginalExtension();
+        $webpName = $originalName . '.webp';
+        $counter = 1;
+
+        // Check for duplicate names for both original and WebP files
+        while (
+            file_exists($destinationPath . '/' . $originalName . '.' . $extension) ||
+            file_exists($destinationPath . '/' . $webpName)
+        ) {
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . '-' . $counter;
+            $webpName = $originalName . '.webp';
+            $counter++;
+        }
+
+        $originalPath = $destinationPath . '/' . $originalName . '.' . $extension;
+        $webpPath = $destinationPath . '/' . $webpName;
+
+        // Move original image
+        $image->move($destinationPath, $originalName . '.' . $extension);
+
+        // Convert to WebP
+        try {
+            $imageType = mime_content_type($originalPath);
+
+            switch ($imageType) {
+                case 'image/jpeg':
+                    $sourceImage = imagecreatefromjpeg($originalPath);
+                    break;
+                case 'image/png':
+                    $sourceImage = imagecreatefrompng($originalPath);
+                    break;
+                case 'image/gif':
+                    $sourceImage = imagecreatefromgif($originalPath);
+                    break;
+                default:
+                    throw new \Exception('Unsupported image type');
+            }
+
+            imagewebp($sourceImage, $webpPath, 90); // Save as WebP
+            imagedestroy($sourceImage);
+
+            // Delete original image
+            unlink($originalPath);
+
+            return $webpName;
+        } catch (\Exception $e) {
+            throw new \Exception('Failed to process image: ' . $e->getMessage());
+        }
     }
 }

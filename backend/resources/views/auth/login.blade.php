@@ -31,6 +31,7 @@ Login
                                 <h4 style="font-size:30px; font-weight:bold">{{ $settings->site_name }}</h4>
                             </div>
                         </div>
+                        @include('components.flash_messages')
                         <div class="card">
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
@@ -112,15 +113,12 @@ Login
                                 <script>
                                     document.write(new Date().getFullYear());
                                 </script>
-                                supervisesite, design by
-                                <a href="https://www.softgate.co.uk" target="_blank"
-                                    rel="noopener noreferrer">Softgate</a>
+                                supervisesite.co.uk, All Rights Reserved.</a>
                             </p>
 
                         </div>
                     </div>
                 </div>
-
             </div>
         </div><!-- end container -->
     </div>

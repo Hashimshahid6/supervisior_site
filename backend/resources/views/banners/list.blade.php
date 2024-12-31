@@ -114,16 +114,3 @@ Banners
     </div>
     <!-- end row -->
     @endsection
-    @section('scripts')
-    <!-- swiper js -->
-    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
-
-    <!-- nouisliderribute js -->
-    <script src="{{ URL::asset('build/libs/nouislider/nouislider.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/wnumb/wNumb.min.js') }}"></script>
-
-    <!-- init js -->
-    <script src="{{ URL::asset('build/js/pages/product-filter-range.init.js') }}"></script>
-    <!-- App js -->
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    @endsection

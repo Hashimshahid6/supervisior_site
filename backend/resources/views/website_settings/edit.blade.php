@@ -205,6 +205,3 @@ Edit Website Settings
         </div>
     </div>
     @endsection
-    @section('scripts')
-    <!-- Add any additional JS if needed -->
-    @endsection

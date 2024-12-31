@@ -19,9 +19,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'user_id',
+        'package_id',
         'email',
         'password',
-        'phone'
+        'phone',
+        'role',
+        'avatar',
+        'created_by',
+        'updated_by',
     ];
 
     /**
@@ -54,15 +60,9 @@ class User extends Authenticatable
             $model->updated_by = auth()->id();
         });
     }//
-
-    public static function getAllUsers()
+    public function package()
     {
-        return User::all();
-    }//
-
-    public function packages()
-    {
-        return $this->hasMany(Packages::class);
+        return $this->hasOne(Packages::class, 'id', 'package_id');
     }//
 
     public function projects()
@@ -74,4 +74,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Messages::class);
     }//
+
+    public static function getAllUsers()
+    {
+        if (auth()->user()->role == 'Admin') {
+            return User::with('projects', 'package')->where('status', 'Active')->get();
+        } else {
+            return User::where('status', 'Active')
+                ->where('created_by', auth()->id())
+                ->get();
+        }
+    }//
+
 }

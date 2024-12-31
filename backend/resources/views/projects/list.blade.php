@@ -19,13 +19,32 @@ Projects
     @section('content')
     @include('components.flash_messages')
     <!-- Left sidebar -->
+    @if($uploadedProjects >= $packageLimit)
+        @if(auth()->user()->role == 'Company')
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="mdi mdi-alert-circle me-2"></i>
+            You have reached your project upload limit. Please upgrade your package to add more projects.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+    @else
+        @if(auth()->user()->role == 'Company')
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="mdi mdi-check me-2"></i>
+            You have <strong>{{ $packageLimit - $uploadedProjects }}</strong> projects limit to upload.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+    @endif
     <div class="email-leftbar">
         <div class="card">
             <div class="card-body">
+                @if($canAddProject && auth()->user()->role == 'Company')
                 <button type="button" class="btn btn-primary waves-effect waves-light w-100" data-bs-toggle="modal"
                     data-bs-target="#composemodal">
                     Add Project
                 </button>
+                @endif
                 <div class="card p-0 overflow-hidden mt-4 shadow-none">
                     <div class="mail-list">
                         @foreach($projects as $project)
@@ -50,7 +69,7 @@ Projects
                 </div>
             </div>
         </div>
-        <div class="card">
+        {{-- <div class="card">
             <div class="card-body">
                 <a href="javascript:void(0);" class="btn btn-danger w-100">
                     Deleted Projects
@@ -78,7 +97,7 @@ Projects
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
     <!-- End Left sidebar -->
 
@@ -222,23 +241,21 @@ Projects
                     .then(response => response.json())
                     .then(data => {
                         const messagesHTML = data.messages.map(message => `
-                            <div class="border-bottom border-2 py-3">
+                            <div class="border-bottom border-1 py-3">
                                 <div class="badge bg-primary mb-2">
                                     ${formatDateWithTime(message.created_at)}
                                 </div>
                                 <p>${message.message}</p>
                                 ${message.image ? `
-                                <div class="card">
-                                    <img class="card-img-top img-fluid" src="{{ asset('public/uploads/messages/') }}/${message.image}" alt="${message.image}">
-                                    <div class="py-2 text-center mb-3">
-                                        <a href="{{ asset('public/uploads/messages/') }}/${message.image}" class="fw-medium p-2 text-white bg-primary rounded shadow-1" download>Download</a>
-                                    </div>
-                                </div> 
+                                    <img class="w-auto h-auto img-thumbnail mb-4"
+                                        src="{{ asset('public/uploads/messages/') }}/${message.image}" 
+                                        alt="${message.image}">
                                 ` : ''}
                                 <div class="d-flex align-items-start">
                                     <div class="flex-grow-1">
                                         <div class="d-flex">
-                                            <img src="{{ URL::asset('build/images/users/${message.user.avatar}') }}" class="avatar-sm rounded-circle" alt="">
+                                            <img src="{{ URL::asset('build/images/users/${message.user.avatar}') }}" 
+                                                class="avatar-sm rounded-circle" alt="${message.user.avatar}">
                                             <div class="flex-1 ms-2 ps-1">
                                                 <h5 class="font-size-15 mb-0">${message.user.name}</h5>
                                                 <p class="text-muted mb-0 mt-1">${message.user.email}</p>
@@ -270,7 +287,7 @@ Projects
                                                     <button type="button" class="btn btn-primary waves-light waves-effect" 
                                                             onclick="editProject(${data.id})">
                                                             <i class="fa fa-edit"></i></button>
-                                                    ${data.status !== 'Deleted' ? `
+                                                    ${data.status !== 'Active' ? `
                                                         <button type="button" class="btn btn-danger waves-light waves-effect"
                                                                 onclick="deleteProject(${data.id})">
                                                                 <i class="far fa-trash-alt"></i></button>
@@ -295,14 +312,13 @@ Projects
                             <h4 class="font-size-16">${data.name}</h4>
                             <p>${data.description}</p>
                             <a href="{{ asset('public/uploads/projects') }}/${data.file}" 
-                                target="_blank" class="btn btn-sm btn-primary mt-1">
+                                target="_blank" class="btn btn-sm btn-primary mt-1 mb-3">
                                 View File <i class="fa fa-eye ms-1"></i>
                             </a>
-                            <hr class="mb-1 text-primary">
-                            <span class="border-bottom border-2 py-3"></span>
+                            <span class="border-bottom border-1 py-3"></span>
                             <div class="tab-pane" id="messages" role="tabpanel">
                                 <div class="py-2">
-                                    <div class="mx-n4 px-2 bg-light rounded" data-simplebar style="max-height: 360px;overflow-y: auto;">
+                                    <div class="mx-n4 px-2 bg-light rounded" data-simplebar style="max-height: 360px;overflow-y: auto; shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
                                         ${messagesHTML}
                                         <div id="new-message"></div>
                                     </div>
@@ -353,12 +369,12 @@ Projects
                                         // Update messages UI
                                         const messagesContainer = document.querySelector('.mx-n4.px-2');
                                         const newMessageHTML = `
-                                            <div class="border-bottom border-2 py-3">
+                                            <div class="border-bottom border-1 py-3">
                                                 <div class="badge bg-primary mb-2">${formatDateWithTime(result.message.created_at)}</div>
                                                 <p class="mb-4">${result.message.message}</p>
                                                 ${result.message.image ? `
                                                     <img src="{{ URL::asset('public/uploads/messages/${result.message.image}') }}" 
-                                                        class="avatar-sm rounded-circle" alt="${result.message.image}">
+                                                        class="w-60 img-thumbnail mb-4" alt="${result.message.image}">
                                                 ` : ''}
                                                 <div class="d-flex align-items-start">
                                                     <div class="flex-grow-1">
@@ -376,6 +392,7 @@ Projects
                                         const newMessageContainer = document.getElementById('new-message');
                                         newMessageContainer.insertAdjacentHTML('beforebegin', newMessageHTML);
                                         messageForm.reset();
+                                        document.getElementById('image-preview-container').innerHTML = ''; // Clear image preview
 
                                         // Scroll the messages container to the bottom to display the latest message
                                         messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -412,8 +429,8 @@ Projects
                     imgPreview.src = e.target.result;
                     imgPreview.alt = "Image Preview";
                     imgPreview.className = "img-thumbnail";
-                    imgPreview.style.width = "250px";
-                    imgPreview.style.height = "250px";
+                    imgPreview.style.width = "auto";
+                    imgPreview.style.height = "auto";
                     imgPreview.style.marginLeft = "10px";
                     imgPreview.style.marginTop = "10px";
                     imgPreview.style.objectFit = "cover";

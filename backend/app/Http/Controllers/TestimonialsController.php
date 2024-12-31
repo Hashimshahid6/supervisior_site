@@ -37,14 +37,24 @@ class TestimonialsController extends Controller
             'description' => 'required|string',
         ]);
 
-        $avatarName = $this->handleImageUpload($request->file('avatar'), 'testimonials');
-        $bgImageName = $this->handleImageUpload($request->file('bgImage'), 'testimonials');
+        $avatarName = null;
+        $bgImageName = null;
+
+        $destinationPath = public_path('images/testimonials');
+
+        if ($request->hasFile('avatar')) {
+            $avatarName = $this->processImage($request->file('avatar'), $destinationPath);
+        }
+
+        if ($request->hasFile('bgImage')) {
+            $bgImageName = $this->processImage($request->file('bgImage'), $destinationPath);
+        }
 
         Testimonials::create([
             'name' => $request->name,
             'designation' => $request->designation,
-            'avatar' => $avatarName ?? $request->avatar,
-            'bgImage' => $bgImageName ?? $request->bgImage,
+            'avatar' => $avatarName,
+            'bgImage' => $bgImageName,
             'description' => $request->description,
         ]);
 
@@ -84,19 +94,24 @@ class TestimonialsController extends Controller
 
         $testimonial = Testimonials::find($id);
 
+        $avatarName = $testimonial->avatar;
+        $bgImageName = $testimonial->bgImage;
+
+        $destinationPath = public_path('images/testimonials');
+
         if ($request->hasFile('avatar')) {
-            $testimonial->avatar = $this->handleImageUpload($request->file('avatar'), 'testimonials');
+            $avatarName = $this->processImage($request->file('avatar'), $destinationPath);
         }
 
         if ($request->hasFile('bgImage')) {
-            $testimonial->bgImage = $this->handleImageUpload($request->file('bgImage'), 'testimonials');
+            $bgImageName = $this->processImage($request->file('bgImage'), $destinationPath);
         }
 
         Testimonials::find($id)->update([
             'name' => $request->name,
             'designation' => $request->designation,
-            'avatar' => $testimonial->avatar ?? $request->avatar,
-            'bgImage' => $testimonial->bgImage ?? $request->bgImage,
+            'avatar' => $avatarName,
+            'bgImage' => $bgImageName,
             'description' => $request->description,
             'status' => $request->status,
         ]);
@@ -116,17 +131,30 @@ class TestimonialsController extends Controller
         return redirect()->route('testimonials.index')->with('success', 'Testimonial deleted successfully.');
     }//
 
-    private function handleImageUpload($image, $folder)
+    private function processImage($image, $destinationPath)
     {
-        $originalName = time() . '.' . $image->getClientOriginalExtension();
-        $destinationPath = public_path('/images/' . $folder);
+        $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $image->getClientOriginalExtension();
+        $webpName = $originalName . '.webp';
+        $counter = 1;
 
-        $image->move($destinationPath, $originalName);
+        // Check for duplicate names for both original and WebP files
+        while (
+            file_exists($destinationPath . '/' . $originalName . '.' . $extension) ||
+            file_exists($destinationPath . '/' . $webpName)
+        ) {
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . '-' . $counter;
+            $webpName = $originalName . '.webp';
+            $counter++;
+        }
 
-        $webpName = time() . '.webp';
-        $originalPath = $destinationPath . '/' . $originalName;
+        $originalPath = $destinationPath . '/' . $originalName . '.' . $extension;
         $webpPath = $destinationPath . '/' . $webpName;
 
+        // Move original image
+        $image->move($destinationPath, $originalName . '.' . $extension);
+
+        // Convert to WebP
         try {
             $imageType = mime_content_type($originalPath);
 
@@ -140,21 +168,19 @@ class TestimonialsController extends Controller
                 case 'image/gif':
                     $sourceImage = imagecreatefromgif($originalPath);
                     break;
-                case 'image/jpg':
-                    $sourceImage = imagecreatefromjpeg($originalPath);
-                    break;
                 default:
                     throw new \Exception('Unsupported image type');
             }
 
-            imagewebp($sourceImage, $webpPath, 90);
+            imagewebp($sourceImage, $webpPath, 90); // Save as WebP
             imagedestroy($sourceImage);
 
+            // Delete original image
             unlink($originalPath);
 
             return $webpName;
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            throw new \Exception('Failed to process image: ' . $e->getMessage());
         }
     }
 }

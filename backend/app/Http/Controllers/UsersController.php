@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UsersController extends Controller
 {
@@ -13,13 +14,18 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        if(Auth::user()->role != 'Employee'){
+            $user = Auth::user();
 
-        $users = User::getAllUsers();
-        if($user->type == 'Company'){
-            $users = User::where('type', 'Employee')->get();
+            $users = User::getAllUsers();
+            if($user->type == 'Company'){
+                $users = User::where('type', 'Employee')->get();
+            }
+            return view('users.list', compact('users'));
         }
-        return view('users.list', compact('users'));
+        else{
+            return view('errors.403');
+        }
     }
 
     /**
@@ -50,7 +56,7 @@ class UsersController extends Controller
             'phone' => $request->phone,
             'avatar' => 'avatar-'.$avatarNumber,
             'password' => bcrypt($request->password),
-            'type' => 'Employee',
+            'role' => 'Employee',
         ]);
 
         return redirect()->route('users.index')->with('success', 'Employee added successfully.');
@@ -86,10 +92,18 @@ class UsersController extends Controller
         ]);
 
         $avatarNumber = rand(1, 4).'.jpg';
-        User::find($id)->update([
+        
+        $user = User::find($id);
+        $user->password;
+
+        if($request->password){
+            $user->password = bcrypt($request->password);
+        }
+        $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'password' => $user->password,
             'avatar' => 'avatar-'.$avatarNumber,
         ]);
 
