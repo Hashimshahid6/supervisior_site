@@ -12,15 +12,43 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if(Auth::user()->role != 'Employee'){
             $user = Auth::user();
 
-            $users = User::getAllUsers();
+            $query = User::query();
+
             if($user->type == 'Company'){
-                $users = User::where('type', 'Employee')->get();
+                $query->where('type', 'Employee');
             }
+
+            if ($request->has('name')) {
+                $query->where('name', 'like', '%' . $request->name . '%');
+            }
+
+            if ($request->has('email')) {
+                $query->where('email', 'like', '%' . $request->email . '%');
+            }
+
+            if ($request->has('role')) {
+                $query->where('role', $request->role);
+            }
+
+            if ($request->has('status')) {
+                $query->where('status', $request->status);
+            }
+
+            if ($request->has('phone')) {
+                $query->where('phone', 'like', '%' . $request->phone . '%');
+            }
+
+            if ($request->has('sort_by') && $request->has('sort_order')) {
+                $query->orderBy($request->sort_by, $request->sort_order);
+            }
+
+            $users = $query->paginate($request->get('per_page', 10));
+
             return view('users.list', compact('users'));
         }
         else{

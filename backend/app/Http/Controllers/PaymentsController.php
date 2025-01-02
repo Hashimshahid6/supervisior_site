@@ -3,20 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Projects;
-use App\Models\User;
 
-class DashboardController extends Controller
+class PaymentsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $projects = Projects::where('status', 'Active')->get();
-        $companies = User::where('role', 'Company')->where('status', 'Active')->get();
-        $employees = User::where('role', 'Employee')->where('status', 'Active')->get();
-        return view('index', compact('projects', 'companies', 'employees'));
+        //
     }
 
     /**

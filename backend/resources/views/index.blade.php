@@ -14,12 +14,100 @@ Dashboard
 <body>
     @endsection
     @section('content')
+    @if(auth()->user()->role == 'Company')
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <i class="mdi mdi-message-alert me-2"></i>
         Your free trial will end in <strong></strong> days.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    {{-- <div class="row">
+    @endif
+    <div class="row">
+        <div class="col-md-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="font-size-15">Sales</h6>
+                            <h4 class="mt-3 pt-1 mb-0 font-size-22">$12,253 <span
+                                    class="text-success fw-medium font-size-14 align-middle"></h4>
+                        </div>
+                        <div class="">
+                            <div class="avatar">
+                                <div class="avatar-title rounded bg-primary-subtle">
+                                    <i class="bx bx-store-alt font-size-24 mb-0 text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="mb-0 font-size-15">Projects</h6>
+                            <h4 class="mt-3 mb-0 font-size-22">{{$projects->count()}} <span
+                                    class="text-danger fw-medium font-size-14 align-middle"></h4>
+                        </div>
+                        <div class="">
+                            <div class="avatar">
+                                <div class="avatar-title rounded bg-primary-subtle">
+                                    <i class="bx bx-briefcase-alt font-size-24 mb-0 text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="mb-0 font-size-15">Companies</h6>
+                            <h4 class="mt-3 mb-0 font-size-22">{{$companies->count()}} <span
+                                    class="text-success fw-medium font-size-14 align-middle"></h4>
+                        </div>
+                        <div class="">
+                            <div class="avatar">
+                                <div class="avatar-title rounded bg-primary-subtle">
+                                    <i class="bx bx-building-house font-size-24 mb-0 text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="mb-0 font-size-15">Employees</h6>
+                            <h4 class="mt-3 mb-0 font-size-22">{{$employees->count()}} <span
+                                    class="text-danger fw-medium font-size-14 align-middle"></h4>
+                        </div>
+
+                        <div class="">
+                            <div class="avatar">
+                                <div class="avatar-title rounded bg-primary-subtle">
+                                    <i class="bx bx-chart font-size-24 mb-0 text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END ROW -->
+    <div class="row">
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-body pb-0">
@@ -254,10 +342,10 @@ Dashboard
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     <!-- end row -->
 
-    {{-- <div class="row">
+    <div class="row">
         <div class="col-xxl-8">
             <div class="row">
                 <div class="col-xl-7">
@@ -653,117 +741,263 @@ Dashboard
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     <!-- end row -->
-
-    {{-- <div class="row">
-        <div class="col-xl-7">
+    <div class="row">
+        <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex align-items-start mb-3">
-                        <div class="flex-grow-1">
-                            <h5 class="card-title">Sales Revenue</h5>
-                        </div>
-                        <div class="flex-shrink-0">
+                    <div class="d-flex flex-wrap align-items-center mb-2">
+                        <h5 class="card-title">Products Of The Month</h5>
+                        <div class="ms-auto">
                             <div class="dropdown">
-                                <a class="dropdown-toggle text-reset" href="#" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <span class="fw-semibold">Year:</span> <span class="text-muted">2021<i
-                                            class="mdi mdi-chevron-down ms-1"></i></span>
+                                <a class="dropdown-toggle text-reset" href="#" id="dropdownMenuButton1"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="text-muted font-size-12">Sort By: </span> <span class="fw-medium">
+                                        Monthly<i class="mdi mdi-chevron-down ms-1"></i></span>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">2019</a>
-                                    <a class="dropdown-item" href="#">2020</a>
-                                    <a class="dropdown-item" href="#">2021</a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                                    <a class="dropdown-item" href="#">Weekly</a>
+                                    <a class="dropdown-item" href="#">Monthly</a>
+                                    <a class="dropdown-item" href="#">Yearly</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row align-items-center">
-                        <div class="col-xxl-7">
-                            <div class="py-3">
-                                <div id="world-map-markers" style="height: 300px"></div>
-                            </div>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-centered align-middle table-nowrap mb-0 table-check">
+                            <thead>
+                                <tr>
+                                    <th style="width: 90px;">
+                                        Product
+                                    </th>
+                                    <th style="width: 210px;">Product Name</th>
+                                    <th>Customer Name</th>
+                                    <th>Order ID</th>
+                                    <th>Color</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th style="width: 270px;">Trend</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="avatar">
+                                            <div
+                                                class="product-img avatar-title img-thumbnail bg-primary-subtle border-0">
+                                                <img src="{{ URL::asset('build/images/product/img-1.png') }}"
+                                                    class="img-fluid" alt="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Office Chair Crime</td>
+                                    <td>
+                                        Neal Matthews
+                                    </td>
+                                    <td>
+                                        #526552
+                                    </td>
+                                    <td>
+                                        Gray
+                                    </td>
+                                    <td>12/01/2022</td>
+                                    <td><span class="badge bg-primary-subtle text-primary font-size-12">Pending</span>
+                                    </td>
+                                    <td>
+                                        <div id="chart-sparkline1" data-colors='["#1f58c7"]'></div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a class="text-muted dropdown-toggle font-size-18" role="button"
+                                                data-bs-toggle="dropdown" aria-haspopup="true">
+                                                <i class="mdi mdi-dots-horizontal"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#">Edit</a>
+                                                <a class="dropdown-item" href="#">Print</a>
+                                                <a class="dropdown-item" href="#">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                        <div class="col-xl-5">
-                            <div class="table-responsive">
-                                <table class="table table-centered align-middle table-nowrap mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 500px;">Countries</th>
-                                            <th>Orders</th>
-                                            <th>Earnings</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ URL::asset('build/images/flags/us.jpg') }}"
-                                                        class="rounded" alt="user-image" height="18">
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <p class="mb-0 text-truncate">United States</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>46k</td>
-                                            <td>$6,524.30</td>
-                                        </tr>
+                                <tr>
+                                    <td>
+                                        <div class="avatar">
+                                            <div
+                                                class="product-img avatar-title img-thumbnail bg-success-subtle border-0">
+                                                <img src="{{ URL::asset('build/images/product/img-2.png') }}"
+                                                    class="img-fluid" alt="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Sofa Home Chair Black</td>
+                                    <td>
+                                        Connie Franco
+                                    </td>
+                                    <td>
+                                        #746648
+                                    </td>
+                                    <td>
+                                        Black
+                                    </td>
+                                    <td>14/01/2022</td>
+                                    <td><span class="badge bg-success-subtle text-success font-size-12">Active</span>
+                                    </td>
+                                    <td>
+                                        <div id="chart-sparkline2" data-colors='["#1f58c7"]'></div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a class="text-muted dropdown-toggle font-size-18" role="button"
+                                                data-bs-toggle="dropdown" aria-haspopup="true">
+                                                <i class="mdi mdi-dots-horizontal"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#">Edit</a>
+                                                <a class="dropdown-item" href="#">Print</a>
+                                                <a class="dropdown-item" href="#">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ URL::asset('build/images/flags/italy.jpg') }}"
-                                                        class="rounded" alt="user-image" height="18">
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <p class="mb-0 text-truncate">Italy</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>86k</td>
-                                            <td>$6,985.94</td>
-                                        </tr>
+                                <tr>
+                                    <td>
+                                        <div class="avatar">
+                                            <div
+                                                class="product-img avatar-title img-thumbnail bg-danger-subtle border-0">
+                                                <img src="{{ URL::asset('build/images/product/img-3.png') }}"
+                                                    class="img-fluid" alt="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Tuition Classes Chair</td>
+                                    <td>
+                                        Paul Reynolds
+                                    </td>
+                                    <td>
+                                        #125635
+                                    </td>
+                                    <td>
+                                        Crime
+                                    </td>
+                                    <td>17/01/2022</td>
+                                    <td><span class="badge bg-success-subtle text-success font-size-12">Active</span>
+                                    </td>
+                                    <td>
+                                        <div id="chart-sparkline3" data-colors='["#1f58c7"]'></div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a class="text-muted dropdown-toggle font-size-18" role="button"
+                                                data-bs-toggle="dropdown" aria-haspopup="true">
+                                                <i class="mdi mdi-dots-horizontal"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#">Edit</a>
+                                                <a class="dropdown-item" href="#">Print</a>
+                                                <a class="dropdown-item" href="#">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ URL::asset('build/images/flags/spain.jpg') }}"
-                                                        class="rounded" alt="user-image" height="18">
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <p class="mb-0 text-truncate">Spain</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>86k</td>
-                                            <td>$5,685.47</td>
-                                        </tr>
+                                <tr>
+                                    <td>
+                                        <div class="avatar">
+                                            <div
+                                                class="product-img avatar-title img-thumbnail bg-primary-subtle border-0">
+                                                <img src="{{ URL::asset('build/images/product/img-4.png') }}"
+                                                    class="img-fluid" alt="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Dining Table Chair</td>
+                                    <td>
+                                        Ronald Patterson
+                                    </td>
+                                    <td>
+                                        #236521
+                                    </td>
+                                    <td>
+                                        Crime
+                                    </td>
+                                    <td>18/01/2022</td>
+                                    <td><span class="badge bg-primary-subtle text-primary font-size-12">Pending</span>
+                                    </td>
+                                    <td>
+                                        <div id="chart-sparkline4" data-colors='["#1f58c7"]'></div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a class="text-muted dropdown-toggle font-size-18" role="button"
+                                                data-bs-toggle="dropdown" aria-haspopup="true">
+                                                <i class="mdi mdi-dots-horizontal"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#">Edit</a>
+                                                <a class="dropdown-item" href="#">Print</a>
+                                                <a class="dropdown-item" href="#">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ URL::asset('build/images/flags/french.jpg') }}"
-                                                        class="rounded" alt="user-image" height="18">
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <p class="mb-0 text-truncate">French</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>56k</td>
-                                            <td>$5,645.45</td>
-                                        </tr>
+                                <tr>
+                                    <td>
+                                        <div class="avatar">
+                                            <div
+                                                class="product-img avatar-title img-thumbnail bg-success-subtle border-0">
+                                                <img src="{{ URL::asset('build/images/product/img-5.png') }}"
+                                                    class="img-fluid" alt="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Home & Office Chair</td>
+                                    <td>
+                                        Adella Perez
+                                    </td>
+                                    <td>
+                                        #236521
+                                    </td>
+                                    <td>
+                                        Crime
+                                    </td>
+                                    <td>18/01/2022</td>
+                                    <td><span class="badge bg-primary-subtle text-primary font-size-12">Pending</span>
+                                    </td>
+                                    <td>
+                                        <div id="chart-sparkline5" data-colors='["#1f58c7"]'></div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a class="text-muted dropdown-toggle font-size-18" role="button"
+                                                data-bs-toggle="dropdown" aria-haspopup="true">
+                                                <i class="mdi mdi-dots-horizontal"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#">Edit</a>
+                                                <a class="dropdown-item" href="#">Print</a>
+                                                <a class="dropdown-item" href="#">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-xxl-5">
+    </div>
+    <!-- end row -->
+    <div class="row">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex flex-wrap align-items-center mb-3">
@@ -1052,7 +1286,7 @@ Dashboard
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     <!-- end row -->
     @endsection
     @section('scripts')

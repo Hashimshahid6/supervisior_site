@@ -11,14 +11,15 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run(): void
-    {
-        // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Supervisor',
-        //     'email' => 'admin@supervisesite.co.uk',
-        //     'password' => Hash::make('12345678'),
-        // ]);
+     public function run()
+    {
+        $this->call([
+            // UserSeeder::class,
+            // ProjectsSeeder::class,
+            MessagesSeeder::class,
+            // PaymentSeeder::class,
+            // InvoiceSeeder::class,
+        ]);
     }
 }

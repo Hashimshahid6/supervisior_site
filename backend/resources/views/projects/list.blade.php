@@ -2,13 +2,6 @@
 @section('title')
 Projects
 @endsection
-@section('css')
-<!-- swiper css -->
-<link rel="stylesheet" href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}">
-
-<!-- nouisliderribute css -->
-<link rel="stylesheet" href="{{ URL::asset('build/libs/nouislider/nouislider.min.css') }}">
-@endsection
 @section('page-title')
 Projects
 @endsection
@@ -254,7 +247,7 @@ Projects
                                 <div class="d-flex align-items-start">
                                     <div class="flex-grow-1">
                                         <div class="d-flex">
-                                            <img src="{{ URL::asset('build/images/users/${message.user.avatar}') }}" 
+                                            <img src="{{ URL::asset('public/uploads/users/${message.user.avatar}') }}" 
                                                 class="avatar-sm rounded-circle" alt="${message.user.avatar}">
                                             <div class="flex-1 ms-2 ps-1">
                                                 <h5 class="font-size-15 mb-0">${message.user.name}</h5>
@@ -301,7 +294,7 @@ Projects
                             <h6><span class="badge bg-primary mb-2">Company Details</span></h6>
                             <div class="d-flex align-items-center mb-4">
                                 <div class="flex-shrink-0 me-3">
-                                    <img class="rounded-circle avatar-sm" src="{{ URL::asset('build/images/users/${data.user.avatar}') }}"
+                                    <img class="rounded-circle avatar-sm" src="{{ URL::asset('public/uploads/users/${data.user.avatar}') }}"
                                         alt="Generic placeholder image">
                                 </div>
                                 <div class="flex-grow-1">
@@ -379,7 +372,7 @@ Projects
                                                 <div class="d-flex align-items-start">
                                                     <div class="flex-grow-1">
                                                         <div class="d-flex">
-                                                            <img src="{{ URL::asset('build/images/users/${result.message.user.avatar}') }}" class="avatar-sm rounded-circle" alt="">
+                                                            <img src="{{ URL::asset('public/uploads/users/${result.message.user.avatar}') }}" class="avatar-sm rounded-circle" alt="">
                                                             <div class="flex-1 ms-2 ps-1">
                                                                 <h5 class="font-size-15 mb-0">${result.message.user.name}</h5>
                                                                 <p class="text-muted mb-0 mt-1">${result.message.user.email}</p>
