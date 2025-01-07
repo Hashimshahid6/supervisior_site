@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Projects;
+use App\Services\PayPalService;
 
 class ProjectsController extends Controller
 {
@@ -148,4 +149,19 @@ class ProjectsController extends Controller
         $project->save();
         return redirect()->route('projects.index')->with('success', 'Project deleted successfully');
     }
+		public function payment_intent(){
+				$paypalService = new PayPalService();
+				$paymentIntent = $paypalService->createPaymentIntent(10);
+				return response()->json($paymentIntent);
+		}	
+		public function capturePayment($orderId){
+				$paypalService = new PayPalService();
+				$paymentIntent = $paypalService->capturePayment($orderId);
+				return response()->json($paymentIntent);
+		}
+		public function retrievePaymentIntent($orderId){
+				$paypalService = new PayPalService();
+				$paymentIntent = $paypalService->retrievePaymentIntent($orderId);
+				return response()->json($paymentIntent);
+		}
 }

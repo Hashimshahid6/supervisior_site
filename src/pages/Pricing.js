@@ -9,7 +9,7 @@ const Pricing = () => {
   const [bannerData, setBannerData] = useState(null);
   const [pageloading, setpageLoading] = useState(true);
   const [error, setError] = useState(null);
-
+	const isAuthenticated = !!localStorage.getItem('token');
   // Fetch banner and service data
   useEffect(() => {
     const fetchData = async () => {
@@ -87,9 +87,10 @@ const Pricing = () => {
                           </p>
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '2em' }}>35</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
-                          <a href="" className="ht-btn ht-btn--round">
+                          { isAuthenticated ? <a href="/admin/dashboard" className="ht-btn ht-btn--round"> Go to Dashboard </a> : <a href="/login" className="ht-btn ht-btn--round">START FREE TRIAL</a> }
+													{/* <a href="/login" className="ht-btn ht-btn--round">
                             START FREE TRIAL
-                          </a>
+                          </a> */}
                         </div>
                       </div>
                     </div>
@@ -108,9 +109,10 @@ const Pricing = () => {
                           </p>
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '2em' }}>55</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
-                          <a href="" className="ht-btn ht-btn--round">
+													{ isAuthenticated ? <a href="/admin/dashboard" className="ht-btn ht-btn--round"> Go to Dashboard </a> : <a href="/login" className="ht-btn ht-btn--round">START FREE TRIAL</a> }
+                          {/* <a href="/login" className="ht-btn ht-btn--round">
                             START FREE TRIAL
-                          </a>
+                          </a> */}
                         </div>
                       </div>
                     </div>
@@ -130,9 +132,10 @@ const Pricing = () => {
                           </p>
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '1.5em' }}>75</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
-                          <a href="" className="ht-btn ht-btn--round">
+													{ isAuthenticated ? <a href="/admin/dashboard" className="ht-btn ht-btn--round"> Go to Dashboard </a> : <a href="/login" className="ht-btn ht-btn--round">START FREE TRIAL</a> }
+                          {/* <a href="/login" className="ht-btn ht-btn--round">
                             START FREE TRIAL
-                          </a>
+                          </a> */}
                         </div>
                       </div>
                     </div>

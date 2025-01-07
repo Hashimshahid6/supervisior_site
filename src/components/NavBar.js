@@ -6,12 +6,16 @@ import { IMAGES_URL } from "../constants";
 class NavBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+			isAuthenticated : !!localStorage.getItem('token'),
+		};
     this.handleScroll = this.handleScroll.bind(this);
 
     this.mobileMenuElement = React.createRef();
+		
+		// const user = JSON.parse(localStorage.getItem('user'));
   }
-
+	
   activeMobileMenu = () => {
     this.mobileMenuElement.current.toggleMobileMenu();
   };
@@ -38,9 +42,10 @@ class NavBar extends Component {
   componentWillUnmount() {
     this.mount = false;
   }
-
+	
   render() {
     const { settings } = this.props;
+		const { isAuthenticated } = this.state;
     return (
       <div>
         {/*====================  header area ====================*/}
@@ -153,6 +158,18 @@ class NavBar extends Component {
                                 PRICING
                               </Link>{" "}
                             </li>
+														{ isAuthenticated ? 
+														<li style={{position: 'absolute', right: '10px', display: 'flex'}}>
+															<Link to={`${process.env.PUBLIC_URL}/admin/dashboard`} style={{marginRight: '20px'}}>
+																WELCOME {JSON.parse(localStorage.getItem('user')).name}
+															</Link>{" "}
+															<Link to={`${process.env.PUBLIC_URL}/logout`}>
+																LOGOUT
+															</Link>{" "}
+														</li>
+														:
+														''
+														}
                           </ul>
                         </nav>
                       </div>

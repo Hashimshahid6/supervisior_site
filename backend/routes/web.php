@@ -70,6 +70,9 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     //users
     Route::resource('users', UsersController::class);
 
+    Route::get('projects/payment_intent', [ProjectsController::class, 'payment_intent'])->name('projects.payment_intent');	
+    Route::get('projects/capturePayment/{orderId?}', [ProjectsController::class, 'capturePayment'])->where('orderId', '[a-zA-Z0-9]+');	
+    Route::get('projects/retrievePaymentIntent/{orderId?}', [ProjectsController::class, 'retrievePaymentIntent'])->where('orderId', '[a-zA-Z0-9]+');	
     //projects
     Route::resource('projects', ProjectsController::class);
 
