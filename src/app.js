@@ -1,5 +1,8 @@
 import React, {  Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Logout from "./pages/Logout";
+// import Register from "./pages/Register";
+// import Login from "./pages/Login";
 
 const HomeOne = lazy(() => import("./home/HomeOne"));
 const HomeTwo = lazy(() => import("./home/HomeTwo"));
@@ -17,6 +20,8 @@ const BlogDetailsRightSidebar = lazy(() => import("./blog/BlogDetailsRightSideba
 const Contact = lazy(() => import("./pages/Contact"));
 const NoMAtch = lazy(() => import("./pages/404"));
 const Pricing = lazy(() => import("./pages/Pricing"));
+const Register = lazy(() => import("./pages/Register"));
+const Login = lazy(() => import("./pages/Login"));
 
 const App = () => {
   return (
@@ -39,6 +44,9 @@ const App = () => {
                 <Route path="/blog-details-right-sidebar" element={<BlogDetailsRightSidebar />} />
                 <Route path="/contact-us" element={<Contact />} />
                 <Route path="/pricing" element={<Pricing />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<NoMAtch />} />
             </Routes>
         </Suspense>

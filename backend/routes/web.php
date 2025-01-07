@@ -43,33 +43,36 @@ Route::get('/admin/cache-clear', function () {
     Artisan::call('route:clear');
     return "Cache is cleared";
 });
-Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     //Hero Sections
     Route::resource('hero_sections', HeroSectionController::class);
-    
+
     //Services
     Route::resource('services', ServicesController::class);
-    
+
     //Testimonials
     Route::resource('testimonials', TestimonialsController::class);
-    
+
     //Website Settings
     Route::resource('website_settings', WebsiteSettingsController::class);
-    
+
     //Banners
     Route::resource('banners', BannersController::class);
 
     //Sections
     Route::resource('sections', SectionsController::class);
-    
+
     //Packages
     Route::resource('packages', PackagesController::class);
-    
+
     //users
     Route::resource('users', UsersController::class);
-    
+
+    Route::get('projects/payment_intent', [ProjectsController::class, 'payment_intent'])->name('projects.payment_intent');
+    Route::get('projects/capturePayment/{orderId?}', [ProjectsController::class, 'capturePayment'])->where('orderId', '[a-zA-Z0-9]+');
+    Route::get('projects/retrievePaymentIntent/{orderId?}', [ProjectsController::class, 'retrievePaymentIntent'])->where('orderId', '[a-zA-Z0-9]+');
     //projects
     Route::resource('projects', ProjectsController::class);
     Route::delete('admin/project-files/{id}', [ProjectsController::class, 'destroyFile'])->name('project-files.destroy');

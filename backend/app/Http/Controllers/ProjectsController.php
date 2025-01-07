@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Projects;
 use App\Models\ProjectFiles;
+use App\Services\PayPalService;
 
 class ProjectsController extends Controller
 {
@@ -14,24 +15,24 @@ class ProjectsController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user(); // Get the authenticated user
-        
+
         // Fetch package project limit
-        $packageLimit = @$user->package->project_limit; 
-        
+        $packageLimit = @$user->package->project_limit;
+
         // Count user's uploaded projects
-        $uploadedProjects = $user->projects()->where('status', 'Active')->count(); 
-    
+        $uploadedProjects = $user->projects()->where('status', 'Active')->count();
+
         // Determine if the user can add more projects
         $canAddProject = $uploadedProjects < $packageLimit;
-    
+
         // Get all projects and deleted projects with pagination
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided
         $projects = Projects::getAllProjects()->paginate($perPage);
         $deletedProjects = Projects::with('user', 'messages')->where('status', 'Deleted')->paginate($perPage);
-    
+
         // Pass data to the view
         return view('projects.list', compact('projects', 'deletedProjects', 'canAddProject', 'uploadedProjects', 'packageLimit'));
-    }    
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -180,5 +181,23 @@ class ProjectsController extends Controller
             'status' => false,
             'message' => 'File not found',
         ], 404);
+    }
+    public function payment_intent()
+    {
+        $paypalService = new PayPalService();
+        $paymentIntent = $paypalService->createPaymentIntent(10);
+        return response()->json($paymentIntent);
+    }
+    public function capturePayment($orderId)
+    {
+        $paypalService = new PayPalService();
+        $paymentIntent = $paypalService->capturePayment($orderId);
+        return response()->json($paymentIntent);
+    }
+    public function retrievePaymentIntent($orderId)
+    {
+        $paypalService = new PayPalService();
+        $paymentIntent = $paypalService->retrievePaymentIntent($orderId);
+        return response()->json($paymentIntent);
     }
 }
