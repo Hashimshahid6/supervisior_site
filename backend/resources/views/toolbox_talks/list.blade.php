@@ -19,7 +19,7 @@ Toolbox Talks
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="mb-3">
-                <h5 class="card-title">Toolbox Talks Template List<span class="text-muted fw-normal ms-2">({{$toolboxTalks->count()}})</span></h5>
+                <h5 class="card-title">Toolbox Talks Template List<span class="text-muted fw-normal ms-2">({{$toolboxTalks->total()}})</span></h5>
             </div>
         </div>
         @if(auth()->user()->role == 'Employee')
@@ -31,6 +31,88 @@ Toolbox Talks
         @endif
     </div>
     @include('components.flash_messages')
+    <!-- Search Filters -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('toolbox_talks.index') }}" method="GET">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="search" class="form-label">Search</label>
+                                    <input type="text" class="form-control" id="search" name="search" value="{{ request()->search }}"
+                                        placeholder="Search">
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="project_id" class="form-label">Projects</label>
+                                    <select class="form-select" name="project_id">
+                                        <option value="">Select Project</option>
+                                        @foreach($projects as $project)
+                                        <option value="{{ $project->id }}" @if(request()->project_id == $project->id) selected @endif>{{ $project->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-select" name="status">
+                                        <option value="">Select Status</option>
+                                        <option value="complete" @if(request()->status == 'complete') selected @endif>Complete</option>
+                                        <option value="incomplete" @if(request()->status == 'incomplete') selected @endif>Incomplete</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="sort_by" class="form-label">Sort By</label>
+                                    <select class="form-select" name="sort_by">
+                                        <option value="id" @if(request()->sort_by == 'id') selected @endif>ID</option>
+                                        <option value="topic" @if(request()->sort_by == 'topic') selected @endif>Topic</option>
+                                        <option value="presented_by" @if(request()->sort_by == 'presented_by') selected @endif>Talk Person</option>
+                                        <option value="project_id" @if(request()->sort_by == 'project_id') selected @endif>Project</option>
+                                        <option value="status" @if(request()->sort_by == 'status') selected @endif>Status</option>
+                                        <option value="created_at" @if(request()->sort_by == 'created_at') selected @endif>Created At</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="sort_order" class="form-label">Sort Order</label>
+                                    <select class="form-select" name="sort_order">
+                                        <option value="desc" @if(request()->sort_order == 'desc') selected @endif>Descending</option>
+                                        <option value="asc" @if(request()->sort_order == 'asc') selected @endif>Ascending</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="per_page" class="form-label">Per Page</label>
+                                    <select class="form-select" id="per_page" name="per_page">
+                                        <option value="10" @if(request()->per_page == '10') selected @endif>10</option>
+                                        <option value="25" @if(request()->per_page == '25') selected @endif>25</option>
+                                        <option value="50" @if(request()->per_page == '50') selected @endif>50</option>
+                                        <option value="100" @if(request()->per_page == '100') selected @endif>100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3 mt-4">
+                                    <label for="search" class="form-label">&nbsp;</label>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <a href="{{ route('toolbox_talks.index') }}" class="btn btn-danger">Reset</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end search filters -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -51,7 +133,7 @@ Toolbox Talks
                                 <tr>
                                     <td>{{ $toolboxTalk->topic }}</td>
                                     <td>{{ $toolboxTalk->presented_by }}</td>
-                                    <td>{{ $toolboxTalk->project->name }}</td>
+                                    <td>{{ @$toolboxTalk->project->name }}</td>
                                     <td>
                                         @if($toolboxTalk->status == 'complete')
                                         <span class="badge bg-success text-white">Completed</span>
@@ -78,6 +160,7 @@ Toolbox Talks
                             </tbody>
                         </table>
                     </div>
+                    {{ $toolboxTalks->appends(request()->query())->links() }}
                 </div>
             </div>
         </div>

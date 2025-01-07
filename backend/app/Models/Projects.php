@@ -9,7 +9,7 @@ class Projects extends Model
 {
     use HasFactory;
     protected $table = 'projects';
-    protected $fillable = ['user_id', 'name', 'description', 'file', 'status'];
+    protected $fillable = ['user_id', 'name', 'description', 'status'];
 
     public static function boot()
     {
@@ -25,7 +25,7 @@ class Projects extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
-    }//
+    } //
 
     public function messages()
     {
@@ -34,30 +34,44 @@ class Projects extends Model
 
     public function plantChecklists()
     {
-        return $this->hasMany(PlantChecklist::class);
+        return $this->hasMany(PlantChecklist::class, 'project_id', 'id');
+    }
+
+    public function projectFiles()
+    {
+        return $this->hasMany(ProjectFiles::class, 'project_id', 'id');
     }
 
     public static function getAllProjects()
     {
-        $user = auth()->user();
+        $query = Projects::query();
+        $query->with(['user', 'messages', 'projectFiles']);
 
-        if ($user->role == 'Admin') {
-            return Projects::with('user', 'messages')->where('status', 'Active')->get();
-        } elseif ($user->role == 'Company') {
-            return Projects::with('user', 'messages')
-                ->where('status', 'Active')
-                ->where('user_id', $user->id)
-                ->get();
-        } elseif ($user->role == 'Employee') {
-            return Projects::with('user', 'messages')
-                ->where('status', 'Active')
-                ->whereHas('user', function ($query) use ($user) {
-                    $query->where('role', 'Company')
-                          ->where('id', $user->user_id);
-                })
-                ->get();
-        } else {
-            return collect(); // Return an empty collection if the role doesn't match
+        if (auth()->user()->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $query->where('user_id', $companyId);
+        } elseif (auth()->user()->role == 'Company') {
+            $query->where('user_id', auth()->id());
         }
-    }//
+
+        if (request()->has('search') && request()->search != '') {
+            $query->where('name', 'like', '%' . request()->search . '%');
+        }
+
+        if (request()->has('project_id') && request()->project_id != '') {
+            $query->where('project_id', request()->project_id);
+        }
+
+        if (request()->has('status') && request()->status != '') {
+            $query->where('status', request()->status);
+        }
+
+        if (request()->has('sort_by') && request()->has('sort_order')) {
+            $query->orderBy(request()->sort_by, request()->sort_order);
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        return $query;
+    }
 }

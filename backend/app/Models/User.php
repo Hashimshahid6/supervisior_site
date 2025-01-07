@@ -59,31 +59,60 @@ class User extends Authenticatable
         self::updating(function ($model) {
             $model->updated_by = auth()->id();
         });
-    }//
+    }
+
     public function package()
     {
         return $this->hasOne(Packages::class, 'id', 'package_id');
-    }//
+    }
 
     public function projects()
     {
         return $this->hasMany(Projects::class);
-    }//
+    }
 
     public function messages()
     {
         return $this->hasMany(Messages::class);
-    }//
+    }
 
     public static function getAllUsers()
     {
-        if (auth()->user()->role == 'Admin') {
-            return User::with('projects', 'package')->where('status', 'Active')->get();
-        } else {
-            return User::where('status', 'Active')
-                ->where('created_by', auth()->id())
-                ->get();
-        }
-    }//
+        $query = User::query();
 
+        if (auth()->user()->role == 'Admin') {
+            $query->with('projects', 'package')->where('status', 'Active');
+        } else {
+            $query->where('status', 'Active')
+                ->where('created_by', auth()->id());
+        }
+
+        if(request()->has('search') && request()->search != ''){
+            $query->where(function($q) {
+                $q->where('name', 'like', '%'.request()->search.'%')
+                  ->orWhere('email', 'like', '%'.request()->search.'%')
+                  ->orWhere('phone', 'like', '%'.request()->search.'%');
+            });
+        }
+
+        if(request()->has('role') && request()->role != ''){
+            $query->where('role', request()->role);
+        }
+
+        if(request()->has('status') && request()->status != ''){
+            $query->where('status', request()->status);
+        }
+
+        if(request()->has('package_id') && request()->package_id != ''){
+            $query->where('package_id', request()->package_id);
+        }
+
+        if (request()->has('sort_by') && request()->has('sort_order')) {
+            $query->orderBy(request()->sort_by, request()->sort_order);
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        return $query;
+    }
 }

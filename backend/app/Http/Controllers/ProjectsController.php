@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Projects;
+use App\Models\ProjectFiles;
 
 class ProjectsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user(); // Get the authenticated user
         
@@ -23,9 +24,10 @@ class ProjectsController extends Controller
         // Determine if the user can add more projects
         $canAddProject = $uploadedProjects < $packageLimit;
     
-        // Get all projects and deleted projects
-        $projects = Projects::getAllProjects();
-        $deletedProjects = Projects::with('user', 'messages')->where('status', 'Deleted')->get();
+        // Get all projects and deleted projects with pagination
+        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+        $projects = Projects::getAllProjects()->paginate($perPage);
+        $deletedProjects = Projects::with('user', 'messages')->where('status', 'Deleted')->paginate($perPage);
     
         // Pass data to the view
         return view('projects.list', compact('projects', 'deletedProjects', 'canAddProject', 'uploadedProjects', 'packageLimit'));
@@ -44,33 +46,36 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
-            'file' => 'required|file|mimes:pdf',
+            'files.*' => 'required|file|mimes:pdf',
         ]);
 
-
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = $file->getClientOriginalName();
-            $file->move('public/uploads/projects', $fileName);
-        }
-
-        Projects::create([
+        $project = Projects::create([
             'user_id' => auth()->id(),
             'name' => $request->name,
             'description' => $request->description,
-            'file' => $fileName,
         ]);
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $fileName = $file->getClientOriginalName();
+                $file->move('public/uploads/projects', $fileName);
+                ProjectFiles::create([
+                    'user_id' => auth()->id(),
+                    'project_id' => $project->id,
+                    'file' => $fileName,
+                ]);
+            }
+        }
 
         session()->flash('success', 'Project added successfully');
         return response()->json([
             'status' => true,
             'errors' => [],
         ]);
-    } //
+    }
 
     /**
      * Display the specified resource.
@@ -78,7 +83,7 @@ class ProjectsController extends Controller
     public function show(string $id)
     {
         // Fetch the project along with the associated user
-        $project = Projects::with('user','messages')->find($id);
+        $project = Projects::with(['user', 'messages', 'projectFiles'])->find($id);
 
         // Handle the case where the project is not found
         if (!$project) {
@@ -96,7 +101,7 @@ class ProjectsController extends Controller
      */
     public function edit(string $id)
     {
-        $project = Projects::find($id);
+        $project = Projects::with('projectFiles')->find($id);
         return response()->json([
             'status' => true,
             'errors' => [],
@@ -112,24 +117,26 @@ class ProjectsController extends Controller
         $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
-            'file' => 'nullable|file|mimes:pdf',
+            'files.*' => 'nullable|file|mimes:pdf',
         ]);
 
         $project = Projects::find($id);
-
-        $fileName = $project->file;
-
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = $file->getClientOriginalName();
-            $file->move('public/uploads/projects', $fileName);
-        }
-
         $project->update([
             'name' => $request->name,
             'description' => $request->description,
-            'file' => $fileName,
         ]);
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $fileName = $file->getClientOriginalName();
+                $file->move('public/uploads/projects', $fileName);
+                ProjectFiles::create([
+                    'user_id' => auth()->id(),
+                    'project_id' => $project->id,
+                    'file' => $fileName,
+                ]);
+            }
+        }
 
         session()->flash('success', 'Project updated successfully');
         return response()->json([
@@ -147,5 +154,31 @@ class ProjectsController extends Controller
         $project->status = 'Deleted';
         $project->save();
         return redirect()->route('projects.index')->with('success', 'Project deleted successfully');
+    }
+
+    /**
+     * Remove the specified file from storage.
+     */
+    public function destroyFile($id)
+    {
+        $file = ProjectFiles::find($id);
+
+        if ($file) {
+            $filePath = public_path('uploads/projects/' . $file->file);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+            $file->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'File deleted successfully',
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'File not found',
+        ], 404);
     }
 }

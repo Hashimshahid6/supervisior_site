@@ -31,6 +31,97 @@ Plant Checklists
         @endif
     </div>
     @include('components.flash_messages')
+    <!-- end row -->
+    <!-- Search Filters -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('plant_checklists.index') }}" method="GET">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="search" class="form-label">Search</label>
+                                        <input type="text" class="form-control" name="search" value="{{ request()->get('search') }}" placeholder="Search">
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="project_id" class="form-label">Project</label>
+                                    <select class="form-select" name="project_id">
+                                        <option value="">Select Project</option>
+                                        @foreach($projects as $project)
+                                        <option value="{{ $project->id }}" @if(request()->project_id == $project->id) selected @endif>{{ $project->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="plant_type" class="form-label">Plant Type</label>
+                                    <select class="form-select" name="plant_type">
+                                        <option value="">Select Plant Type</option>
+                                        @foreach($PlantTypes as $value)
+                                        <option value="{{ $value }}" @if(request()->plant_type == $value) selected @endif>{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-select" name="status">
+                                        <option value="">Select Status</option>
+                                        <option value="complete" @if(request()->status == 'complete') selected @endif>Complete</option>
+                                        <option value="incomplete" @if(request()->status == 'incomplete') selected @endif>Incomplete</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="sort_by" class="form-label">Sort By</label>
+                                    <select class="form-select" name="sort_by">
+                                        <option value="id" @if(request()->sort_by == 'id') selected @endif>ID</option>
+                                        <option value="project_id" @if(request()->sort_by == 'project_id') selected @endif>Project</option>
+                                        <option value="plant_type" @if(request()->sort_by == 'plant_type') selected @endif>Plant Type</option>
+                                        <option value="status" @if(request()->sort_by == 'status') selected @endif>Status</option>
+                                        <option value="created_at" @if(request()->sort_by == 'created_at') selected @endif>Created At</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="sort_order" class="form-label">Sort Order</label>
+                                    <select class="form-select" name="sort_order">
+                                        <option value="desc" @if(request()->sort_order == 'desc') selected @endif>Descending</option>
+                                        <option value="asc" @if(request()->sort_order == 'asc') selected @endif>Ascending</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="per_page" class="form-label">Per Page</label>
+                                    <select class="form-select" id="per_page" name="per_page">
+                                        <option value="10" @if(request()->per_page == '10') selected @endif>10</option>
+                                        <option value="25" @if(request()->per_page == '25') selected @endif>25</option>
+                                        <option value="50" @if(request()->per_page == '50') selected @endif>50</option>
+                                        <option value="100" @if(request()->per_page == '100') selected @endif>100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3 mt-4">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <a href="{{ route('plant_checklists.index') }}" class="btn btn-danger">Reset</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -41,6 +132,7 @@ Plant Checklists
                                 <tr>
                                     <th scope="col">Project Name</th>
                                     <th scope="col">Plant Type</th>
+                                    <th scope="col">Created At</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -48,13 +140,14 @@ Plant Checklists
                             <tbody>
                                 @foreach($DailyChecklists as $checklist)
                                 <tr>
-                                    <td>{{ $checklist->project->name }}</td>
-                                    <td>{{ $PlantTypes[$checklist->plant_type] ?? 'Unknown' }}</td>
+                                    <td>{{ @$checklist->project->name }}</td>
+                                    <td>{{ $checklist->plant_type }}</td>
+                                    <td><span class="badge bg-primary-subtle text-primary  mb-0">{{ $checklist->created_at->format('d M Y') }}</span></td>
                                     <td>
                                         @if($checklist->status == 'complete')
-                                        <span class="badge bg-success text-white">Completed</span>
+                                        <span class="badge bg-success-subtle text-dark mb-0">Completed</span>
                                         @elseif($checklist->status == 'incomplete')
-                                        <span class="badge bg-warning text-dark">Incomplete</span>
+                                        <span class="badge bg-warning-subtle text-warning mb-0">Incomplete</span>
                                         @endif
                                     </td>
                                     <td>
@@ -76,6 +169,7 @@ Plant Checklists
                             </tbody>
                         </table>
                     </div>
+                    {{ $DailyChecklists->links() }}
                 </div>
             </div>
         </div>

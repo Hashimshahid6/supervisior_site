@@ -16,12 +16,14 @@ class VehicleChecklistController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $projects = Projects::getAllProjects()->get();
+        // dd($projects[0]);
         $VehicleItems = VehicleChecklist::$VehicleItems;
-        $VehicleChecklists = VehicleChecklist::getAllVehicleChecklist();
-        // dd($DailyChecklists);
-        return view('vehicle_checklist.list', compact('VehicleChecklists', 'VehicleItems'));
+        $perPage = $request->input('per_page', 10);
+        $VehicleChecklists = VehicleChecklist::getAllVehicleChecklist()->paginate($perPage);
+        return view('vehicle_checklist.list', compact('VehicleChecklists', 'VehicleItems', 'projects'));
     }
 
     /**
@@ -30,7 +32,7 @@ class VehicleChecklistController extends Controller
     public function create()
     {
         $Days = PlantChecklist::$Days;
-        $Projects = Projects::getAllProjects();
+        $Projects = Projects::getAllProjects()->get();
         $VehicleItems = VehicleChecklist::$VehicleItems;
         $VehicleData = VehicleChecklist::$VehicleData;
         return view('vehicle_checklist.add', compact('VehicleItems', 'VehicleData', 'Projects', 'Days'));
@@ -85,7 +87,7 @@ class VehicleChecklistController extends Controller
         $VehicleItems = VehicleChecklist::$VehicleItems;
         $VehicleData = VehicleChecklist::$VehicleData;
         $Days = PlantChecklist::$Days;
-        $Projects = Projects::getAllProjects();
+        $Projects = Projects::getAllProjects()->get();
 
         $DailyChecklist = VehicleChecklist::with(['project', 'user'])->find($id);
         // dd($DailyChecklist);

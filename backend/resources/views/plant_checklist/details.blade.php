@@ -31,54 +31,62 @@ Plant Checklist Details
                     </div>
                 </div>
                 <div class="p-4 border-top">
-                    <table class="table table-bordered" id="plantTypeTable">
-                        <tr>
-                            <td class="align-middle text-start fw-bold">Plant Type</td>
-                            <td>{{ $PlantTypes[$DailyChecklist->plant_type] ?? 'Unknown' }}</td>
-                            <td class="align-middle text-start fw-bold">Project</td>
-                            <td>{{ $DailyChecklist->project->name }}</td>
-                        </tr>
-                    </table>
-                    <table class="table table-bordered align-middle" id="itemsCheckedTable">
-                        <tr>
-                            <th>Items Checked</th>
-                            @foreach($Days as $key => $value)
-                            <th class="text-center">{{ $value }}</th>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="plantTypeTable">
+                            <tr>
+                                <td class="align-middle text-start fw-bold">Plant Type</td>
+                                <td>{{ $PlantTypes[$DailyChecklist->plant_type] ?? 'Unknown' }}</td>
+                                <td class="align-middle text-start fw-bold">Project</td>
+                                <td>{{ $DailyChecklist->project->name }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle" id="itemsCheckedTable">
+                            <tr>
+                                <th>Items Checked</th>
+                                @foreach($Days as $key => $value)
+                                <th class="text-center">{{ $value }}</th>
+                                @endforeach
+                            </tr>
+                            @foreach($PlantChecklists as $key => $value)
+                            <tr>
+                                <td class="fw-bold">{{ $value }}</td>
+                                @foreach($Days as $day)
+                                <td class="text-center">{{ json_decode($DailyChecklist->checklist, true)[$value][$day] ?? ''
+                                    }}</td>
+                                @endforeach
+                            </tr>
                             @endforeach
-                        </tr>
-                        @foreach($PlantChecklists as $key => $value)
-                        <tr>
-                            <td class="fw-bold">{{ $value }}</td>
-                            @foreach($Days as $day)
-                            <td class="text-center">{{ json_decode($DailyChecklist->checklist, true)[$value][$day] ?? ''
-                                }}</td>
-                            @endforeach
-                        </tr>
-                        @endforeach
-                    </table>
-                    <table class="table table-bordered" id="defectTable">
-                        <tr class="fw-bold">
-                            <td>Defect:</td>
-                            <td>Date Reported:</td>
-                            <td>Usable:</td>
-                            <td>Reported To:</td>
-                            <td>Operator:</td>
-                        </tr>
-                        @if(isset($DailyChecklist->reports))
-                        @php
-                        $reports = json_decode($DailyChecklist->reports, true);
-                        @endphp
-                        @for($i = 0; $i < count($reports['defect']); $i++)
-                        <tr>
-                            <td>{{ $reports['defect'][$i] ?? '' }}</td>
-                            <td>{{ $reports['date_reported'][$i] ?? '' }}</td>
-                            <td>{{ $reports['useable'][$i] ?? '' }}</td>
-                            <td>{{ $reports['reported_to'][$i] ?? '' }}</td>
-                            <td>{{ $reports['operator'][$i] ?? '' }}</td>
-                        </tr>
-                        @endfor
-                        @endif
-                    </table>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="defectTable">
+                            <tr class="fw-bold">
+                                <td>Defect:</td>
+                                <td>Date Reported:</td>
+                                <td>Usable:</td>
+                                <td>Reported To:</td>
+                                <td>Operator:</td>
+                            </tr>
+                            @if(isset($DailyChecklist->reports))
+                            @php
+                            $reports = json_decode($DailyChecklist->reports, true);
+                            @endphp
+                            @if(is_array($reports['defect'] ?? []))
+                            @for($i = 0; $i < count($reports['defect']); $i++)
+                            <tr>
+                                <td>{{ $reports['defect'][$i] ?? '' }}</td>
+                                <td>{{ $reports['date_reported'][$i] ?? '' }}</td>
+                                <td>{{ $reports['useable'][$i] ?? '' }}</td>
+                                <td>{{ $reports['reported_to'][$i] ?? '' }}</td>
+                                <td>{{ $reports['operator'][$i] ?? '' }}</td>
+                            </tr>
+                            @endfor
+                            @endif
+                            @endif
+                        </table>
+                    </div>
                     <div class="row mb-4">
                         <div class="col text-end">
                             <a class="btn btn-danger" id="exportToPdf">Export to PDF</a>

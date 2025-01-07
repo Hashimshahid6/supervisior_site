@@ -20,7 +20,7 @@ Employees
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="mb-3">
-                <h5 class="card-title">Employees List <span class="text-muted fw-normal ms-2">( {{ $users->total() }} )</span></h5>
+                <h5 class="card-title">Employees List <span class="text-muted fw-normal ms-2">( {{ $users->count() }} )</span></h5>
             </div>
         </div>
         <div class="col-md-6">
@@ -42,16 +42,20 @@ Employees
                         <div class="row">
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name"
-                                        value="{{ request()->name }}">
+                                    <label for="search" class="form-label">Search</label>
+                                    <input type="text" class="form-control" id="search" name="search"
+                                        value="{{ request()->search }}">
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="text" class="form-control" id="email" name="email"
-                                        value="{{ request()->email }}">
+                                    <label for="package_id" class="form-label">Package</label>
+                                    <select class="form-select" id="package_id" name="package_id">
+                                        <option value="">Select Package</option>
+                                        @foreach($packages as $package)
+                                        <option value="{{ $package->id }}" @if(request()->package_id == $package->id) selected @endif>{{ $package->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-3">
@@ -78,9 +82,25 @@ Employees
                             </div>
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" class="form-control" id="phone" name="phone"
-                                        value="{{ request()->phone }}">
+                                    <label for="sort_by" class="form-label">Sort By</label>
+                                    <select class="form-select" id="sort_by" name="sort_by">
+                                        <option value="id" @if(request()->sort_by == 'id') selected @endif>ID</option>
+                                        <option value="name" @if(request()->sort_by == 'name') selected @endif>Name</option>
+                                        <option value="email" @if(request()->sort_by == 'email') selected @endif>Email</option>
+                                        <option value="role" @if(request()->sort_by == 'role') selected @endif>Role</option>
+                                        <option value="status" @if(request()->sort_by == 'status') selected @endif>Status</option>
+                                        <option value="phone" @if(request()->sort_by == 'phone') selected @endif>Phone</option>
+                                        <option value="created_at" @if(request()->sort_by == 'created_at') selected @endif>Created At</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <label for="sort_order" class="form-label">Sort Order</label>
+                                    <select class="form-select" id="sort_order" name="sort_order">
+                                        <option value="desc" @if(request()->sort_order == 'desc') selected @endif>Descending</option>
+                                        <option value="asc" @if(request()->sort_order == 'asc') selected @endif>Ascending</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-3">
@@ -95,39 +115,9 @@ Employees
                                 </div>
                             </div>
                             <div class="col-lg-3">
-                                <div class="mb-3">
-                                    <label for="sort_by" class="form-label">Sort By</label>
-                                    <select class="form-select" id="sort_by" name="sort_by">
-                                        <option value="id" @if(request()->sort_by == 'id') selected @endif>ID</option>
-                                        <option value="name" @if(request()->sort_by == 'name') selected @endif>Name</option>
-                                        <option value="email" @if(request()->sort_by == 'email') selected @endif>Email</option>
-                                        <option value="role" @if(request()->sort_by == 'role') selected @endif>Role</option>
-                                        <option value="status" @if(request()->sort_by == 'status') selected @endif>Status</option>
-                                        <option value="phone" @if(request()->sort_by == 'phone') selected @endif>Phone</option>
-                                        <option value="created_at" @if(request()->sort_by == 'created_at') selected @endif>Created At</option>
-                                        <option value="updated_at" @if(request()->sort_by == 'updated_at') selected @endif>Updated At</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="mb-3">
-                                    <label for="sort_order" class="form-label">Sort Order</label>
-                                    <select class="form-select" id="sort_order" name="sort_order">
-                                        <option value="asc" @if(request()->sort_order == 'asc') selected @endif>Ascending</option>
-                                        <option value="desc" @if(request()->sort_order == 'desc') selected @endif>Descending</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="mb-3">
-                                    <label for="search" class="form-label">Search</label>
-                                    <input type="text" class="form-control" id="search" name="search"
-                                        value="{{ request()->search }}">
-                                </div>
-                            </div>
-                            <div class="col-lg-2">
                                 <div class="mb-3 mt-4">
-                                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <a href="{{ route('users.index') }}" class="btn btn-danger">Reset</a>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +135,9 @@ Employees
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col">User Details</th>
+                                    <th scope="col">Package</th>
                                     <th scope="col">Role</th>
+                                    <th scope="col">Created At</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -164,21 +156,35 @@ Employees
                                         </div>
                                     </td>
                                     <td>
-                                        @if($user->role == 'Admin')
-                                        <span class="badge bg-success text-white">Admin</span>
-                                        @elseif($user->role == 'Company')
-                                        <span class="badge bg-primary text-white">Company</span>
-                                        @elseif($user->role == 'Employee')
-                                        <span class="badge bg-success text-white">Employee</span>
+                                        @if($user->package)
+                                        @if($user->package->id == 1)
+                                        <span class="badge bg-primary-subtle text-primary mb-0">{{ $user->package->name }}</span>
+                                        @elseif($user->package->id == 2)
+                                        <span class="badge bg-success-subtle text-success mb-0">{{ $user->package->name }}</span>
+                                        @elseif($user->package->id == 3)
+                                        <span class="badge bg-danger-subtle text-danger mb-0">{{ $user->package->name }}</span>
+                                        @endif
+                                        @else
+                                        <span class="badge bg-danger text-white">No Package</span>
                                         @endif
                                     </td>
                                     <td>
+                                        @if($user->role == 'Admin')
+                                        <span class="badge bg-success-subtle text-success mb-0">Admin</span>
+                                        @elseif($user->role == 'Company')
+                                        <span class="badge bg-primary-subtle text-primary mb-0">Company</span>
+                                        @elseif($user->role == 'Employee')
+                                        <span class="badge bg-danger-subtle text-danger mb-0">Employee</span>
+                                        @endif
+                                    </td>
+                                    <td><span class="badge bg-primary-subtle text-primary  mb-0">{{ $user->created_at->format('d M Y') }}</span></td>
+                                    <td>
                                         @if($user->status == 'Active')
-                                        <span class="badge bg-success text-white">Active</span>
+                                        <span class="badge bg-success-subtle text-dark mb-0">Active</span>
                                         @elseif($user->status == 'Inactive')
-                                        <span class="badge bg-warning text-white">Inactive</span>
+                                        <span class="badge bg-warning-subtle text-warning mb-0">Inactive</span>
                                         @else
-                                        <span class="badge bg-danger text-dark">Deleted</span>
+                                        <span class="badge bg-danger-subtle text-danger mb-0">Deleted</span>
                                         @endif
                                     </td>
                                     <td>
@@ -195,7 +201,7 @@ Employees
                             </tbody>
                         </table>
                     </div>
-                    {{ $users->appends(request()->query())->links() }}
+                    {{ $users->links() }}
                 </div>
             </div>
         </div>

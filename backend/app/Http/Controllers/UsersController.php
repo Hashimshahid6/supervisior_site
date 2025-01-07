@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Models\Packages;
 
 class UsersController extends Controller
 {
@@ -15,41 +15,10 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         if(Auth::user()->role != 'Employee'){
-            $user = Auth::user();
-
-            $query = User::query();
-
-            if($user->type == 'Company'){
-                $query->where('type', 'Employee');
-            }
-
-            if ($request->has('name')) {
-                $query->where('name', 'like', '%' . $request->name . '%');
-            }
-
-            if ($request->has('email')) {
-                $query->where('email', 'like', '%' . $request->email . '%');
-            }
-
-            if ($request->has('role')) {
-                $query->where('role', $request->role);
-            }
-
-            if ($request->has('status')) {
-                $query->where('status', $request->status);
-            }
-
-            if ($request->has('phone')) {
-                $query->where('phone', 'like', '%' . $request->phone . '%');
-            }
-
-            if ($request->has('sort_by') && $request->has('sort_order')) {
-                $query->orderBy($request->sort_by, $request->sort_order);
-            }
-
-            $users = $query->paginate($request->get('per_page', 10));
-
-            return view('users.list', compact('users'));
+            $packages = Packages::getAllPackages();
+            $perPage = $request->input('per_page', 10);
+            $users = User::getAllUsers()->paginate($perPage);
+            return view('users.list', compact('users', 'packages'));
         }
         else{
             return view('errors.403');

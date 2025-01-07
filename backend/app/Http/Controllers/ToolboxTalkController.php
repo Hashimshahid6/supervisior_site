@@ -15,10 +15,11 @@ class ToolboxTalkController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $toolboxTalks = ToolboxTalk::getAllToolBoxTalk();
-        return view('toolbox_talks.list', compact('toolboxTalks'));
+        $projects = Projects::getAllProjects();
+        $toolboxTalks = ToolboxTalk::filter($request->all())->paginate($request->get('per_page', 10));
+        return view('toolbox_talks.list', compact('toolboxTalks', 'projects'));
     }
 
     /**

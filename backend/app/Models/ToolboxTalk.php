@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ToolboxTalk extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'project_id',
         'user_id',
@@ -64,5 +66,33 @@ class ToolboxTalk extends Model
         }
 
         return $query->get();
-    }
+    }//
+
+    public function scopeFilter($query, $filters)
+    {
+        if(isset($filters['project_id']) && $filters['project_id'] != '') {
+            $query->where('project_id', $filters['project_id']);
+        }
+
+        if(isset($filters['search']) && $filters['search'] != '') {
+            $query->where(function ($q) use ($filters) {
+                $q->whereHas('project', function ($query) use ($filters) {
+                    $query->where('name', 'like', '%' . $filters['search'] . '%');
+                })->orWhere('topic', 'like', '%' . $filters['search'] . '%')
+                ->orWhere('presented_by', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+        
+        if(isset($filters['status']) && $filters['status'] != '') {
+            $query->where('status', $filters['status']);
+        }
+
+        if (isset($filters['sort_by']) && isset($filters['sort_order'])) {
+            $query->orderBy($filters['sort_by'], $filters['sort_order']);
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        return $query;
+    }//
 }

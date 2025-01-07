@@ -9,18 +9,29 @@ use App\Mail\PlantChecklistMail;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class PlantChecklistController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = Auth::user();
+        if($user->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $projects = Projects::where('status', 'Active')->where('user_id', $companyId)->get();
+        } elseif($user->role == 'Company') {
+            $projects = Projects::where('status', 'Active')->where('user_id', $user->id)->get();
+        } else {
+            $projects = Projects::where('status', 'Active')->get();
+        }
+        $perPage = $request->input('per_page', 10);
+        $DailyChecklists = PlantChecklist::getAllPlantChecklist()->paginate($perPage);
         $PlantTypes = PlantChecklist::$PlantTypes;
-        $DailyChecklists = PlantChecklist::getAllPlantChecklist();
-        // dd($DailyChecklists);
-        return view('plant_checklist.list', compact('DailyChecklists', 'PlantTypes'));
+
+        return view('plant_checklist.list', compact('DailyChecklists', 'projects', 'PlantTypes'));
     }
 
     /**
@@ -51,7 +62,7 @@ class PlantChecklistController extends Controller
 
         PlantChecklist::create([
             'project_id' => $request->project_id,
-            'created_by' => auth()->id(),
+            'user_id' => auth()->id(),
             'plant_type' => $request->plant_type,
             'checklist' => $checklistData,
             'reports' => $defectData,
@@ -111,7 +122,6 @@ class PlantChecklistController extends Controller
         $DailyChecklist = PlantChecklist::find($id);
         $DailyChecklist->update([
             'project_id' => $request->project_id,
-            'updated_by' => auth()->id(),
             'plant_type' => $request->plant_type,
             'checklist' => $checklistData,
             'reports' => $defectData,

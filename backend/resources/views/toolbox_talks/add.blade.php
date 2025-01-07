@@ -33,55 +33,60 @@ Toolbox Talks
                     <div class="p-4 border-top">
                         <form action="{{ route('toolbox_talks.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td class="align-middle text-start fw-bold">Projects <span
-                                            class="text-danger">*</span></td>
-                                    <td>
-                                        <select class="form-select" name="project_id" id="project_id">
-                                            <option value="">Select Project</option>
-                                            @foreach($projects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('project_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle text-start fw-bold">Topic <span class="text-danger">*</span>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="topic" class="form-control">
-                                        @error('topic')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle text-start fw-bold">Presented By <span
-                                            class="text-danger">*</span></td>
-                                    <td>
-                                        <input type="text" name="presented_by" class="form-control">
-                                        @error('presented_by')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </td>
-                                </tr>
-                            </table>
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>First Name</th>
-                                    <th>Surname</th>
-                                    <th>Date</th>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" name="first_name[]" class="form-control"></td>
-                                    <td><input type="text" name="surname[]" class="form-control"></td>
-                                    <td><input type="date" name="date[]" class="form-control"></td>
-                                </tr>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="align-middle text-start fw-bold">Projects <span
+                                                class="text-danger">*</span></td>
+                                        <td>
+                                            <select class="form-select" name="project_id" id="project_id">
+                                                <option value="">Select Project</option>
+                                                @foreach($projects as $project)
+                                                <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('project_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle text-start fw-bold">Topic <span
+                                                class="text-danger">*</span>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="topic" class="form-control">
+                                            @error('topic')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle text-start fw-bold">Presented By <span
+                                                class="text-danger">*</span></td>
+                                        <td>
+                                            <input type="text" name="presented_by" class="form-control">
+                                            @error('presented_by')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Surname</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" name="first_name[]" class="form-control"></td>
+                                        <td><input type="text" name="surname[]" class="form-control"></td>
+                                        <td><input type="date" name="date[]" class="form-control"></td>
+                                    </tr>
+                                </table>
+                            </div>
                             <button type="button" class="btn btn-primary add-row">Add More</button>
                             <div class="row mb-4">
                                 <div class="col text-end">

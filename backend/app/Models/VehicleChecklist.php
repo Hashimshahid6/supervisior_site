@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class VehicleChecklist extends Model
 {
+    use HasFactory;
     protected $table = 'vehicles';
     protected $fillable = [
         'project_id',
@@ -28,7 +30,7 @@ class VehicleChecklist extends Model
             $model->updated_by = auth()->id();
         });
     } //
-    
+
     public static $VehicleData = [
         'Vehicle Registration',
         'Date',
@@ -64,31 +66,49 @@ class VehicleChecklist extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+
     public static function getAllVehicleChecklist()
     {
-        $query = VehicleChecklist::with(['project', 'user']); // Corrected the with method
 
-        // Get the authenticated user
-        $authUser = auth()->user();
+        $query = VehicleChecklist::query();
+        $query->with('project', 'user');
 
-        // Check role-based conditions
-        if ($authUser->role == 'Employee') {
-            // Employee can see their own records
-            $query->where('user_id', $authUser->id);
-        } elseif ($authUser->role == 'Company') {
-            // Company can see records created by their employees
-            $query->where(function ($q) use ($authUser) {
-                $q->whereHas('user', function ($query) use ($authUser) {
-                    $query->where('user_id', $authUser->id); // Match `user_id` with the company's ID
-                })->orWhere('user_id', $authUser->id); // Include records directly created by the company itself
-            });
-        } elseif ($authUser->role == 'Admin') {
-            // Admin can see all records
-        } else {
-            // Return an empty collection if the role doesn't match
-            return collect();
+        if (auth()->user()->role == 'Employee') {
+            // Employee can see only their own records
+            $query->where('user_id', auth()->id());
+        } elseif (auth()->user()->role == 'Company') {
+            // The logged-in user is the company
+            $companyId = auth()->id(); // The company's ID in the `users` table
+
+            // Get the IDs of employees belonging to this company
+            $employeeIds = User::where('company_id', $companyId)->pluck('id');
+
+            // Include forms created by employees
+            $query->whereIn('user_id', $employeeIds);
         }
 
-        return $query->get();
+        if (request()->has('search') && request()->search != '') {
+            $query->where(function ($q) {
+                $q->orWhereHas('project', function ($query) {
+                    $query->where('name', 'like', '%' . request()->search . '%');
+                });
+            });
+        }
+
+        if (request()->has('project_id') && request()->project_id != '') {
+            $query->where('project_id', request()->project_id);
+        }
+
+        if (request()->has('status') && request()->status != '') {
+            $query->where('status', request()->status);
+        }
+
+        if (request()->has('sort_by') && request()->has('sort_order')) {
+            $query->orderBy(request()->sort_by, request()->sort_order);
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        return $query;
     }
 }

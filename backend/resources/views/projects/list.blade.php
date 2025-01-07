@@ -29,6 +29,75 @@ Projects
         </div>
         @endif
     @endif
+    {{-- Search Filters --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('projects.index') }}" method="GET">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="mb-3">
+                                    <label for="search" class="form-label">Search</label>
+                                    <input type="text" class="form-control" name="search"
+                                        value="{{ request()->search }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-select" name="status">
+                                        <option value="">Select Status</option>
+                                        <option value="Active" @if(request()->status == 'Active') selected @endif>Active</option>
+                                        <option value="Inactive" @if(request()->status == 'Inactive') selected @endif>Inactive</option>
+                                        <option value="Deleted" @if(request()->status == 'Deleted') selected @endif>Deleted</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="mb-3">
+                                    <label for="sort_by" class="form-label">Sort By</label>
+                                    <select class="form-select" id="sort_by" name="sort_by">
+                                        <option value="id" @if(request()->sort_by == 'id') selected @endif>ID</option>
+                                        <option value="name" @if(request()->sort_by == 'name') selected @endif>Project Name</option>
+                                        <option value="status" @if(request()->sort_by == 'status') selected @endif>Status</option>
+                                        <option value="created_at" @if(request()->sort_by == 'created_at') selected @endif>Created At</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="mb-3">
+                                    <label for="sort_order" class="form-label">Sort Order</label>
+                                    <select class="form-select" id="sort_order" name="sort_order">
+                                        <option value="desc" @if(request()->sort_order == 'desc') selected @endif>Descending</option>
+                                        <option value="asc" @if(request()->sort_order == 'asc') selected @endif>Ascending</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="mb-3">
+                                    <label for="per_page" class="form-label">Per Page</label>
+                                    <select class="form-select" id="per_page" name="per_page">
+                                        <option value="10" @if(request()->per_page == '10') selected @endif>10</option>
+                                        <option value="25" @if(request()->per_page == '25') selected @endif>25</option>
+                                        <option value="50" @if(request()->per_page == '50') selected @endif>50</option>
+                                        <option value="100" @if(request()->per_page == '100') selected @endif>100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="mb-3 mt-4">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <a href="{{ route('projects.index') }}" class="btn btn-danger">Reset</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="email-leftbar">
         <div class="card">
             <div class="card-body">
@@ -41,9 +110,7 @@ Projects
                 <div class="card p-0 overflow-hidden mt-4 shadow-none">
                     <div class="mail-list">
                         @foreach($projects as $project)
-                        <a href="javascript:void(0);"
-                            class="project-link"
-                            data-id="{{ $project->id }}">
+                        <a href="javascript:void(0);" class="project-link" data-id="{{ $project->id }}">
                             <div class="d-flex align-items-center">
                                 <i class="mdi mdi-folder-outline font-size-20 align-middle me-3"></i>
                                 <div class="flex-grow-1">
@@ -70,9 +137,7 @@ Projects
                 <div class="card p-0 overflow-hidden mt-4 shadow-none">
                     <div class="mail-list">
                         @foreach($deletedProjects as $project)
-                        <a href="javascript:void(0);"
-                            class="project-link"
-                            data-id="{{ $project->id }}">
+                        <a href="javascript:void(0);" class="project-link" data-id="{{ $project->id }}">
                             <div class="d-flex align-items-center">
                                 <i class="mdi mdi-folder-outline font-size-20 align-middle me-3"></i>
                                 <div class="flex-grow-1">
@@ -102,6 +167,9 @@ Projects
             </div>
         </div>
     </div>
+    <div class="row">
+        {{ $projects->links() }}
+    </div>
     <!-- end Col-9 -->
 
     <!-- Add Modal -->
@@ -125,9 +193,12 @@ Projects
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Project File <span class="text-danger"> *</span></label>
-                            <input type="file" class="form-control" id="file" name="file" accept=".pdf">
-                            <span class="text-danger text-error"></span>
+                            <label class="form-label">Project Files <span class="text-danger"> *</span></label>
+                            <div id="file-upload-container">
+                                <input type="file" class="form-control mb-2" name="files[]" accept=".pdf" multiple>
+                            </div>
+                            <span class="text-danger text-error" id="file-error"></span>
+                            <button type="button" class="badge bg-primary-subtle text-primary" id="add-file-upload">Add File</button>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Description <span class="text-danger"> *</span></label>
@@ -167,9 +238,12 @@ Projects
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Project File</label>
-                            <input type="file" class="form-control" id="edit_file" name="file" accept=".pdf">
-                            <span id="existing-file" class="text-muted"></span>
+                            <label class="form-label">Project Files</label>
+                            <div id="edit-file-upload-container">
+                                <input type="file" class="form-control mb-2" name="files[]" accept=".pdf" multiple>
+                            </div>
+                            <button type="button" class="badge bg-primary-subtle text-primary mb-4" id="add-edit-file-upload">Add File</button>
+                            <span id="existing-files" class="text-muted"></span>
                             <span class="text-danger text-error"></span>
                         </div>
                         <div class="mb-3">
@@ -214,6 +288,28 @@ Projects
             </div>
         </div>
     </div>
+
+    <!-- Delete File Modal -->
+    <div class="modal fade" id="file-modal-delete" tabindex="-1" role="dialog" aria-labelledby="fileModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fileModalTitle">Delete File</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this file?</p>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" id="confirm-delete-file">Delete <i
+                                class="fas fa-trash-alt ms-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @endsection
     @section('scripts')
     <script type="text/javascript">
@@ -235,7 +331,7 @@ Projects
                     .then(data => {
                         const messagesHTML = data.messages.map(message => `
                             <div class="border-bottom border-1 py-3">
-                                <div class="badge bg-primary mb-2">
+                                <div class="badge bg-primary-subtle text-primary mb-2">
                                     ${formatDateWithTime(message.created_at)}
                                 </div>
                                 <p>${message.message}</p>
@@ -291,7 +387,6 @@ Projects
                                     </div>
                                 </div>
                             </div>
-                            <h6><span class="badge bg-primary mb-2">Company Details</span></h6>
                             <div class="d-flex align-items-center mb-4">
                                 <div class="flex-shrink-0 me-3">
                                     <img class="rounded-circle avatar-sm" src="{{ URL::asset('public/uploads/users/${data.user.avatar}') }}"
@@ -304,10 +399,13 @@ Projects
                             </div>
                             <h4 class="font-size-16">${data.name}</h4>
                             <p>${data.description}</p>
-                            <a href="{{ asset('public/uploads/projects') }}/${data.file}" 
-                                target="_blank" class="btn btn-sm btn-primary mt-1 mb-3">
-                                View File <i class="fa fa-eye ms-1"></i>
-                            </a>
+                            <div class="mt-3">
+                                <h6>Project Files:</h6>
+                                ${data.project_files.map(file => `
+                                    <a href="{{ asset('public/uploads/projects') }}/${file.file}" target="_blank" class="badge bg-primary-subtle text-primary mt-1">View File <i class="fa fa-eye ms-1"></i></a>
+                                `).join(' ')}
+                            </div>
+                            <hr class="border-1">
                             <span class="border-bottom border-1 py-3"></span>
                             <div class="tab-pane" id="messages" role="tabpanel">
                                 <div class="py-2">
@@ -363,12 +461,12 @@ Projects
                                         const messagesContainer = document.querySelector('.mx-n4.px-2');
                                         const newMessageHTML = `
                                             <div class="border-bottom border-1 py-3">
-                                                <div class="badge bg-primary mb-2">${formatDateWithTime(result.message.created_at)}</div>
                                                 <p class="mb-4">${result.message.message}</p>
                                                 ${result.message.image ? `
                                                     <img src="{{ URL::asset('public/uploads/messages/${result.message.image}') }}" 
                                                         class="w-60 img-thumbnail mb-4" alt="${result.message.image}">
                                                 ` : ''}
+                                                <div class="badge bg-primary-subtle text-primary mb-2">${formatDateWithTime(result.message.created_at)}</div>
                                                 <div class="d-flex align-items-start">
                                                     <div class="flex-grow-1">
                                                         <div class="d-flex">
@@ -439,6 +537,13 @@ Projects
             e.preventDefault();
             var form = $(this);
             var formData = new FormData(this);
+
+            // Check if files are selected
+            if (!formData.has('files[]') || formData.getAll('files[]').length === 0) {
+                $('#file-error').html('Please select at least one file.');
+                return;
+            }
+
             $.ajax({
                 url: form.attr('action'),
                 type: 'POST',
@@ -455,14 +560,14 @@ Projects
                 var errors = xhr.responseJSON.errors;
                 $.each(errors, function(key, value) {
                     if (form.hasClass('editform')) {
-                    $('#edit_' + key).next('.text-danger').html(value);
+                    $('#edit_' + key).parent().find('.text-error').html(value);
                     } else {
-                    $('#' + key).next('.text-danger').html(value);
+                    $('#' + key).parent().find('.text-error').html(value);
                     }
                 });
                 }
             });
-            });
+        });
       });
       const formatDateWithTime = (timestamp) => {
         const date = new Date(timestamp);
@@ -484,8 +589,17 @@ Projects
             $('#project-modal-edit').modal('show');
             $('#edit_name').val(response.project.name);
             $('#existing-file').html(`<a href="{{ asset('public/uploads/projects') }}/${response.project.file}" target="_blank" class="btn btn-sm btn-primary mt-1">View File <i class="fa fa-eye ms-1"></i></a>`);
-            $('#edit_description').val(response.project.description)
-  
+            $('#edit_description').val(response.project.description);
+
+            // Parse and display existing files with delete option
+            const files = response.project.project_files;
+            $('#existing-files').html(files.map(file => `
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <a href="{{ asset('public/uploads/projects') }}/${file.file}" target="_blank" class="badge bg-primary-subtle text-primary mt-1">View File <i class="fa fa-eye ms-1"></i></a>
+                    <button type="button" class="badge bg-danger-subtle text-danger ms-2" onclick="deleteFile(${file.id}, this)">Delete</button>
+                </div>
+            `).join(' '));
+
             // Set the status radio button based on the service status
             $('input[name="status"]').prop('checked', false); // Clear previous selection
             if (response.project.status === 'Active') {
@@ -505,7 +619,86 @@ Projects
         $('#delete_project').attr('action', "{{ route('projects.destroy', '') }}/" + id);
         $('#project-modal-delete').modal('show');
       } //
-      // 
+      function deleteFile(fileId, button) {
+        $('#file-modal-delete').modal({
+            backdrop: 'static',
+            keyboard: false
+        }).modal('show');
+        $('#project-modal-edit').css('opacity', '0.8').css('background-color', 'black');
+        $('#file-modal-delete').on('hidden.bs.modal', function () {
+            $('#project-modal-edit').css('opacity', '1').css('background-color', '');
+        });
+        $('#confirm-delete-file').off('click').on('click', function() {
+            $.ajax({
+                url: "{{ url('admin/project-files') }}" + '/' + fileId,
+                type: "DELETE",
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.status) {
+                        $(button).closest('div').remove();
+                        $('#file-modal-delete').modal('hide');
+                        $('#project-modal-edit').css('opacity', '1').css('background-color', '');
+                    } else {
+                        alert('Failed to delete file.');
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr);
+                }
+            });
+        });
+    }
 
+    document.getElementById('add-file-upload').addEventListener('click', function() {
+        const container = document.getElementById('file-upload-container');
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.name = 'files[]';
+        input.accept = '.pdf';
+        input.className = 'form-control mb-2';
+        container.appendChild(input);
+    });
+
+    document.getElementById('add-edit-file-upload').addEventListener('click', function() {
+        const container = document.getElementById('edit-file-upload-container');
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.name = 'files[]';
+        input.accept = '.pdf';
+        input.className = 'form-control mb-2';
+        container.appendChild(input);
+    });
     </script>
+    <style>
+        .email-leftbar {
+            max-height: 600px; /* Adjust the height as needed */
+            overflow-y: auto;
+        }
+
+        /* Custom scrollbar styles */
+        .email-leftbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .email-leftbar::-webkit-scrollbar-thumb {
+            background-color: #007bff; /* Primary color */
+            border-radius: 10px;
+        }
+
+        .email-leftbar::-webkit-scrollbar-thumb:hover {
+            background-color: #0056b3; /* Darker primary color on hover */
+        }
+
+        .email-leftbar::-webkit-scrollbar-track {
+            background-color: #f1f1f1; /* Light background color */
+        }
+
+        /* Black overlay for modal */
+        .modal-backdrop.show {
+            opacity: 0.8;
+            background-color: black;
+        }
+    </style>
     @endsection

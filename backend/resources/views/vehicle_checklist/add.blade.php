@@ -34,86 +34,94 @@ Vehicle Checklist
                         <form action="{{ route('vehicle_checklists.store') }}" method="POST"
                             enctype="multipart/form-data" id="checklist-form">
                             @csrf
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td class="align-middle text-start fw-bold">Projects <span
-                                            class="text-danger">*</span></td>
-                                    <td>
-                                        <select class="form-select" name="project_id" id="project_id">
-                                            <option value="">Select Project</option>
-                                            @foreach($Projects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('project_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </td>
-                                </tr>
-                            </table>
-                            <table class="table table-bordered align-middle">
-                                <tr>
-                                    @foreach($VehicleData as $key => $value)
-                                    <th>
-                                        <span name="vehicle_data" id="vehicle_data">{{ $value }}</span>
-                                    </th>
-                                    @endforeach
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="text" name="vehicle_registration[]" class="form-control">
-                                    </td>
-                                    <td>
-                                        <input type="date" name="date[]" class="form-control">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="driver_name[]" class="form-control">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="miles[]" class="form-control">
-                                    </td>
-                                </tr>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="align-middle text-start fw-bold">Projects <span
+                                                class="text-danger">*</span></td>
+                                        <td>
+                                            <select class="form-select" name="project_id" id="project_id">
+                                                <option value="">Select Project</option>
+                                                @foreach($Projects as $project)
+                                                <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('project_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <tr>
+                                        @foreach($VehicleData as $key => $value)
+                                        <th>
+                                            <span name="vehicle_data" id="vehicle_data">{{ $value }}</span>
+                                        </th>
+                                        @endforeach
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="vehicle_registration[]" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="date" name="date[]" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="driver_name[]" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="miles[]" class="form-control">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                             <button type="button" class="btn btn-primary vehicle_data_row mb-4">Add More</button>
-                            <table class="table table-bordered align-middle">
-                                <tr>
-                                    <th>Items Checked</th>
-                                    @foreach($Days as $key => $value)
-                                    <th class="text-center">
-                                        <span name="day" id="day">{{ $value }}</span>
-                                    </th>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <tr>
+                                        <th>Items Checked</th>
+                                        @foreach($Days as $key => $value)
+                                        <th class="text-center">
+                                            <span name="day" id="day">{{ $value }}</span>
+                                        </th>
+                                        @endforeach
+                                    </tr>
+                                    @foreach($VehicleItems as $key => $value)
+                                    <tr>
+                                        <td class="fw-bold">{{ $value }}</td>
+                                        @foreach($Days as $day)
+                                        <td class="text-center">
+                                            <input type="text" name="checklist[{{ $value }}][{{ $day }}]"
+                                                class="form-control">
+                                        </td>
+                                        @endforeach
+                                    </tr>
                                     @endforeach
-                                </tr>
-                                @foreach($VehicleItems as $key => $value)
-                                <tr>
-                                    <td class="fw-bold">{{ $value }}</td>
-                                    @foreach($Days as $day)
-                                    <td class="text-center">
-                                        <input type="text" name="checklist[{{ $value }}][{{ $day }}]"
-                                            class="form-control">
-                                    </td>
-                                    @endforeach
-                                </tr>
-                                @endforeach
-                            </table>
-                            <table class="table table-bordered defect-table">
-                                <tr class="fw-bold">
-                                    <td>Defect</td>
-                                    <td>Date Reported</td>
-                                    <td>Usable</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="text" name="defect[]" class="form-control">
-                                    </td>
-                                    <td>
-                                        <input type="date" name="date_reported[]" class="form-control">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="useable[]" class="form-control">
-                                    </td>
-                                </tr>
-                            </table>
+                                </table>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered defect-table">
+                                    <tr class="fw-bold">
+                                        <td>Defect</td>
+                                        <td>Date Reported</td>
+                                        <td>Usable</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="defect[]" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="date" name="date_reported[]" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="useable[]" class="form-control">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                             <button type="button" class="btn btn-primary add-row">Add More</button>
                             <div class="row mb-4">
                                 <div class="col text-end">

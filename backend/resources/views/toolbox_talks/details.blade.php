@@ -32,38 +32,42 @@ Toolbox Talk Details
                     </div>
                 </div>
                 <div class="p-4 border-top">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td class="align-middle text-start fw-bold">Project</td>
-                            <td>{{ $toolboxTalk->project->name }}</td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle text-start fw-bold">Topic</td>
-                            <td>{{ $toolboxTalk->topic }}</td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle text-start fw-bold">Presented By</td>
-                            <td>{{ $toolboxTalk->presented_by }}</td>
-                        </tr>
-                    </table>
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>First Name</th>
-                            <th>Surname</th>
-                            <th>Date</th>
-                        </tr>
-                        @if(isset($toolboxTalk->toolbox_talk))
-                        @php
-                        $toolboxTalk = json_decode($toolboxTalk->toolbox_talk, true);
-                        @endphp
-                        @for($i = 0; $i < count($toolboxTalk['first_name']); $i++) <tr>
-                            <td>{{ $toolboxTalk['first_name'][$i] }}</td>
-                            <td>{{ $toolboxTalk['surname'][$i] }}</td>
-                            <td>{{ $toolboxTalk['date'][$i] }}</td>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td class="align-middle text-start fw-bold">Project</td>
+                                <td>{{ $toolboxTalk->project->name }}</td>
                             </tr>
-                            @endfor
-                            @endif
-                    </table>
+                            <tr>
+                                <td class="align-middle text-start fw-bold">Topic</td>
+                                <td>{{ $toolboxTalk->topic }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-start fw-bold">Presented By</td>
+                                <td>{{ $toolboxTalk->presented_by }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>First Name</th>
+                                <th>Surname</th>
+                                <th>Date</th>
+                            </tr>
+                            @if(isset($toolboxTalk->toolbox_talk))
+                            @php
+                            $toolboxTalk = json_decode($toolboxTalk->toolbox_talk, true);
+                            @endphp
+                            @for($i = 0; $i < count($toolboxTalk['first_name']); $i++) <tr>
+                                <td>{{ $toolboxTalk['first_name'][$i] }}</td>
+                                <td>{{ $toolboxTalk['surname'][$i] }}</td>
+                                <td>{{ $toolboxTalk['date'][$i] }}</td>
+                                </tr>
+                                @endfor
+                                @endif
+                        </table>
+                    </div>
                     <div class="row mb-4">
                         <div class="col text-end">
                             <a class="btn btn-danger" id="exportToPdf">Export to PDF</a>
