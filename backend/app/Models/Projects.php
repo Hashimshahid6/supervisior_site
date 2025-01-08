@@ -74,4 +74,12 @@ class Projects extends Model
 
         return $query;
     }
+
+    public static function canMakeDeletedProjectActive()
+    {
+        $user = auth()->user();
+        $packageLimit = @$user->package->project_limit;
+        $uploadedProjects = $user->projects()->where('status', 'Active')->count();
+        return $uploadedProjects < $packageLimit;
+    }
 }

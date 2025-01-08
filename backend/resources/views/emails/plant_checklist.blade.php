@@ -17,6 +17,8 @@
         <tr>
             <th>Plant Type</th>
             <td>{{ $PlantTypes[$DailyChecklist->plant_type] ?? 'Unknown' }}</td>
+            <th>Plant Details</th>
+            <td>{{ $DailyChecklist->plant_details }}</td>
             <th>Project</th>
             <td>{{ $DailyChecklist->project->name }}</td>
         </tr>

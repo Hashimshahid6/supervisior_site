@@ -50,6 +50,15 @@ Plant Checklists
                                             <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
+                                        <td class="align-middle text-start fw-bold">Plant Details <span
+                                                class="text-danger">*</span>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="plant_details" class="form-control">
+                                            @error('plant_details')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
                                         <td class="align-middle text-start fw-bold">Projects <span
                                                 class="text-danger">*</span></td>
                                         <td>

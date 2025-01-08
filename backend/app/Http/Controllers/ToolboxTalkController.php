@@ -9,6 +9,7 @@ use App\Models\Projects;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class ToolboxTalkController extends Controller
 {
@@ -17,8 +18,17 @@ class ToolboxTalkController extends Controller
      */
     public function index(Request $request)
     {
-        $projects = Projects::getAllProjects();
-        $toolboxTalks = ToolboxTalk::filter($request->all())->paginate($request->get('per_page', 10));
+        $user = Auth::user();
+        if($user->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $projects = Projects::where('status', 'Active')->where('user_id', $companyId)->get();
+        } elseif($user->role == 'Company') {
+            $projects = Projects::where('status', 'Active')->where('user_id', $user->id)->get();
+        } else {
+            $projects = Projects::where('status', 'Active')->get();
+        }
+        $perPage = $request->input('per_page', 10);
+        $toolboxTalks = ToolboxTalk::getAllToolBoxTalk()->paginate($perPage);
         return view('toolbox_talks.list', compact('toolboxTalks', 'projects'));
     }
 

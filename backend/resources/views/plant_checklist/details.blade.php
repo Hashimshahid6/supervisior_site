@@ -36,6 +36,8 @@ Plant Checklist Details
                             <tr>
                                 <td class="align-middle text-start fw-bold">Plant Type</td>
                                 <td>{{ $PlantTypes[$DailyChecklist->plant_type] ?? 'Unknown' }}</td>
+                                <td class="align-middle text-start fw-bold">Plant Details</td>
+                                <td>{{ $DailyChecklist->plant_details }}</td>
                                 <td class="align-middle text-start fw-bold">Project</td>
                                 <td>{{ $DailyChecklist->project->name }}</td>
                             </tr>

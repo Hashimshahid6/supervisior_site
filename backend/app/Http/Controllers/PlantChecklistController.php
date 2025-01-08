@@ -39,8 +39,12 @@ class PlantChecklistController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        if($user->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $Projects = Projects::where('status', 'Active')->where('user_id', $companyId)->get();
+        }
         $Days = PlantChecklist::$Days;
-        $Projects = Projects::getAllProjects();
         $PlantTypes = PlantChecklist::$PlantTypes;
         $PlantChecklists = PlantChecklist::$PlantChecklists;
         return view('plant_checklist.add', compact('PlantChecklists', 'PlantTypes', 'Projects', 'Days'));
@@ -53,7 +57,8 @@ class PlantChecklistController extends Controller
     {
         $request->validate([
             'project_id' => 'required|integer',
-            'plant_type' => 'required|integer',
+            'plant_type' => 'required|string',
+            'plant_details' => 'required|string',
             'checklist' => 'required|array',
         ]);
 
@@ -64,6 +69,7 @@ class PlantChecklistController extends Controller
             'project_id' => $request->project_id,
             'user_id' => auth()->id(),
             'plant_type' => $request->plant_type,
+            'plant_details' => $request->plant_details,
             'checklist' => $checklistData,
             'reports' => $defectData,
             'status' => $request->action == 'save' ? 'incomplete' : 'complete'
@@ -89,10 +95,15 @@ class PlantChecklistController extends Controller
      */
     public function edit(string $id)
     {
+        $user = Auth::user();
+        if($user->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $Projects = Projects::where('status', 'Active')->where('user_id', $companyId)->get();
+        }
+
         $PlantChecklists = PlantChecklist::$PlantChecklists;
         $PlantTypes = PlantChecklist::$PlantTypes;
         $Days = PlantChecklist::$Days;
-        $Projects = Projects::getAllProjects();
 
         $DailyChecklist = PlantChecklist::with('project')->find($id);
         // dd($DailyChecklist);
@@ -107,7 +118,8 @@ class PlantChecklistController extends Controller
     {
         $request->validate([
             'project_id' => 'required|integer',
-            'plant_type' => 'required|integer',
+            'plant_type' => 'required|string',
+            'plant_details' => 'required|string',
             'checklist' => 'required|array',
         ]);
     
@@ -123,6 +135,7 @@ class PlantChecklistController extends Controller
         $DailyChecklist->update([
             'project_id' => $request->project_id,
             'plant_type' => $request->plant_type,
+            'plant_details' => $request->plant_details,
             'checklist' => $checklistData,
             'reports' => $defectData,
             'status' => $request->action == 'save' ? 'incomplete' : 'complete'

@@ -45,12 +45,21 @@ Edit Plant Checklist
                                         <td>
                                             <select class="form-select" name="plant_type" id="plant_type">
                                                 <option value="">Please Select</option>
-                                                @foreach($PlantTypes as $key => $value)
-                                                <option value="{{ $key }}" {{ $DailyChecklist->plant_type == $key ?
+                                                @foreach($PlantTypes as $value)
+                                                <option value="{{ $value }}" {{ $DailyChecklist->plant_type == $value ?
                                                     'selected' : '' }}>{{ $value }}</option>
                                                 @endforeach
                                             </select>
                                             @error('plant_type')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                        <td class="align-middle text-start fw-bold">Plant Details <span
+                                                class="text-danger">*</span></td>
+                                        <td>
+                                            <input type="text" name="plant_details" class="form-control"
+                                                value="{{ $DailyChecklist->plant_details }}">
+                                            @error('plant_details')
                                             <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>

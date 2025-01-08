@@ -38,61 +38,51 @@ class ToolboxTalk extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }//
+    }//end of user
 
     public static function getAllToolBoxTalk()
     {
-        $query = ToolboxTalk::with(['project', 'user']); // Corrected the with method
 
-        // Get the authenticated user
-        $authUser = auth()->user();
+        $query = ToolboxTalk::query();
+        $query->with('project', 'user');
 
-        // Check role-based conditions
-        if ($authUser->role == 'Employee') {
-            // Employee can see their own records
-            $query->where('user_id', $authUser->id);
-        } elseif ($authUser->role == 'Company') {
-            // Company can see records created by their employees
-            $query->where(function ($q) use ($authUser) {
-                $q->whereHas('user', function ($query) use ($authUser) {
-                    $query->where('user_id', $authUser->id); // Match `user_id` with the company's ID
-                })->orWhere('user_id', $authUser->id); // Include records directly created by the company itself
-            });
-        } elseif ($authUser->role == 'Admin') {
-            // Admin can see all records
-        } else {
-            // Return an empty collection if the role doesn't match
-            return collect();
+        if (auth()->user()->role == 'Employee') {
+            // Employee can see only their own records
+            $query->where('user_id', auth()->id());
+        } elseif (auth()->user()->role == 'Company') {
+            // The logged-in user is the company
+            $companyId = auth()->id(); // The company's ID in the `users` table
+
+            // Get the IDs of employees belonging to this company
+            $employeeIds = User::where('company_id', $companyId)->pluck('id');
+
+            // Include forms created by employees
+            $query->whereIn('user_id', $employeeIds);
         }
 
-        return $query->get();
-    }//
-
-    public function scopeFilter($query, $filters)
-    {
-        if(isset($filters['project_id']) && $filters['project_id'] != '') {
-            $query->where('project_id', $filters['project_id']);
-        }
-
-        if(isset($filters['search']) && $filters['search'] != '') {
-            $query->where(function ($q) use ($filters) {
-                $q->whereHas('project', function ($query) use ($filters) {
-                    $query->where('name', 'like', '%' . $filters['search'] . '%');
-                })->orWhere('topic', 'like', '%' . $filters['search'] . '%')
-                ->orWhere('presented_by', 'like', '%' . $filters['search'] . '%');
+        if (request()->has('search') && request()->search != '') {
+            $query->where(function ($q) {
+                $q->orWhereHas('project', function ($query) {
+                    $query->where('name', 'like', '%' . request()->search . '%');
+                })->orWhere('topic', 'like', '%' . request()->search . '%')
+                ->orWhere('presented_by', 'like', '%' . request()->search . '%');
             });
         }
-        
-        if(isset($filters['status']) && $filters['status'] != '') {
-            $query->where('status', $filters['status']);
+
+        if (request()->has('project_id') && request()->project_id != '') {
+            $query->where('project_id', request()->project_id);
         }
 
-        if (isset($filters['sort_by']) && isset($filters['sort_order'])) {
-            $query->orderBy($filters['sort_by'], $filters['sort_order']);
+        if (request()->has('status') && request()->status != '') {
+            $query->where('status', request()->status);
+        }
+
+        if (request()->has('sort_by') && request()->has('sort_order')) {
+            $query->orderBy(request()->sort_by, request()->sort_order);
         } else {
             $query->orderBy('id', 'desc');
         }
 
         return $query;
-    }//
+    }
 }

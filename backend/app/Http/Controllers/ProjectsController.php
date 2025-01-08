@@ -15,6 +15,7 @@ class ProjectsController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user(); // Get the authenticated user
+        $deletedProjects = collect(); // Initialize deletedProjects as an empty collection
 
         // Fetch package project limit
         $packageLimit = @$user->package->project_limit;
@@ -27,8 +28,11 @@ class ProjectsController extends Controller
 
         // Get all projects and deleted projects with pagination
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided
-        $projects = Projects::getAllProjects()->paginate($perPage);
-        $deletedProjects = Projects::with('user', 'messages')->where('status', 'Deleted')->paginate($perPage);
+        $projects = Projects::getAllProjects()->where('status', 'Active')->paginate($perPage);
+
+        if ($user->role == 'Company') {
+            $deletedProjects = Projects::getAllProjects()->where('status', 'Deleted')->paginate($perPage);
+        }
 
         // Pass data to the view
         return view('projects.list', compact('projects', 'deletedProjects', 'canAddProject', 'uploadedProjects', 'packageLimit'));
@@ -83,8 +87,8 @@ class ProjectsController extends Controller
      */
     public function show(string $id)
     {
-        // Fetch the project along with the associated user
-        $project = Projects::with(['user', 'messages', 'projectFiles'])->find($id);
+        // Fetch the project along with the associated user, messages, and project files
+        $project = Projects::with(['user', 'messages.user', 'projectFiles'])->find($id);
 
         // Handle the case where the project is not found
         if (!$project) {
@@ -119,12 +123,22 @@ class ProjectsController extends Controller
             'name' => 'required|string',
             'description' => 'required|string',
             'files.*' => 'nullable|file|mimes:pdf',
+            'status' => 'required|in:Active,Inactive,Deleted',
         ]);
 
         $project = Projects::find($id);
+
+        if ($request->status == 'Active' && $project->status == 'Deleted' && !Projects::canMakeDeletedProjectActive()) {
+            return response()->json([
+                'status' => false,
+                'errors' => ['You need to delete one of your active projects to make this project active.'],
+            ], 403);
+        }
+
         $project->update([
             'name' => $request->name,
             'description' => $request->description,
+            'status' => $request->status,
         ]);
 
         if ($request->hasFile('files')) {

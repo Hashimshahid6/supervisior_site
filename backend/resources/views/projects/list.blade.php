@@ -14,19 +14,19 @@ Projects
     <!-- Left sidebar -->
     @if($uploadedProjects >= $packageLimit)
         @if(auth()->user()->role == 'Company')
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="mdi mdi-alert-circle me-2"></i>
-            You have reached your project upload limit. Please upgrade your package to add more projects.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="mdi mdi-alert-circle me-2"></i>
+                You have reached your project upload limit. Please upgrade your package to add more projects.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
-    @else
+        @else
         @if(auth()->user()->role == 'Company')
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="mdi mdi-check me-2"></i>
-            You have <strong>{{ $packageLimit - $uploadedProjects }}</strong> projects limit to upload.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="mdi mdi-check me-2"></i>
+                You have <strong>{{ $packageLimit - $uploadedProjects }}</strong> projects limit to upload.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
     @endif
     {{-- Search Filters --}}
@@ -48,9 +48,12 @@ Projects
                                     <label for="status" class="form-label">Status</label>
                                     <select class="form-select" name="status">
                                         <option value="">Select Status</option>
-                                        <option value="Active" @if(request()->status == 'Active') selected @endif>Active</option>
-                                        <option value="Inactive" @if(request()->status == 'Inactive') selected @endif>Inactive</option>
-                                        <option value="Deleted" @if(request()->status == 'Deleted') selected @endif>Deleted</option>
+                                        <option value="Active" @if(request()->status == 'Active') selected @endif>Active
+                                        </option>
+                                        <option value="Inactive" @if(request()->status == 'Inactive') selected
+                                            @endif>Inactive</option>
+                                        <option value="Deleted" @if(request()->status == 'Deleted') selected
+                                            @endif>Deleted</option>
                                     </select>
                                 </div>
                             </div>
@@ -59,9 +62,12 @@ Projects
                                     <label for="sort_by" class="form-label">Sort By</label>
                                     <select class="form-select" id="sort_by" name="sort_by">
                                         <option value="id" @if(request()->sort_by == 'id') selected @endif>ID</option>
-                                        <option value="name" @if(request()->sort_by == 'name') selected @endif>Project Name</option>
-                                        <option value="status" @if(request()->sort_by == 'status') selected @endif>Status</option>
-                                        <option value="created_at" @if(request()->sort_by == 'created_at') selected @endif>Created At</option>
+                                        <option value="name" @if(request()->sort_by == 'name') selected @endif>Project
+                                            Name</option>
+                                        <option value="status" @if(request()->sort_by == 'status') selected
+                                            @endif>Status</option>
+                                        <option value="created_at" @if(request()->sort_by == 'created_at') selected
+                                            @endif>Created At</option>
                                     </select>
                                 </div>
                             </div>
@@ -69,8 +75,10 @@ Projects
                                 <div class="mb-3">
                                     <label for="sort_order" class="form-label">Sort Order</label>
                                     <select class="form-select" id="sort_order" name="sort_order">
-                                        <option value="desc" @if(request()->sort_order == 'desc') selected @endif>Descending</option>
-                                        <option value="asc" @if(request()->sort_order == 'asc') selected @endif>Ascending</option>
+                                        <option value="desc" @if(request()->sort_order == 'desc') selected
+                                            @endif>Descending</option>
+                                        <option value="asc" @if(request()->sort_order == 'asc') selected
+                                            @endif>Ascending</option>
                                     </select>
                                 </div>
                             </div>
@@ -81,7 +89,8 @@ Projects
                                         <option value="10" @if(request()->per_page == '10') selected @endif>10</option>
                                         <option value="25" @if(request()->per_page == '25') selected @endif>25</option>
                                         <option value="50" @if(request()->per_page == '50') selected @endif>50</option>
-                                        <option value="100" @if(request()->per_page == '100') selected @endif>100</option>
+                                        <option value="100" @if(request()->per_page == '100') selected @endif>100
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -98,7 +107,7 @@ Projects
         </div>
     </div>
 
-    <div class="email-leftbar">
+    <div class="email-leftbar mb-5">
         <div class="card">
             <div class="card-body">
                 @if($canAddProject && auth()->user()->role == 'Company')
@@ -129,7 +138,8 @@ Projects
                 </div>
             </div>
         </div>
-        {{-- <div class="card">
+        @if(auth()->user()->role == 'Company')
+        <div class="card">
             <div class="card-body">
                 <a href="javascript:void(0);" class="btn btn-danger w-100">
                     Deleted Projects
@@ -155,7 +165,8 @@ Projects
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
+        @endif
     </div>
     <!-- End Left sidebar -->
 
@@ -198,7 +209,8 @@ Projects
                                 <input type="file" class="form-control mb-2" name="files[]" accept=".pdf" multiple>
                             </div>
                             <span class="text-danger text-error" id="file-error"></span>
-                            <button type="button" class="badge bg-primary-subtle text-primary" id="add-file-upload">Add File</button>
+                            <button type="button" class="badge bg-primary-subtle text-primary" id="add-file-upload">Add
+                                File</button>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Description <span class="text-danger"> *</span></label>
@@ -242,7 +254,8 @@ Projects
                             <div id="edit-file-upload-container">
                                 <input type="file" class="form-control mb-2" name="files[]" accept=".pdf" multiple>
                             </div>
-                            <button type="button" class="badge bg-primary-subtle text-primary mb-4" id="add-edit-file-upload">Add File</button>
+                            <button type="button" class="badge bg-primary-subtle text-primary mb-4"
+                                id="add-edit-file-upload">Add File</button>
                             <span id="existing-files" class="text-muted"></span>
                             <span class="text-danger text-error"></span>
                         </div>
@@ -250,6 +263,30 @@ Projects
                             <label class="form-label">Description <span class="text-danger"> *</span></label>
                             <textarea class="form-control" rows="4" name="description" id="edit_description"></textarea>
                             <span class="text-danger text-error"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status <span class="text-danger"> *</span></label>
+                            <div class="d-flex">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="radio" name="status" id="active"
+                                        value="Active">
+                                    <label class="form-check-label" for="active">Active</label>
+                                </div>
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="radio" name="status" id="inactive"
+                                        value="Inactive">
+                                    <label class="form-check-label" for="inactive">Inactive</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="deleted"
+                                        value="Deleted">
+                                    <label class="form-check-label" for="deleted">Deleted</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="active-warning" class="text-danger" style="display: none;">
+                            <i class="mdi mdi-alert-circle me-2"></i>
+                            You need to delete one of your active projects to make a deleted project active.
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -376,11 +413,9 @@ Projects
                                                     <button type="button" class="btn btn-primary waves-light waves-effect" 
                                                             onclick="editProject(${data.id})">
                                                             <i class="fa fa-edit"></i></button>
-                                                    ${data.status !== 'Active' ? `
                                                         <button type="button" class="btn btn-danger waves-light waves-effect"
                                                                 onclick="deleteProject(${data.id})">
                                                                 <i class="far fa-trash-alt"></i></button>
-                                                    ` : ''}
                                                 </div>
                                             </div>
                                         </div>
@@ -670,10 +705,22 @@ Projects
         input.className = 'form-control mb-2';
         container.appendChild(input);
     });
+
+    const activeRadio = document.getElementById('active');
+    const activeWarning = document.getElementById('active-warning');
+
+    activeRadio.addEventListener('change', function () {
+        if (this.checked && {{ $uploadedProjects }} >= {{ $packageLimit }}) {
+            activeWarning.style.display = 'block';
+        } else {
+            activeWarning.style.display = 'none';
+        }
+    });
     </script>
     <style>
         .email-leftbar {
-            max-height: 600px; /* Adjust the height as needed */
+            max-height: 600px;
+            /* Adjust the height as needed */
             overflow-y: auto;
         }
 
@@ -683,16 +730,19 @@ Projects
         }
 
         .email-leftbar::-webkit-scrollbar-thumb {
-            background-color: #007bff; /* Primary color */
+            background-color: #007bff;
+            /* Primary color */
             border-radius: 10px;
         }
 
         .email-leftbar::-webkit-scrollbar-thumb:hover {
-            background-color: #0056b3; /* Darker primary color on hover */
+            background-color: #0056b3;
+            /* Darker primary color on hover */
         }
 
         .email-leftbar::-webkit-scrollbar-track {
-            background-color: #f1f1f1; /* Light background color */
+            background-color: #f1f1f1;
+            /* Light background color */
         }
 
         /* Black overlay for modal */

@@ -19,7 +19,7 @@ Toolbox Talks
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="mb-3">
-                <h5 class="card-title">Toolbox Talks Template List<span class="text-muted fw-normal ms-2">({{$toolboxTalks->total()}})</span></h5>
+                <h5 class="card-title">Toolbox Talks Template List<span class="text-muted fw-normal ms-2">({{$toolboxTalks->count()}})</span></h5>
             </div>
         </div>
         @if(auth()->user()->role == 'Employee')
@@ -160,7 +160,7 @@ Toolbox Talks
                             </tbody>
                         </table>
                     </div>
-                    {{ $toolboxTalks->appends(request()->query())->links() }}
+                    {{ $toolboxTalks->links() }}
                 </div>
             </div>
         </div>
