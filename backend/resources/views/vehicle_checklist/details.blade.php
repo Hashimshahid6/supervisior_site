@@ -65,11 +65,11 @@ Vehicle Checklist Details
                     <table class="table table-bordered align-middle" id="itemsCheckedTable">
                         <tr>
                             <th>Items Checked</th>
-                            @foreach($Days as $key => $value)
+                            @foreach($Days as $value)
                             <th class="text-center">{{ $value }}</th>
                             @endforeach
                         </tr>
-                        @foreach($VehicleItems as $key => $value)
+                        @foreach($VehicleItems as $value)
                         <tr>
                             <td class="fw-bold">{{ $value }}</td>
                             @foreach($Days as $day)
@@ -131,7 +131,6 @@ Vehicle Checklist Details
         pdf.autoTable({ html: defectTable, startY: pdf.lastAutoTable.finalY + 10, theme: 'striped', headStyles: { fillColor: [22, 160, 133] }, styles: { lineColor: [0, 0, 0], lineWidth: 0.1 } });
         pdf.save('Vehicle_Checklist.pdf');
     });
-
     document.getElementById('exportToExcel').addEventListener('click', function () {
         const wb = XLSX.utils.book_new();
         const projectTable = document.getElementById('projectTable');
@@ -139,13 +138,24 @@ Vehicle Checklist Details
         const itemsCheckedTable = document.getElementById('itemsCheckedTable');
         const defectTable = document.getElementById('defectTable');
 
-        const projectData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(plantTypeTable), { header: 1 });
+        const projectData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(projectTable), { header: 1 });
         const vehiclesData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(vehiclesTable), { header: 1 });
         const itemsCheckedData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(itemsCheckedTable), { header: 1 });
         const defectData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(defectTable), { header: 1 });
 
         const combinedData = [...projectData, [], ...vehiclesData, [], ...itemsCheckedData, [], ...defectData];
         const ws = XLSX.utils.aoa_to_sheet(combinedData);
+
+        // Format date columns to display as date in Excel
+        const dateColumns = [1, 2]; // Assuming date columns are at index 1 and 2
+        dateColumns.forEach(col => {
+            for (let i = 1; i < combinedData.length; i++) {
+                if (combinedData[i][col]) {
+                    ws[XLSX.utils.encode_cell({ r: i, c: col })].z = 'dd/mm/yyyy';
+                }
+            }
+        });
+
         XLSX.utils.book_append_sheet(wb, ws, 'Vehicle Checklist');
         XLSX.writeFile(wb, 'Vehicle_Checklist.xlsx');
     });

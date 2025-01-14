@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Artisan;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/admin', [LoginController::class, 'index']);
 Route::get('/admin/login', [LoginController::class, 'index'])->name('login');
 Route::post('/admin/login', [AuthenticationController::class, 'authenticate'])->name('login.post');
 Route::get('/admin/register', [RegisterController::class, 'index'])->name('register');

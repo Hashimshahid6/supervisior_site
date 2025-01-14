@@ -42,7 +42,7 @@
     <table>
         <thead>
             <tr>
-                @foreach($VehicleData as $key => $value)
+                @foreach($VehicleData => $value)
                 <th>{{ $value }}</th>
                 @endforeach
             </tr>

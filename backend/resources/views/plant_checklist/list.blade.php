@@ -132,6 +132,7 @@ Plant Checklists
                                 <tr>
                                     <th scope="col">Project Name</th>
                                     <th scope="col">Plant Type</th>
+                                    <th scope="col">Plant Details</th>
                                     <th scope="col">Created At</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
@@ -142,6 +143,7 @@ Plant Checklists
                                 <tr>
                                     <td>{{ @$checklist->project->name }}</td>
                                     <td>{{ $checklist->plant_type }}</td>
+                                    <td>{{ $checklist->plant_details }}</td>
                                     <td><span class="badge bg-primary-subtle text-primary  mb-0">{{ $checklist->created_at->format('d M Y') }}</span></td>
                                     <td>
                                         @if($checklist->status == 'complete')

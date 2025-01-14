@@ -16,7 +16,7 @@
     <table>
         <tr>
             <th>Plant Type</th>
-            <td>{{ $PlantTypes[$DailyChecklist->plant_type] ?? 'Unknown' }}</td>
+            <td>{{ $DailyChecklist->plant_type ?? 'Unknown' }}</td>
             <th>Plant Details</th>
             <td>{{ $DailyChecklist->plant_details }}</td>
             <th>Project</th>
@@ -28,13 +28,13 @@
         <thead>
             <tr>
                 <th>Items</th>
-                @foreach($Days as $key => $value)
+                @foreach($Days as $value)
                     <th>{{ $value }}</th>
                 @endforeach
             </tr>
         </thead>
         <tbody>
-            @foreach($PlantChecklists as $key => $value)
+            @foreach($PlantChecklists as $value)
                 <tr>
                     <td>{{ $value }}</td>
                     @foreach($Days as $day)

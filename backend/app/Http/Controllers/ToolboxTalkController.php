@@ -37,7 +37,11 @@ class ToolboxTalkController extends Controller
      */
     public function create()
     {
-        $projects = Projects::getAllProjects();
+        $user = Auth::user();
+        if($user->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $projects = Projects::where('status', 'Active')->where('user_id', $companyId)->get();
+        }
         return view('toolbox_talks.add', compact('projects'));
     }
 
@@ -72,9 +76,8 @@ class ToolboxTalkController extends Controller
      */
     public function show(string $id)
     {
-        $projects = Projects::getAllProjects();
-        $toolboxTalk = ToolboxTalk::find($id);
-        return view('toolbox_talks.details', compact('toolboxTalk', 'projects'));
+        $toolboxTalk = ToolboxTalk::with('project')->find($id);
+        return view('toolbox_talks.details', compact('toolboxTalk'));
     }
 
     /**
@@ -82,7 +85,11 @@ class ToolboxTalkController extends Controller
      */
     public function edit(string $id)
     {
-        $projects = Projects::getAllProjects();
+        $user = Auth::user();
+        if($user->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $projects = Projects::where('status', 'Active')->where('user_id', $companyId)->get();
+        }
         $toolboxTalk = ToolboxTalk::find($id);
         return view('toolbox_talks.edit', compact('toolboxTalk', 'projects'));
     }

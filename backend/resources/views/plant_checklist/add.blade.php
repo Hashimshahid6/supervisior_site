@@ -42,8 +42,8 @@ Plant Checklists
                                         <td>
                                             <select class="form-select" name="plant_type" id="plant_type">
                                                 <option value="">Please Select</option>
-                                                @foreach($PlantTypes as $key => $value)
-                                                <option value="{{ $key }}">{{ $value }}</option>
+                                                @foreach($PlantTypes as $value)
+                                                <option value="{{ $value }}">{{ $value }}</option>
                                                 @endforeach
                                             </select>
                                             @error('plant_type')
@@ -125,8 +125,8 @@ Plant Checklists
                                         </td>
                                     </tr>
                                 </table>
+                                <button type="button" class="btn btn-primary add-row">Add More</button>
                             </div>
-                            <button type="button" class="btn btn-primary add-row">Add More</button>
                             <div class="row mb-4">
                                 <div class="col text-end">
                                     <button type="submit" class="btn btn-secondary" name="action" value="save">Save

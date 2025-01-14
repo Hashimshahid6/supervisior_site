@@ -8,7 +8,10 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ URL::asset('build/images/favicon.ico') }}">
+    @php
+        $settings = App\Models\WebsiteSettings::first();
+    @endphp
+    <link rel="shortcut icon" href="{{ URL::asset('public/images/websiteimages/'. $settings->site_favicon) }}">
 
     <!-- include head css -->
     @include('layouts.head-css')

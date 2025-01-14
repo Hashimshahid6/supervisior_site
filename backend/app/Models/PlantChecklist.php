@@ -14,6 +14,7 @@ class PlantChecklist extends Model
         'user_id',
         'project_id',
         'plant_type',
+        'plant_details',
         'checklist',
         'reports',
         'status'

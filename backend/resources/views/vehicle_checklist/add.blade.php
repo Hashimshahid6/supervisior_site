@@ -77,8 +77,8 @@ Vehicle Checklist
                                         </td>
                                     </tr>
                                 </table>
+                                <button type="button" class="btn btn-primary vehicle_data_row mb-4">Add More</button>
                             </div>
-                            <button type="button" class="btn btn-primary vehicle_data_row mb-4">Add More</button>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle">
                                     <tr>
@@ -121,8 +121,8 @@ Vehicle Checklist
                                         </td>
                                     </tr>
                                 </table>
+                                <button type="button" class="btn btn-primary add-row">Add More</button>
                             </div>
-                            <button type="button" class="btn btn-primary add-row">Add More</button>
                             <div class="row mb-4">
                                 <div class="col text-end">
                                     <button type="submit" class="btn btn-secondary" name="action" value="save">Save

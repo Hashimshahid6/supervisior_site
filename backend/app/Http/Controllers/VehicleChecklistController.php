@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use App\Models\VehicleChecklist;
+use App\Models\User;
 
 class VehicleChecklistController extends Controller
 {
@@ -18,8 +19,15 @@ class VehicleChecklistController extends Controller
      */
     public function index(Request $request)
     {
-        $projects = Projects::getAllProjects()->get();
-        // dd($projects[0]);
+        $user = Auth::user();
+        if ($user->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $projects = Projects::where('status', 'Active')->where('user_id', $companyId)->get();
+        } elseif ($user->role == 'Company') {
+            $projects = Projects::where('status', 'Active')->where('user_id', $user->id)->get();
+        } else {
+            $projects = Projects::where('status', 'Active')->get();
+        }
         $VehicleItems = VehicleChecklist::$VehicleItems;
         $perPage = $request->input('per_page', 10);
         $VehicleChecklists = VehicleChecklist::getAllVehicleChecklist()->paginate($perPage);
@@ -31,8 +39,12 @@ class VehicleChecklistController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        if($user->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $Projects = Projects::where('status', 'Active')->where('user_id', $companyId)->get();
+        }
         $Days = PlantChecklist::$Days;
-        $Projects = Projects::getAllProjects()->get();
         $VehicleItems = VehicleChecklist::$VehicleItems;
         $VehicleData = VehicleChecklist::$VehicleData;
         return view('vehicle_checklist.add', compact('VehicleItems', 'VehicleData', 'Projects', 'Days'));
@@ -65,7 +77,7 @@ class VehicleChecklistController extends Controller
         ]);
 
         return redirect()->route('vehicle_checklists.index')->with('success', $request->action == 'save' ? 'Vehicle Checklist Checklist saved successfully' : 'Vehicle Checklist submitted successfully');
-    }//
+    } //
 
     /**
      * Display the specified resource.
@@ -84,11 +96,14 @@ class VehicleChecklistController extends Controller
      */
     public function edit(string $id)
     {
+        $user = Auth::user();
+        if($user->role == 'Employee') {
+            $companyId = User::where('id', auth()->id())->pluck('company_id')->first();
+            $Projects = Projects::where('status', 'Active')->where('user_id', $companyId)->get();
+        }
         $VehicleItems = VehicleChecklist::$VehicleItems;
         $VehicleData = VehicleChecklist::$VehicleData;
         $Days = PlantChecklist::$Days;
-        $Projects = Projects::getAllProjects()->get();
-
         $DailyChecklist = VehicleChecklist::with(['project', 'user'])->find($id);
         // dd($DailyChecklist);
 
@@ -105,16 +120,16 @@ class VehicleChecklistController extends Controller
             'checklist' => 'required|array',
             'vehicle_data' => 'nullable|array',
         ]);
-    
+
         $VehicleItems = VehicleChecklist::$VehicleItems;
         $VehicleData = VehicleChecklist::$VehicleData;
         $Days = PlantChecklist::$Days;
         $email = Auth::user()->email;
-    
+
         $checklistData = json_encode($request->input('checklist'));
         $vehicleData = json_encode($request->only(['vehicle_registration', 'date', 'driver_name', 'miles']));
         $defectData = json_encode($request->only(['defect', 'date_reported', 'useable', 'reported_to', 'operator']));
-    
+
         $DailyChecklist = VehicleChecklist::find($id);
         $DailyChecklist->update([
             'project_id' => $request->project_id,
@@ -123,24 +138,24 @@ class VehicleChecklistController extends Controller
             'reports' => $defectData,
             'status' => $request->action == 'save' ? 'incomplete' : 'complete'
         ]);
-    
+
         if ($request->action == 'submit') {
             $pdf = Pdf::loadView('emails.vehicle_checklist', compact('DailyChecklist', 'VehicleItems', 'VehicleData', 'Days'));
-    
+
             // Save the PDF to public/uploads/pdf
             $pdfPath = public_path('uploads/pdf/Vehicle_Checklist_' . time() . '.pdf');
             $pdf->save($pdfPath);
             // Send the email with the PDF attached
             Mail::to($email)->send(new VehicleChecklistMail($DailyChecklist, $pdfPath, $VehicleItems, $VehicleData, $Days));
-    
+
             // Delete the file after sending the email
             if (file_exists($pdfPath)) {
                 unlink($pdfPath);
             }
         }
-    
+
         return redirect()->route('vehicle_checklists.index')->with('success', $request->action == 'save' ? 'Vehicle Checklist saved successfully' : 'Vehicle Checklist submitted successfully');
-    }    
+    }
 
     /**
      * Remove the specified resource from storage.

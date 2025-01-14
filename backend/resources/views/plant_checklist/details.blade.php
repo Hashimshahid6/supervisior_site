@@ -9,6 +9,7 @@ Plant Checklist Details
 Plant Checklist Details
 @endsection
 @section('body')
+
 <body>
     @endsection
     @section('content')
@@ -35,7 +36,7 @@ Plant Checklist Details
                         <table class="table table-bordered" id="plantTypeTable">
                             <tr>
                                 <td class="align-middle text-start fw-bold">Plant Type</td>
-                                <td>{{ $PlantTypes[$DailyChecklist->plant_type] ?? 'Unknown' }}</td>
+                                <td>{{ $DailyChecklist->plant_type ?? 'Unknown' }}</td>
                                 <td class="align-middle text-start fw-bold">Plant Details</td>
                                 <td>{{ $DailyChecklist->plant_details }}</td>
                                 <td class="align-middle text-start fw-bold">Project</td>
@@ -55,7 +56,8 @@ Plant Checklist Details
                             <tr>
                                 <td class="fw-bold">{{ $value }}</td>
                                 @foreach($Days as $day)
-                                <td class="text-center">{{ json_decode($DailyChecklist->checklist, true)[$value][$day] ?? ''
+                                <td class="text-center">{{ json_decode($DailyChecklist->checklist, true)[$value][$day]
+                                    ?? ''
                                     }}</td>
                                 @endforeach
                             </tr>
@@ -76,17 +78,16 @@ Plant Checklist Details
                             $reports = json_decode($DailyChecklist->reports, true);
                             @endphp
                             @if(is_array($reports['defect'] ?? []))
-                            @for($i = 0; $i < count($reports['defect']); $i++)
-                            <tr>
+                            @for($i = 0; $i < count($reports['defect']); $i++) <tr>
                                 <td>{{ $reports['defect'][$i] ?? '' }}</td>
                                 <td>{{ $reports['date_reported'][$i] ?? '' }}</td>
                                 <td>{{ $reports['useable'][$i] ?? '' }}</td>
                                 <td>{{ $reports['reported_to'][$i] ?? '' }}</td>
                                 <td>{{ $reports['operator'][$i] ?? '' }}</td>
-                            </tr>
-                            @endfor
-                            @endif
-                            @endif
+                                </tr>
+                                @endfor
+                                @endif
+                                @endif
                         </table>
                     </div>
                     <div class="row mb-4">
@@ -175,6 +176,16 @@ Plant Checklist Details
 
         // Convert the combined data to a worksheet
         const ws = XLSX.utils.aoa_to_sheet(combinedData);
+
+                // Format date columns to display as date in Excel
+                const dateColumns = [1, 2]; // Assuming date columns are at index 1 and 2
+        dateColumns.forEach(col => {
+            for (let i = 1; i < combinedData.length; i++) {
+                if (combinedData[i][col]) {
+                    ws[XLSX.utils.encode_cell({ r: i, c: col })].z = 'dd/mm/yyyy';
+                }
+            }
+        });
 
         // Append the worksheet to the workbook
         XLSX.utils.book_append_sheet(wb, ws, 'Plant Checklist');

@@ -33,7 +33,7 @@ Toolbox Talk Details
                 </div>
                 <div class="p-4 border-top">
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="projectTable">
                             <tr>
                                 <td class="align-middle text-start fw-bold">Project</td>
                                 <td>{{ $toolboxTalk->project->name }}</td>
@@ -49,7 +49,7 @@ Toolbox Talk Details
                         </table>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="attendeesTable">
                             <tr>
                                 <th>First Name</th>
                                 <th>Surname</th>
@@ -89,8 +89,8 @@ Toolbox Talk Details
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF();
             pdf.text('Toolbox Talk Report', 14, 15);
-            const projectTable = document.querySelector('table:nth-of-type(1)');
-            const attendeesTable = document.querySelector('table:nth-of-type(2)');
+            const projectTable = document.getElementById('projectTable');
+            const attendeesTable = document.getElementById('attendeesTable');
             pdf.autoTable({ html: projectTable, startY: 20, theme: 'striped', headStyles: { fillColor: [22, 160, 133] }, styles: { lineColor: [0, 0, 0], lineWidth: 0.1 } });
             pdf.autoTable({ html: attendeesTable, startY: pdf.lastAutoTable.finalY + 10, theme: 'striped', headStyles: { fillColor: [22, 160, 133] }, styles: { lineColor: [0, 0, 0], lineWidth: 0.1 } });
             pdf.save('Toolbox_Talk.pdf');
@@ -98,12 +98,23 @@ Toolbox Talk Details
 
         document.getElementById('exportToExcel').addEventListener('click', function () {
             const wb = XLSX.utils.book_new();
-            const projectTable = document.querySelector('table:nth-of-type(1)');
-            const attendeesTable = document.querySelector('table:nth-of-type(2)');
+            const projectTable = document.getElementById('projectTable');
+            const attendeesTable = document.getElementById('attendeesTable');
             const projectData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(projectTable), { header: 1 });
             const attendeesData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(attendeesTable), { header: 1 });
             const combinedData = [...projectData, [], ...attendeesData];
             const ws = XLSX.utils.aoa_to_sheet(combinedData);
+            
+            // Format date columns to display as date in Excel
+            const dateColumns = [1, 2]; // Assuming date columns are at index 1 and 2
+            dateColumns.forEach(col => {
+                for (let i = 1; i < combinedData.length; i++) {
+                    if (combinedData[i][col]) {
+                        ws[XLSX.utils.encode_cell({ r: i, c: col })].z = 'dd/mm/yyyy';
+                    }
+                }
+            });
+            
             XLSX.utils.book_append_sheet(wb, ws, 'Toolbox Talk');
             XLSX.writeFile(wb, 'Toolbox_Talk.xlsx');
         });

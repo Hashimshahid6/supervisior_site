@@ -93,8 +93,8 @@ Edit Vehicle Checklist
                                     @endfor
                                 @endif
                             </table>
+                            <button type="button" class="btn btn-primary vehicle_data_row mb-4">Add More</button>
                         </div>
-                        <button type="button" class="btn btn-primary vehicle_data_row mb-4">Add More</button>
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle">
                                 <tr>
@@ -148,8 +148,8 @@ Edit Vehicle Checklist
                                 @endfor
                                 @endif
                             </table>
+                            <button type="button" class="btn btn-primary add-row">Add More</button>
                         </div>
-                        <button type="button" class="btn btn-primary add-row">Add More</button>
 
                         <div class="row mb-4">
                             <div class="col text-end">
