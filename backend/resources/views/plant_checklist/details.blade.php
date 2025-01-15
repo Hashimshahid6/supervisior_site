@@ -36,7 +36,7 @@ Plant Checklist Details
                         <table class="table table-bordered" id="plantTypeTable">
                             <tr>
                                 <td class="align-middle text-start fw-bold">Plant Type</td>
-                                <td>{{ $DailyChecklist->plant_type ?? 'Unknown' }}</td>
+                             <td>{{ $DailyChecklist->plant_type ?? 'Unknown' }}</td>
                                 <td class="align-middle text-start fw-bold">Plant Details</td>
                                 <td>{{ $DailyChecklist->plant_details }}</td>
                                 <td class="align-middle text-start fw-bold">Project</td>
