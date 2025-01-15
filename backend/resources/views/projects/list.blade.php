@@ -616,9 +616,9 @@ Projects
     };
 
       function editProject(id) {
-        $('#projectsedit').attr('action', "{{ url('/admin/projects') }}/" + id);
+        $('#projectsedit').attr('action', "{{ url('projects') }}/" + id);
         $.ajax({
-          url: "{{ url('admin/projects') }}" + '/' + id + '/edit',
+          url: "{{ url('projects') }}" + '/' + id + '/edit',
           type: "GET",
           success: function(response) {
             $('#project-modal-edit').modal('show');

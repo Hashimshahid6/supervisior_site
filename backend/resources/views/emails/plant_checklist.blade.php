@@ -16,7 +16,7 @@
     <table>
         <tr>
             <th>Plant Type</th>
-            <td>{{ $DailyChecklist->plant_type ?? 'Unknown' }}</td>
+            <td>{{ $PlantTypes[$DailyChecklist->plant_type] ?? 'Unknown' }}</td>
             <th>Plant Details</th>
             <td>{{ $DailyChecklist->plant_details }}</td>
             <th>Project</th>

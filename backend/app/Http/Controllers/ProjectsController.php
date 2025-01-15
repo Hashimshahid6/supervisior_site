@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Projects;
 use App\Models\ProjectFiles;
 use App\Services\PayPalService;
+use Auth;
 
 class ProjectsController extends Controller
 {
@@ -213,5 +214,21 @@ class ProjectsController extends Controller
         $paypalService = new PayPalService();
         $paymentIntent = $paypalService->retrievePaymentIntent($orderId);
         return response()->json($paymentIntent);
-    }
+    }//
+		public function makePayment(){
+			// dd(Auth::user());
+			$user = Auth::user();
+			$paypal_vault_id = $user->paypal_vault_id;
+			$paypal_customer_id = $user->paypal_customer_id;
+			// echo "<pre>"; print_r($user); die;
+			if($paypal_vault_id && $paypal_customer_id){
+				$amount = 10;
+				$currency_code = 'GBP';
+				$description = 'Payment for project';
+				$paypalService = new PayPalService();
+				$paymentIntent = $paypalService->makePayment($amount,$paypal_vault_id,$currency_code,$description);
+				return response()->json($paymentIntent);
+			} //
+				// return view('projects.payment', compact('paymentIntent'));
+		}
 }

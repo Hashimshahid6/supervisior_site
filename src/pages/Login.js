@@ -3,8 +3,10 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
 import withSettings from "../contexts/withSettings";
-import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
+import { IMAGES_URL, BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
+// axios.defaults.withCredentials = true;
+// axios.defaults.baseURL = BASE_URL;
 
 const Login = ({ settings }) => {
 	const [bannerData, setBannerData] = useState(null);
@@ -14,7 +16,7 @@ const Login = ({ settings }) => {
   useEffect(() => {
     const fetchBanner = async () => {
       try {
-        const response = await axios.get(API_BASE_URL + "getbanner/3", {
+        const response = await axios.get(API_BASE_URL + "getbanner/4", {
           headers: { Authorization: `Bearer ${API_TOKEN}` },
         });
         setBannerData(response.data);
@@ -54,14 +56,14 @@ const Login = ({ settings }) => {
 				}
       );
 			if(response.status === 200) {
-      // console.log("Form Submitted Successfully");
+      	console.log("Form Submitted Successfully",response.data);
 				// Save token to localStorage or cookies
-				localStorage.setItem("token", response.data.access_token);
+				localStorage.setItem("login_token", response.data.access_token);
 
 				// Optionally store user details
 				localStorage.setItem("user", JSON.stringify(response.data.user));
       	setSubmitted(true);
-				window.location.href = "/pricing";
+				window.location.href=`${process.env.PUBLIC_URL}/pricing`;
 			}else{
 				alert("Error in Form Submission");
 			}
@@ -126,7 +128,7 @@ const Login = ({ settings }) => {
               <div className="col-12">
                 <div className="contact-form">
                   <h3>Login Now</h3>
-									<p>Not Registered? <a href="/Register">Click Here</a> to Register</p>
+									<p>Not Registered? <a href={`${process.env.PUBLIC_URL}/register`}>Click Here</a> to Register</p>
 									<div className="alert alert-danger errormsg d-none"></div>
 									{ !submitted ?
                   <form id="contact-form" onSubmit={handleSubmit}>

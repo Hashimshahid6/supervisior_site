@@ -32,4 +32,11 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
 	Route::get('aboutsectionthree', [ApiController::class,'getAboutSectionthree']);
 	Route::get('getbanner/{id}', [ApiController::class,'getBannerId'])->where('id','[0-9]+');
 	Route::post('contactus_form', [ApiController::class,'contactus_form']);
+	Route::post('LoginUser', [ApiController::class,'LoginUser']);
+	Route::post('RegisterUser', [ApiController::class,'RegisterUser']);
+	Route::get('isLoggedIn', [ApiController::class,'isLoggedIn']);
+	Route::get('LogoutUser', [ApiController::class,'LogoutUser'])->middleware('web');
+	Route::post('createPaymentIntent', [ApiController::class,'createPaymentIntent']);
+	Route::get('paypalCancelled', [ApiController::class,'paypalCancelled']);
+	Route::get('doPaypalReturn', [ApiController::class,'doPaypalReturn']);
 });

@@ -13,6 +13,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
+			// echo session()->get('token'); die;
         $projects = Projects::where('status', 'Active')->get();
         $companies = User::where('role', 'Company')->where('status', 'Active')->get();
         $employees = User::where('role', 'Employee')->where('status', 'Active')->get();

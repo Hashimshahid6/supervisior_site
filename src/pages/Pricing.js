@@ -4,12 +4,64 @@ import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
 import { IMAGES_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
-
+import {isLoggedIn} from "../contexts/isLoggedIn";
+import Modal from "../components/Modal";
 const Pricing = () => {
   const [bannerData, setBannerData] = useState(null);
   const [pageloading, setpageLoading] = useState(true);
   const [error, setError] = useState(null);
-	const isAuthenticated = !!localStorage.getItem('token');
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedForm, setSelectedForm] = useState(null); 
+	const handleFormSubmit = (e) => {
+    e.preventDefault();
+		setSelectedForm(e.target);
+    setIsModalOpen(true); // Open modal on form submission
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false); // Close the modal
+    setSelectedForm(null); // Clear the form reference
+  };
+	const [loading, setLoading] = useState(false);
+  const handleConfirm = async() => {
+		setLoading(true); // Show loader
+		if (selectedForm) {
+      const formData = new FormData(selectedForm); // Use the stored form reference
+      console.log("FormData values:");
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+			setIsModalOpen(false);
+		// Get the form element
+			// const form = e.target;
+			// Create FormData object from the form
+			// const formData = new FormData(form);
+			// console.log("ddd", JSON.stringify(formData));
+			try {
+				const user_token = localStorage.getItem('login_token');
+				const response = await axios.post(
+					API_BASE_URL+"createPaymentIntent",
+					formData, {
+					headers: { Authorization: `Bearer ${user_token}` }
+					}
+				);
+				// console.log("Form Submitted Successfully",response);
+				if(response.data.status === "PAYER_ACTION_REQUIRED"){
+					response.data.paypal_response.links.map((link) => {
+						if(link.rel === "payer-action"){
+							window.location.href = link.href;
+						}
+					});
+				}
+				setSubmitted(true);
+			} catch {
+				console.log("Error in Form Submission");
+			}
+		}
+    console.log("Form submitted!"); // Replace with your submission logic
+  };
+	const [submitted, setSubmitted] = useState(false);
+	const [loggedIn, setLoggedIn] = useState(false);
   // Fetch banner and service data
   useEffect(() => {
     const fetchData = async () => {
@@ -27,10 +79,15 @@ const Pricing = () => {
         setpageLoading(false);
       }
     };
-
     fetchData();
-  }, []);
+		const checkLoginStatus = async () => {
+      const loggedInStatus = await isLoggedIn();
+      setLoggedIn(loggedInStatus);
+    };
 
+    checkLoginStatus();
+  }, []);
+	
   if (pageloading) {
     return <div className="loader"></div>;
   }
@@ -87,8 +144,19 @@ const Pricing = () => {
                           </p>
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '2em' }}>35</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
-                          { isAuthenticated ? <a href="/admin/dashboard" className="ht-btn ht-btn--round"> Go to Dashboard </a> : <a href="/login" className="ht-btn ht-btn--round">START FREE TRIAL</a> }
-													{/* <a href="/login" className="ht-btn ht-btn--round">
+                          { loggedIn ? 
+														<form onSubmit={handleFormSubmit}>
+															<input type="hidden" name="package" value="1" />
+															<input type="hidden" name="amount" value="5" />
+															<input type="hidden" name="currency" value="GBP" />
+															<button type="submit" className="ht-btn ht-btn--round" disabled={loading}>
+																{loading ? "Processing..." : "START FREE TRIAL"}
+																</button>
+														</form>
+														: 
+														<a href={`${process.env.PUBLIC_URL}/login`} className="ht-btn ht-btn--round">START FREE TRIAL</a> 
+													}
+													{/* <a href="/supervisor_build/login" className="ht-btn ht-btn--round">
                             START FREE TRIAL
                           </a> */}
                         </div>
@@ -109,8 +177,19 @@ const Pricing = () => {
                           </p>
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '2em' }}>55</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
-													{ isAuthenticated ? <a href="/admin/dashboard" className="ht-btn ht-btn--round"> Go to Dashboard </a> : <a href="/login" className="ht-btn ht-btn--round">START FREE TRIAL</a> }
-                          {/* <a href="/login" className="ht-btn ht-btn--round">
+													{ loggedIn ? 
+														<form onSubmit={handleFormSubmit}>
+															<input type="hidden" name="package" value="2" />
+															<input type="hidden" name="amount" value="5" />
+															<input type="hidden" name="currency" value="GBP" />
+															<button type="submit" className="ht-btn ht-btn--round" disabled={loading}>
+																{loading ? "Processing..." : "START FREE TRIAL"}
+															</button>
+														</form>
+														: 
+														<a href={`${process.env.PUBLIC_URL}/login`} className="ht-btn ht-btn--round">START FREE TRIAL</a> 
+													}
+                          {/* <a href="/supervisor_build/login" className="ht-btn ht-btn--round">
                             START FREE TRIAL
                           </a> */}
                         </div>
@@ -132,8 +211,19 @@ const Pricing = () => {
                           </p>
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '1.5em' }}>75</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
-													{ isAuthenticated ? <a href="/admin/dashboard" className="ht-btn ht-btn--round"> Go to Dashboard </a> : <a href="/login" className="ht-btn ht-btn--round">START FREE TRIAL</a> }
-                          {/* <a href="/login" className="ht-btn ht-btn--round">
+													{ loggedIn ? 
+														<form onSubmit={handleFormSubmit}>
+															<input type="hidden" name="package" value="1" />
+															<input type="hidden" name="amount" value="5" />
+															<input type="hidden" name="currency" value="GBP" />
+															<button type="submit" className="ht-btn ht-btn--round" disabled={loading}>
+																{loading ? "Processing..." : "START FREE TRIAL"}
+															</button>
+														</form>
+														: 
+														<a href={`${process.env.PUBLIC_URL}/login`} className="ht-btn ht-btn--round">START FREE TRIAL</a> 
+													}
+                          {/* <a href="/supervisor_build/login" className="ht-btn ht-btn--round">
                             START FREE TRIAL
                           </a> */}
                         </div>
@@ -144,6 +234,13 @@ const Pricing = () => {
               </div>
             </div>
           </div>
+					<Modal
+						show={isModalOpen}
+						onClose={handleClose}
+						onConfirm={handleConfirm}
+						title="Payment Confirmation"
+						message="You will be charged £5 for the free trial, that will be refunded later. Do you want to continue?"
+					/>
         </div>
         {/*Projects section end*/}
       </div>

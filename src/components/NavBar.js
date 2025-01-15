@@ -3,16 +3,18 @@ import { Link } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import withSettings from "../contexts/withSettings";
 import { IMAGES_URL } from "../constants";
+import {isLoggedIn} from "../contexts/isLoggedIn";
+
 class NavBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-			isAuthenticated : !!localStorage.getItem('token'),
-		};
     this.handleScroll = this.handleScroll.bind(this);
 
     this.mobileMenuElement = React.createRef();
-		
+		this.state = {
+			loggedIn: false, // Initial state to track login status
+      // isAuthenticated: localStorage.getItem("token"),
+    };
 		// const user = JSON.parse(localStorage.getItem('user'));
   }
 	
@@ -31,9 +33,19 @@ class NavBar extends Component {
     const el = document.querySelector("nav");
     this.setState({ top: el.offsetTop, height: el.offsetHeight });
     window.addEventListener("scroll", this.handleScroll);
+		this.checkLoginStatus();
   }
 
-  componentDidUpdate() {
+	checkLoginStatus = async () => {
+    try {
+      const loggedInStatus = await isLoggedIn();
+      this.setState({ loggedIn: loggedInStatus });
+    } catch (error) {
+      console.error("Error checking login status:", error);
+    }
+  };
+  
+	componentDidUpdate() {
     this.state.scroll > this.state.top
       ? (document.body.style.paddingTop = `${this.state.height}px`)
       : (document.body.style.paddingTop = 0);
@@ -45,7 +57,8 @@ class NavBar extends Component {
 	
   render() {
     const { settings } = this.props;
-		const { isAuthenticated } = this.state;
+		const { loggedIn } = this.state;
+		// const { isAuthenticated } = this.state;
     return (
       <div>
         {/*====================  header area ====================*/}
@@ -158,7 +171,7 @@ class NavBar extends Component {
                                 PRICING
                               </Link>{" "}
                             </li>
-														{ isAuthenticated ? 
+														{ loggedIn ? 
 														<li style={{position: 'absolute', right: '10px', display: 'flex'}}>
 															<Link to={`${process.env.PUBLIC_URL}/admin/dashboard`} style={{marginRight: '20px'}}>
 																WELCOME {JSON.parse(localStorage.getItem('user')).name}
@@ -168,7 +181,11 @@ class NavBar extends Component {
 															</Link>{" "}
 														</li>
 														:
-														''
+														<li style={{position: 'absolute', right: '10px', display: 'flex'}}>
+															<Link to={`${process.env.PUBLIC_URL}/login`}>
+																LOGIN
+															</Link>{" "}
+														</li>
 														}
                           </ul>
                         </nav>

@@ -30,20 +30,31 @@ use Illuminate\Support\Facades\Artisan;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/admin', [LoginController::class, 'index']);
-Route::get('/admin/login', [LoginController::class, 'index'])->name('login');
-Route::post('/admin/login', [AuthenticationController::class, 'authenticate'])->name('login.post');
-Route::get('/admin/register', [RegisterController::class, 'index'])->name('register');
-Route::post('/admin/register', [RegisterController::class, 'register'])->name('register.post');
-Route::get('/admin/update-password', [LoginController::class, 'updatePassword'])->name('password.update');
-Route::post('/admin/update-password', [LoginController::class, 'updatePasswordPost'])->name('password.update.post');
-Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/test-session', function () {
+    request()->session()->put('key', 'value');
+    return request()->session()->get('key');
+})->middleware('web');
+Route::get('/debug-session', function () {
+    session()->put('key', 'value'); // Store a test value in session
+    return response()->json([
+        'session_id' => session()->getId(),
+        'session_value' => session()->get('key'),
+    ]);
+});
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [AuthenticationController::class, 'authenticate'])->name('login.post');
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+Route::get('/update-password', [LoginController::class, 'updatePassword'])->name('password.update');
+Route::post('/update-password', [LoginController::class, 'updatePasswordPost'])->name('password.update.post');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/admin/cache-clear', function () {
     Artisan::call('route:clear');
     return "Cache is cleared";
 });
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+
+Route::middleware(['auth','admin','web'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //Hero Sections
@@ -69,18 +80,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     //users
     Route::resource('users', UsersController::class);
-
-    Route::get('projects/payment_intent', [ProjectsController::class, 'payment_intent'])->name('projects.payment_intent');
-    Route::get('projects/capturePayment/{orderId?}', [ProjectsController::class, 'capturePayment'])->where('orderId', '[a-zA-Z0-9]+');
-    Route::get('projects/retrievePaymentIntent/{orderId?}', [ProjectsController::class, 'retrievePaymentIntent'])->where('orderId', '[a-zA-Z0-9]+');
+		Route::get('projects/makePayment', [ProjectsController::class, 'makePayment']);
     //projects
     Route::resource('projects', ProjectsController::class);
-    Route::delete('admin/project-files/{id}', [ProjectsController::class, 'destroyFile'])->name('project-files.destroy');
+        Route::delete('project-files/{id}', [ProjectsController::class, 'destroyFile'])->name('project-files.destroy');
 
     //messages
     Route::resource('messages', MessagesController::class);
-
-    //Plant Checklist
+    
+        //Plant Checklist
     Route::resource('plant_checklists', PlantChecklistController::class);
 
     //Vehicle Checklist

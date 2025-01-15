@@ -43,7 +43,12 @@ class LoginController extends Controller
     }
 
     public function logout(){
-        auth()->logout();
-        return redirect()->route('login');
+			$user = auth()->user();
+			if ($user) {
+        $user->tokens()->delete(); // Revoke all tokens
+        // return response()->json(['message' => 'Logged out successfully'], 200);
+    	} // Revoke all tokens
+			auth()->logout();
+			return redirect()->route('login');
     }
 }

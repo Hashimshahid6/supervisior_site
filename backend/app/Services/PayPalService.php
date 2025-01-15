@@ -88,9 +88,10 @@ class PayPalService
             ];
             
             $response = $this->client->post('/v2/checkout/orders', [
-                'headers' => $this->getHeaders(['PayPal-Request-Id' => 'A v4 style guid']),
+                'headers' => $this->getHeaders(),
                 'json' => $paymentData,
             ]);
+						// dd($response);
             $paymentIntent = json_decode($response->getBody(), true);
             $paymentIntent['client_secret'] = '';
             if ($paymentIntent['status'] === 'COMPLETED') {
@@ -110,7 +111,7 @@ class PayPalService
     /**
      * Create a new PayPal order and authorize payment method tokens to store in valut .
      */
-    public function createPaymentIntent($amount)
+    public function createPaymentIntent($package,$amount,$currency_code)
     {
       
         try {
@@ -125,8 +126,8 @@ class PayPalService
                             ]
                         ],
                         "experience_context" => [
-                            "return_url" => url('/paypal-redirect'),
-                            "cancel_url" => url('/payment-failed'),
+                            "return_url" => url('http://localhost:3000/PaypalReturn'),
+                            "cancel_url" => url('http://localhost:3000/PaypalCancel'),
                             "shipping_preference" => "NO_SHIPPING"
                         ]
                     ]
@@ -135,11 +136,11 @@ class PayPalService
                     [
                         //"reference_id" => "quixxs_orderid_PU12345",
                         "amount" => [
-                           "currency_code" => "GBP",
+                           "currency_code" => $currency_code,
 													 // is_string($licensePlanCurrency) ? LicensePlansCurrencies::where('country_numeric_code' , $customer->country)->first()->currency_code : $licensePlanCurrency->currency_code,
-                           "value" => "$amount"
+                           "value" => $amount
                         ],
-                        "description" => "Test Description", //is_string($licensePlanCurrency) ? $licensePlanCurrency : $licensePlanCurrency->plan->plan_description
+                        "description" => $package->name, //is_string($licensePlanCurrency) ? $licensePlanCurrency : $licensePlanCurrency->plan->plan_description
                     ]
                 ]
             ];
@@ -189,11 +190,13 @@ class PayPalService
      */
 		public function capturePayment($orderId)
     {
+			// return '{"id":"07B31289GS149580B","status":"COMPLETED","payment_source":{"paypal":{"email_address":"sb-oq8r434911991@business.example.com","account_id":"Y2RZXLBYXF25J","account_status":"VERIFIED","name":{"given_name":"John","surname":"Doe"},"business_name":"Test Store","phone_number":{"national_number":"01213582601"},"address":{"address_line_1":"Whittaker House","address_line_2":"2 Whittaker Avenue","admin_area_2":"Richmond","admin_area_1":"Surrey","postal_code":"TW9 1EH","country_code":"GB"},"attributes":{"vault":{"id":"15m794150u431261t","status":"VAULTED","customer":{"id":"XQDFfbuuXn"},"links":[{"href":"https:\/\/api.sandbox.paypal.com\/v3\/vault\/payment-tokens\/15m794150u431261t","rel":"self","method":"GET"},{"href":"https:\/\/api.sandbox.paypal.com\/v3\/vault\/payment-tokens\/15m794150u431261t","rel":"delete","method":"DELETE"},{"href":"https:\/\/api.sandbox.paypal.com\/v2\/checkout\/orders\/07B31289GS149580B","rel":"up","method":"GET"}]}}}},"purchase_units":[{"reference_id":"default","shipping":[],"payments":{"captures":[{"id":"3UA20869KK3779740","status":"COMPLETED","amount":{"currency_code":"GBP","value":"5.00"},"final_capture":true,"disbursement_mode":"INSTANT","seller_protection":{"status":"ELIGIBLE","dispute_categories":["ITEM_NOT_RECEIVED","UNAUTHORIZED_TRANSACTION"]},"seller_receivable_breakdown":{"gross_amount":{"currency_code":"GBP","value":"5.00"},"paypal_fee":{"currency_code":"GBP","value":"0.64"},"net_amount":{"currency_code":"GBP","value":"4.36"}},"links":[{"href":"https:\/\/api.sandbox.paypal.com\/v2\/payments\/captures\/3UA20869KK3779740","rel":"self","method":"GET"},{"href":"https:\/\/api.sandbox.paypal.com\/v2\/payments\/captures\/3UA20869KK3779740\/refund","rel":"refund","method":"POST"},{"href":"https:\/\/api.sandbox.paypal.com\/v2\/checkout\/orders\/07B31289GS149580B","rel":"up","method":"GET"}],"create_time":"2025-01-14T06:25:41Z","update_time":"2025-01-14T06:25:41Z"}]}}],"payer":{"name":{"given_name":"John","surname":"Doe"},"email_address":"sb-oq8r434911991@business.example.com","payer_id":"Y2RZXLBYXF25J","phone":{"phone_number":{"national_number":"01213582601"}},"address":{"address_line_1":"Whittaker House","address_line_2":"2 Whittaker Avenue","admin_area_2":"Richmond","admin_area_1":"Surrey","postal_code":"TW9 1EH","country_code":"GB"}},"links":[{"href":"https:\/\/api.sandbox.paypal.com\/v2\/checkout\/orders\/07B31289GS149580B","rel":"self","method":"GET"}]}';
         try{
             $response = $this->client->post("/v2/checkout/orders/{$orderId}/capture", [
                 'headers' => $this->getHeaders(),
             ]);
-            return json_decode($response->getBody(), true);
+            // return json_decode($response->getBody(), true);
+						return json_decode((string) $response->getBody(), true);
         } catch (Exception $e) {
             dd($e->getMessage());
         }
@@ -283,7 +286,5 @@ class PayPalService
 			} catch (Exception $e) {
 				dd($e->getMessage());
 			}
-		}
-		// create order and capture using paypal valuted id
-
+		}		
 }

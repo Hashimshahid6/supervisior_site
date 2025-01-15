@@ -46,7 +46,7 @@ const Register = ({ settings }) => {
     e.preventDefault();
     // console.log("ddd", JSON.stringify(formData));
     try {
-			if(formData.password !== formData.confirm_password) {
+			if(formData.password !== formData.password_confirmation) {
 				// alert("Passwords do not match");
 				document.querySelector(".errormsg").innerHTML = "Passwords do not match";
 				document.querySelector(".errormsg").classList.remove("d-none");
@@ -61,6 +61,7 @@ const Register = ({ settings }) => {
 			if(response.status === 200) {
       // console.log("Form Submitted Successfully");
       	setSubmitted(true);
+				window.location.href = "/supervisor_build/login";
 			}else{
 				alert("Error in Form Submission");
 			}
@@ -124,7 +125,7 @@ const Register = ({ settings }) => {
               <div className="col-12">
                 <div className="contact-form">
                   <h3>Register Now</h3>
-									<p>Already registered? <a href="/Login">Click Here</a> to Login</p>
+									<p>Already registered? <a href={`${process.env.PUBLIC_URL}/login`}>Click Here</a> to Login</p>
 									<div className="alert alert-danger errormsg d-none"></div>
 									{ !submitted ?
                   <form id="contact-form" onSubmit={handleSubmit}>
@@ -161,10 +162,10 @@ const Register = ({ settings }) => {
                       </div>
 											<div className="col-md-6 col-12 section-space--bottom--20">
                         <input
-                          name="confirm_password"
+                          name="password_confirmation"
                           type="password"
                           placeholder="Confirm Password"
-													value={formData.confirm_password}
+													value={formData.password_confirmation}
 													required
 													onChange={handleChange}
                         />

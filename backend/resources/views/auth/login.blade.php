@@ -113,7 +113,7 @@ Login
                                 <script>
                                     document.write(new Date().getFullYear());
                                 </script>
-                                supervisesite.co.uk. All Rights Reserved.</a>
+                                supervisesite.co.uk, All Rights Reserved.</a>
                             </p>
 
                         </div>

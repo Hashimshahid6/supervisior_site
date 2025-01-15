@@ -26,6 +26,8 @@ class AuthenticationController extends Controller
 		if(\Auth::attempt($credentials)){
 			$user = User::find(\Auth::user()->id);
 			$token = $user->createToken('token')->plainTextToken;
+			// echo $token; die;
+			session()->put('token', $token);
 			if($user->role == 'Employee'){
 				return redirect()->route('projects.index');
 			}else{
