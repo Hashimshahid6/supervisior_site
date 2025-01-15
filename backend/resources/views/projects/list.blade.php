@@ -13,21 +13,21 @@ Projects
     @include('components.flash_messages')
     <!-- Left sidebar -->
     @if($uploadedProjects >= $packageLimit)
-        @if(auth()->user()->role == 'Company')
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="mdi mdi-alert-circle me-2"></i>
-                You have reached your project upload limit. Please upgrade your package to add more projects.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        @else
-        @if(auth()->user()->role == 'Company')
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="mdi mdi-check me-2"></i>
-                You have <strong>{{ $packageLimit - $uploadedProjects }}</strong> projects limit to upload.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+    @if(auth()->user()->role == 'Company')
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="mdi mdi-alert-circle me-2"></i>
+        You have reached your project upload limit. Please upgrade your package to add more projects.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+    @else
+    @if(auth()->user()->role == 'Company')
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="mdi mdi-check me-2"></i>
+        You have <strong>{{ $packageLimit - $uploadedProjects }}</strong> projects limit to upload.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
     @endif
     {{-- Search Filters --}}
     <div class="row">
@@ -710,7 +710,7 @@ Projects
     const activeWarning = document.getElementById('active-warning');
 
     activeRadio.addEventListener('change', function () {
-        if (this.checked && {{ $uploadedProjects }} >= {{ $packageLimit }}) {
+        if (this.checked && @json($uploadedProjects) >= @json($packageLimit)) {
             activeWarning.style.display = 'block';
         } else {
             activeWarning.style.display = 'none';

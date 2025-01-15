@@ -137,7 +137,7 @@
                         <h6 class="mb-0">{{auth()->user()->name}}</h6>
                         <p class="mb-0 font-size-11 text-muted">{{auth()->user()->email}}</p>
                     </div>
-                    <a class="dropdown-item" href="javascript:void(0)"><i
+                    <a class="dropdown-item" href="{{route('users.show', auth()->user()->id)}}"><i
                             class="mdi mdi-account-circle text-muted font-size-16 align-middle me-2"></i> <span
                             class="align-middle">Profile</span></a>
                     <a class="dropdown-item" href="{{route('logout')}}"><i

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Packages;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -43,16 +44,26 @@ class UsersController extends Controller
             'email' => 'required|email|unique:users',
             'phone' => 'required|numeric',
             'password' => 'required|min:8',
+            'confirm_password' => 'required|same:password',
+            'avatar' => 'nullable|file|mimes:jpeg,jpg,png,gif',
         ]);
 
         $avatarNumber = rand(1, 4).'.jpg';
+
+        $avatarName = 'avatar-'.$avatarNumber;
+
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatarName = time() . '_' . $avatar->getClientOriginalName();
+            $avatar->move(public_path('uploads/users'), $avatarName);
+        }
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'avatar' => 'avatar-'.$avatarNumber,
-            'password' => bcrypt($request->password),
+            'avatar' => $avatarName ?? 'avatar-'.$avatarNumber,
+            'password' => Hash::make($request->password),
             'role' => 'Employee',
         ]);
 
@@ -82,29 +93,37 @@ class UsersController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
             'phone' => 'required|numeric',
             'avatar' => 'nullable|file|mimes:jpeg,jpg,png,gif',
+            'password' => 'nullable|min:8',
+            'confirm_password' => 'nullable|same:password',
         ]);
-
-        $avatarNumber = rand(1, 4).'.jpg';
         
         $user = User::find($id);
-        $user->password;
 
-        if($request->password){
-            $user->password = bcrypt($request->password);
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatarName = time() . '_' . $avatar->getClientOriginalName();
+            $avatar->move(public_path('uploads/users'), $avatarName);
+            $user->avatar = $avatarName;
         }
-        $user->update([
+
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+        $test = $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => $user->password,
-            'avatar' => 'avatar-'.$avatarNumber,
+            'avatar' => $user->avatar,
         ]);
-
+        
+        // dd($test);
         return redirect()->route('users.index')->with('success', 'Employee updated successfully.');
     }
 

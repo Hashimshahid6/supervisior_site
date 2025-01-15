@@ -77,6 +77,26 @@ Users
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="confirm_password">Confirm Password <span
+                                                class="text-danger">*</span></label>
+                                        <input id="confirm_password" name="confirm_password"
+                                            placeholder="Enter Confirm Password" type="password" class="form-control">
+                                        @error('confirm_password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="avatar">Profile Image</label>
+                                        <input id="avatar" name="avatar" type="file" class="form-control">
+                                        @error('avatar')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col text-end">

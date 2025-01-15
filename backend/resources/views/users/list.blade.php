@@ -147,6 +147,10 @@ Employees
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-start text-start">
+                                            <!-- User Image -->
+                                            <div class="me-3">
+                                                <img src="{{ URL::asset('public/uploads/users/' . $user->avatar) }}" alt="{{ $user->name }}" class="avatar-sm rounded-circle">
+                                            </div>
                                             <!-- Title and Description -->
                                             <div>
                                                 <h6 class="mb-1">{{ $user->name }}</h6>

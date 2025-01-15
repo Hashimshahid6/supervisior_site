@@ -17,6 +17,9 @@ Edit User
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="{{ URL::asset('build/images/users/' . auth()->user()->avatar) }}" alt="User Image" class="rounded-circle" width="150">
+                    </div>
                     <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -61,6 +64,25 @@ Edit User
                                     @error('password')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Confirm Password </label>
+                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                                    @error('password_confirmation')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Profile Image</label>
+                                    <input type="file" class="form-control" id="avatar" name="avatar">
+                                    @error('avatar')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col text-end">
@@ -68,6 +90,7 @@ Edit User
                                         Save Changes </button>
                                 </div> <!-- end col -->
                             </div> <!-- end row-->
+                        </div>
                     </form>
                 </div>
             </div>
