@@ -11,10 +11,15 @@ const Pricing = () => {
   const [pageloading, setpageLoading] = useState(true);
   const [error, setError] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [selectedForm, setSelectedForm] = useState(null); 
-	const handleFormSubmit = (e) => {
+	const [loadingForm, setLoadingForm] = useState(false); 
+	const [selectedForm, setSelectedForm] = useState(null);
+	const [selectedFormId, setSelectedFormId] = useState(null);  
+	const [loadingIds, setLoadingIds] = useState([]); // Track IDs of forms being processed
+	const handleFormSubmit = (e, formId) => {
     e.preventDefault();
+		// console.log("pkg_id", pkg_id);
 		setSelectedForm(e.target);
+		setSelectedFormId(formId);
     setIsModalOpen(true); // Open modal on form submission
   };
 
@@ -22,10 +27,13 @@ const Pricing = () => {
     setIsModalOpen(false); // Close the modal
     setSelectedForm(null); // Clear the form reference
   };
-	const [loading, setLoading] = useState(false);
+	// const [loading, setLoading] = useState(false);
   const handleConfirm = async() => {
-		setLoading(true); // Show loader
+		setLoadingIds((prev) => [...prev, selectedFormId]);
+		// setLoading(true); // Show loader
 		if (selectedForm) {
+			setLoadingIds((prev) => [...prev, selectedFormId]); // Mark the selected form as loading
+			// setLoadingForm(selectedForm);
       const formData = new FormData(selectedForm); // Use the stored form reference
       console.log("FormData values:");
       for (let [key, value] of formData.entries()) {
@@ -56,6 +64,9 @@ const Pricing = () => {
 				setSubmitted(true);
 			} catch {
 				console.log("Error in Form Submission");
+			} finally {
+				setLoadingIds((prev) => prev.filter((id) => id !== selectedFormId)); // Remove the form from the loading state
+				setIsModalOpen(false); // Close the modal
 			}
 		}
     console.log("Form submitted!"); // Replace with your submission logic
@@ -144,13 +155,13 @@ const Pricing = () => {
                           </p>
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '2em' }}>35</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
-                          { loggedIn ? 
-														<form onSubmit={handleFormSubmit}>
+                          { loggedIn ?
+														<form onSubmit={(e) => handleFormSubmit(e, '1')}>
 															<input type="hidden" name="package" value="1" />
 															<input type="hidden" name="amount" value="5" />
 															<input type="hidden" name="currency" value="GBP" />
-															<button type="submit" className="ht-btn ht-btn--round" disabled={loading}>
-																{loading ? "Processing..." : "START FREE TRIAL"}
+															<button type="submit" className="ht-btn ht-btn--round btn-1" disabled={loadingIds.includes('1')}>
+																{loadingIds.includes('1') ? "Processing..." : "START FREE TRIAL"}
 																</button>
 														</form>
 														: 
@@ -177,13 +188,13 @@ const Pricing = () => {
                           </p>
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '2em' }}>55</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
-													{ loggedIn ? 
-														<form onSubmit={handleFormSubmit}>
+													{ loggedIn ?
+														<form onSubmit={(e) => handleFormSubmit(e, '2')}>
 															<input type="hidden" name="package" value="2" />
 															<input type="hidden" name="amount" value="5" />
 															<input type="hidden" name="currency" value="GBP" />
-															<button type="submit" className="ht-btn ht-btn--round" disabled={loading}>
-																{loading ? "Processing..." : "START FREE TRIAL"}
+															<button type="submit" className="ht-btn ht-btn--round btn-2" disabled={loadingIds.includes('2')}>
+																{loadingIds.includes('2') ? "Processing..." : "START FREE TRIAL"}
 															</button>
 														</form>
 														: 
@@ -211,15 +222,15 @@ const Pricing = () => {
                           </p>
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '1.5em' }}>75</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
-													{ loggedIn ? 
-														<form onSubmit={handleFormSubmit}>
-															<input type="hidden" name="package" value="1" />
+													{ loggedIn ?
+														<form onSubmit={(e) => handleFormSubmit(e, '3')}>
+															<input type="hidden" name="package" value="3" />
 															<input type="hidden" name="amount" value="5" />
 															<input type="hidden" name="currency" value="GBP" />
-															<button type="submit" className="ht-btn ht-btn--round" disabled={loading}>
-																{loading ? "Processing..." : "START FREE TRIAL"}
+															<button type="submit" className="ht-btn ht-btn--round btn-3" disabled={loadingIds.includes('3')}>
+																{loadingIds.includes('3') ? "Processing..." : "START FREE TRIAL"}
 															</button>
-														</form>
+														</form>													 
 														: 
 														<a href={`${process.env.PUBLIC_URL}/login`} className="ht-btn ht-btn--round">START FREE TRIAL</a> 
 													}

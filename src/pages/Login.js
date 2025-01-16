@@ -5,6 +5,7 @@ import MobileMenu from "../components/MobileMenu";
 import withSettings from "../contexts/withSettings";
 import { IMAGES_URL, BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
+// import ForgotModal from "../components/ForgotModal.js";
 // axios.defaults.withCredentials = true;
 // axios.defaults.baseURL = BASE_URL;
 
@@ -12,6 +13,13 @@ const Login = ({ settings }) => {
 	const [bannerData, setBannerData] = useState(null);
 	const [pageloading, setpageLoading] = useState(true);
 	const [error, setError] = useState(null);
+	
+	// Show Modal
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const showModal = () => {
+		setIsModalOpen(true);
+	}
+	
 	// Fetch banner data
   useEffect(() => {
     const fetchBanner = async () => {
@@ -154,9 +162,11 @@ const Login = ({ settings }) => {
 													required
 													onChange={handleChange}
                         />
-                      </div>										                    
+                      </div>	
                       <div className="col-12">
                         <button className="btn btn-primary">Login Now</button>
+											<p>Forgot Password? <a onClick={showModal} style={{ color: '#007bff', marginTop:'20px' }}> Click Here to Reset</a>
+												</p>									                    
                       </div>
                     </div>
                   </form>
@@ -166,6 +176,7 @@ const Login = ({ settings }) => {
             </div>
           </div>
         </div>
+				
       </div>
 
       {/* Footer */}

@@ -61,7 +61,7 @@ const Register = ({ settings }) => {
 			if(response.status === 200) {
       // console.log("Form Submitted Successfully");
       	setSubmitted(true);
-				window.location.href = "/supervisor_build/login";
+				window.location.href = `${process.env.PUBLIC_URL}/login`;
 			}else{
 				alert("Error in Form Submission");
 			}

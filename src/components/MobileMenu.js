@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-
+import {isLoggedIn} from "../contexts/isLoggedIn";
 class MobileMenu extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			loggedIn: false, // Initial state to track login status
+			// isAuthenticated: localStorage.getItem("token"),
+		};
+		// const user = JSON.parse(localStorage.getItem('user'));
+	}
   state = {
     active: false,
   };
@@ -40,9 +48,18 @@ class MobileMenu extends Component {
     for (let i = 0; i < numMenuExpand; i++) {
       menuExpand[i].addEventListener("click", sideMenuExpand);
     }
+		this.checkLoginStatus();
   }
-
+	checkLoginStatus = async () => {
+		try {
+			const loggedInStatus = await isLoggedIn();
+			this.setState({ loggedIn: loggedInStatus });
+		} catch (error) {
+			console.error("Error checking login status:", error);
+		}
+	};
   render() {
+		const { loggedIn } = this.state;
     return (
       <div>
         {/*=======  offcanvas mobile menu  =======*/}
@@ -95,9 +112,31 @@ class MobileMenu extends Component {
                     </Link>
                   </li>
                   <li>
-                    <Link to={`${process.env.PUBLIC_URL}/pricing`}>Pricing</Link>
+                    <Link to={`${process.env.PUBLIC_URL}/pricing`}>PRICING</Link>
                   </li>
                 </ul>
+								{
+									loggedIn ?
+									<ul>
+										<li>
+											<a href={`${process.env.PUBLIC_URL}/admin/dashboard`} style={{marginRight: '20px'}}>
+																WELCOME {JSON.parse(localStorage.getItem('user')).name}
+															</a>
+										</li>
+										<li>
+											<Link to={`${process.env.PUBLIC_URL}/logout`}>LOGOUT</Link>
+										</li>
+									</ul>
+									:
+									<ul>
+										<li>
+											<Link to={`${process.env.PUBLIC_URL}/login`}>LOGIN</Link>
+										</li>
+										<li>
+											<Link to={`${process.env.PUBLIC_URL}/register`}>REGISTER</Link>
+										</li>
+									</ul>
+								}
               </nav>
               <div className="offcanvas-widget-area">
                 <div className="off-canvas-contact-widget">
