@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import withSettings from "../contexts/withSettings";
 import { IMAGES_URL } from "../constants";
-import {isLoggedIn} from "../contexts/isLoggedIn";
+import { isLoggedIn } from "../contexts/isLoggedIn";
 
 class NavBar extends Component {
   constructor(props) {
@@ -11,13 +11,12 @@ class NavBar extends Component {
     this.handleScroll = this.handleScroll.bind(this);
 
     this.mobileMenuElement = React.createRef();
-		this.state = {
-			loggedIn: false, // Initial state to track login status
-      // isAuthenticated: localStorage.getItem("token"),
+    this.state = {
+      loggedIn: !!localStorage.getItem("login_token"), // Check token existence
     };
-		// const user = JSON.parse(localStorage.getItem('user'));
+    // const user = JSON.parse(localStorage.getItem('user'));
   }
-	
+
   activeMobileMenu = () => {
     this.mobileMenuElement.current.toggleMobileMenu();
   };
@@ -33,19 +32,23 @@ class NavBar extends Component {
     const el = document.querySelector("nav");
     this.setState({ top: el.offsetTop, height: el.offsetHeight });
     window.addEventListener("scroll", this.handleScroll);
-		this.checkLoginStatus();
+    this.checkLoginStatus();
   }
 
-	checkLoginStatus = async () => {
-    try {
-      const loggedInStatus = await isLoggedIn();
-      this.setState({ loggedIn: loggedInStatus });
-    } catch (error) {
-      console.error("Error checking login status:", error);
-    }
+  // checkLoginStatus = async () => {
+  //   try {
+  //     const loggedInStatus = await isLoggedIn();
+  //     this.setState({ loggedIn: loggedInStatus });
+  //   } catch (error) {
+  //     console.error("Error checking login status:", error);
+  //   }
+  // };
+  checkLoginStatus = () => {
+    const loggedIn = !!localStorage.getItem("login_token"); // Token presence check
+    this.setState({ loggedIn });
   };
-  
-	componentDidUpdate() {
+
+  componentDidUpdate() {
     this.state.scroll > this.state.top
       ? (document.body.style.paddingTop = `${this.state.height}px`)
       : (document.body.style.paddingTop = 0);
@@ -54,11 +57,11 @@ class NavBar extends Component {
   componentWillUnmount() {
     this.mount = false;
   }
-	
+
   render() {
     const { settings } = this.props;
-		const { loggedIn } = this.state;
-		// const { isAuthenticated } = this.state;
+    const { loggedIn } = this.state;
+    // const { isAuthenticated } = this.state;
     return (
       <div>
         {/*====================  header area ====================*/}
@@ -69,24 +72,24 @@ class NavBar extends Component {
         >
           <div className="header-area__desktop header-area__desktop--default">
             {/*=======  header info area  =======*/}
-            <div className="header-info-area" style={{padding: '0px'}}>
+            <div className="header-info-area" style={{ padding: "0px" }}>
               <div className="container">
                 <div className="row align-items-center">
                   <div className="col-lg-12">
                     <div className="header-info-wrapper align-items-center">
-                    {/* logo */}
-                    <div className="logo">
+                      {/* logo */}
+                      <div className="logo">
                         <Link to={`/`}>
-                            <img
-                                src={`${IMAGES_URL}images/websiteimages/${settings.site_logo}`}
-                                className="img-fluid"
-                                alt="Logo"
-                                loading="lazy"
-                            />
+                          <img
+                            src={`${IMAGES_URL}images/websiteimages/${settings.site_logo}`}
+                            className="img-fluid"
+                            alt="Logo"
+                            loading="lazy"
+                          />
                         </Link>
                         <h3>{settings.site_name}</h3>
-                    </div>
-                    {/* header contact info */}
+                      </div>
+                      {/* header contact info */}
                       <div className="header-contact-info">
                         <div className="header-info-single-item">
                           <div className="header-info-single-item__icon">
@@ -171,22 +174,41 @@ class NavBar extends Component {
                                 PRICING
                               </Link>{" "}
                             </li>
-														{ loggedIn ? 
-														<li style={{position: 'absolute', right: '10px', display: 'flex'}}>
-															<Link to={`${process.env.PUBLIC_URL}/admin/dashboard`} style={{marginRight: '20px'}}>
-																WELCOME {JSON.parse(localStorage.getItem('user')).name}
-															</Link>{" "}
-															<Link to={`${process.env.PUBLIC_URL}/logout`}>
-																LOGOUT
-															</Link>{" "}
-														</li>
-														:
-														<li style={{position: 'absolute', right: '10px', display: 'flex'}}>
-															<Link to={`${process.env.PUBLIC_URL}/login`}>
-																LOGIN
-															</Link>{" "}
-														</li>
-														}
+                            {loggedIn ? (
+                              <li
+                                style={{
+                                  position: "absolute",
+                                  right: "10px",
+                                  display: "flex",
+                                }}
+                              >
+                                <Link
+                                  to={`${process.env.PUBLIC_URL}/admin/dashboard`}
+                                  style={{ marginRight: "20px" }}
+                                >
+                                  WELCOME{" "}
+                                  {
+                                    JSON.parse(localStorage.getItem("user"))
+                                      .name
+                                  }
+                                </Link>{" "}
+                                <Link to={`${process.env.PUBLIC_URL}/logout`}>
+                                  LOGOUT
+                                </Link>{" "}
+                              </li>
+                            ) : (
+                              <li
+                                style={{
+                                  position: "absolute",
+                                  right: "10px",
+                                  display: "flex",
+                                }}
+                              >
+                                <Link to={`${process.env.PUBLIC_URL}/login`}>
+                                  LOGIN
+                                </Link>{" "}
+                              </li>
+                            )}
                           </ul>
                         </nav>
                       </div>

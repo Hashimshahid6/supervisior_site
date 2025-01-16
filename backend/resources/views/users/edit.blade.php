@@ -18,7 +18,7 @@ Edit User
             <div class="card">
                 <div class="card-body">
                     <div class="text-center mb-4">
-                        <img src="{{ URL::asset('build/images/users/' . auth()->user()->avatar) }}" alt="User Image" class="rounded-circle" width="150">
+                        <img src="{{ URL::asset('public/uploads/users/' . $user->avatar) }}" alt="User Image" class="rounded-circle" width="150">
                     </div>
                     <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf

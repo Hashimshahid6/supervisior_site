@@ -120,17 +120,17 @@ const Register = ({ settings }) => {
           <div className="container">
             
             {/* Contact Information */}
-            <div className="row">
+            <div className="row justify-content-center">
               {/* Contact Form */}
-              <div className="col-12">
-                <div className="contact-form">
+              <div className="col-md-6 col-12">
+                <div className="contact-form text-center">
                   <h3>Register Now</h3>
-									<p>Already registered? <a href={`${process.env.PUBLIC_URL}/login`}>Click Here</a> to Login</p>
+									<p>Already registered? <a href={`${process.env.PUBLIC_URL}/login`} style={{ color: "blue" }}>Click Here to Login</a></p>
 									<div className="alert alert-danger errormsg d-none"></div>
 									{ !submitted ?
                   <form id="contact-form" onSubmit={handleSubmit}>
                     <div className="row row-10">
-                      <div className="col-md-6 col-12 section-space--bottom--20">
+                      <div className="col-12 section-space--bottom--20">
                         <input
                           name="name"
                           type="text"
@@ -140,7 +140,7 @@ const Register = ({ settings }) => {
 													onChange={handleChange}
                         />
                       </div>
-                      <div className="col-md-6 col-12 section-space--bottom--20">
+                      <div className="col-12 section-space--bottom--20">
                         <input
                           name="email"
                           type="email"
@@ -150,7 +150,7 @@ const Register = ({ settings }) => {
 													onChange={handleChange}
                         />
                       </div>
-											<div className="col-md-6 col-12 section-space--bottom--20">
+											<div className="col-12 section-space--bottom--20">
                         <input
                           name="password"
                           type="password"
@@ -160,7 +160,7 @@ const Register = ({ settings }) => {
 													onChange={handleChange}
                         />
                       </div>
-											<div className="col-md-6 col-12 section-space--bottom--20">
+											<div className="col-12 section-space--bottom--20">
                         <input
                           name="password_confirmation"
                           type="password"

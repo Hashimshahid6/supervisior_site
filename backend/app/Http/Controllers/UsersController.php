@@ -96,7 +96,7 @@ class UsersController extends Controller
         // dd($request->all());
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,'.$id,
             'phone' => 'required|numeric',
             'avatar' => 'nullable|file|mimes:jpeg,jpg,png,gif',
             'password' => 'nullable|min:8',
@@ -115,7 +115,7 @@ class UsersController extends Controller
         if ($request->password) {
             $user->password = Hash::make($request->password);
         }
-        $test = $user->update([
+        $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,

@@ -122,19 +122,20 @@ const Login = ({ settings }) => {
           <div className="container">
             
             {/* Contact Information */}
-            <div className="row">
+            <div className="row justify-content-center">
               
               {/* Contact Form */}
-              <div className="col-12">
-                <div className="contact-form">
+              <div className="col-md-6 col-12">
+                <div className="contact-form text-center">
                   <h3>Login Now</h3>
-									<p>Not Registered? <a href={`${process.env.PUBLIC_URL}/register`}>Click Here</a> to Register</p>
+									<p>Not Registered? <a href={`${process.env.PUBLIC_URL}/register`} style={{ color: '#007bff' }}>Click Here to Register</a></p>
 									<div className="alert alert-danger errormsg d-none"></div>
 									{ !submitted ?
                   <form id="contact-form" onSubmit={handleSubmit}>
                     <div className="row row-10">
-                      <div className="col-md-6 col-12 section-space--bottom--20">
+                      <div className="col-12 section-space--bottom--20">
                         <input
+                          className="form-control"
                           name="email"
                           type="email"
                           placeholder="Email"
@@ -143,8 +144,9 @@ const Login = ({ settings }) => {
 													onChange={handleChange}
                         />
                       </div>	
-											<div className="col-md-6 col-12 section-space--bottom--20">
+											<div className="col-12 section-space--bottom--20">
                         <input
+                          className="form-control"
                           name="password"
                           type="password"
                           placeholder="Password"
@@ -154,7 +156,7 @@ const Login = ({ settings }) => {
                         />
                       </div>										                    
                       <div className="col-12">
-                        <button>Login Now</button>
+                        <button className="btn btn-primary">Login Now</button>
                       </div>
                     </div>
                   </form>

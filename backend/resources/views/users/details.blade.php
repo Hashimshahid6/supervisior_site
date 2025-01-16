@@ -18,7 +18,7 @@ Profile Info
             <div class="card">
                 <div class="card-body">
                     <div class="text-center mb-4">
-                        <img src="{{ URL::asset('build/images/users/' . auth()->user()->avatar) }}" alt="User Image" class="rounded-circle" width="150">
+                        <img src="{{ URL::asset('public/uploads/users/' . $user->avatar) }}" alt="User Image" class="rounded-circle" width="150">
                     </div>
                     <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -58,9 +58,9 @@ Profile Info
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="profile_image" class="form-label">Profile Image</label>
-                                    <input type="file" class="form-control" id="profile_image" name="profile_image">
-                                    @error('profile_image')
+                                    <label for="avatar" class="form-label">Profile Image</label>
+                                    <input type="file" class="form-control" id="avatar" name="avatar">
+                                    @error('avatar')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -84,6 +84,14 @@ Profile Info
                                     @enderror
                                 </div>
                             </div>
+                            @if($user->role == 'Company')
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="package" class="form-label">Package</label>
+                                    <input type="text" class="form-control" id="package" name="package" value="{{ $user->package->name }}" readonly>
+                                </div>
+                            </div>
+                            @endif
                             <div class="row mb-4">
                                 <div class="col text-end">
                                     <button type="submit" class="btn btn-success"> <i class="bx bx-check me-1"></i>
