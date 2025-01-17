@@ -14,6 +14,7 @@ use App\Models\Packages;
 use App\Models\Payments;
 use App\Models\PaymentVaultInfo;
 use App\Models\UserSubscriptions;
+use App\Mail\ForgotPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use App\Services\PayPalService;
@@ -96,6 +97,26 @@ class ApiController extends Controller
 		$login = User::LoginUser();
 		return $login;
 	}
+	public function forgotPassword(Request $request)
+	{
+		$email = $request->email;
+		$user_exist = User::where('email',$email)->first();
+		if($user_exist == null){
+			return response()->json(['message' => 'Invalid Email'], 404);
+		} //
+		// return response()->json(['message' => $user_exist], 200);
+		$new_password = $this->generate_random_password();
+		$new_password_hashed = \Hash::make('$value');
+		$user_exist->password = $new_password_hashed;
+		$user_exist->save();
+		// send email to user
+		$settings = WebsiteSettings::getWebsiteSettingsFrontend();
+		\Mail::to($user_exist->email)->send(new ForgotPassword($user_exist, $settings, $new_password));
+		return response()->json(['message' => 'Password Recovered Successfully.'.$new_password], 200);		
+	} //
+	public function generate_random_password(){
+		return random_int(100000, 999999);	
+	}//
 	public function RegisterUser()
 	{
 		$register = User::RegisterUser();

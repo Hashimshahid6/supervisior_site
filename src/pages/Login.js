@@ -5,21 +5,48 @@ import MobileMenu from "../components/MobileMenu";
 import withSettings from "../contexts/withSettings";
 import { IMAGES_URL, BASE_URL, API_BASE_URL, API_TOKEN } from "../constants.js";
 import axios from "axios";
-// import ForgotModal from "../components/ForgotModal.js";
-// axios.defaults.withCredentials = true;
-// axios.defaults.baseURL = BASE_URL;
 
 const Login = ({ settings }) => {
 	const [bannerData, setBannerData] = useState(null);
 	const [pageloading, setpageLoading] = useState(true);
 	const [error, setError] = useState(null);
-	
-	// Show Modal
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const showModal = () => {
-		setIsModalOpen(true);
-	}
-	
+	// FORGOT PASSWORD
+	const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [forgotmessage, setForgotMessage] = useState("");
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setForgotMessage("");
+
+		const forgoterrormsgdiv = document.querySelector(".forgoterrormsg");
+    try {
+      const response = await axios.post(`${API_BASE_URL}forgotPassword`, {
+        email,
+      }, {
+        headers: { Authorization: `Bearer ${API_TOKEN}` }
+				});
+      setForgotMessage("Password reset email sent. Please check your inbox.");
+			// document.querySelector(".forgotsuccessmsg").setHTMLUnsafe("Password reset email sent. Please check your inbox.");
+			document.querySelector(".forgotsuccessmsg").classList.remove("d-none");
+    } catch (error) {
+			forgoterrormsgdiv.textContent = error.response.data.message;
+			// document.querySelector(".forgoterrormsg").innerHTML("Error sending password reset email. Please try again.");
+			document.querySelector(".forgoterrormsg").classList.remove("d-none");
+      setForgotMessage("Error sending password reset email. Please try again.");
+    } finally {
+      setLoading(false);
+			setTimeout(() => {
+        setIsForgotPasswordOpen(false); // Close modal after submission
+      }, 3000); // 3 seconds delay
+    }
+  };
+	const handleClose = () => {
+    setIsForgotPasswordOpen(false); // Close the modal
+    // setSelectedForm(null); // Clear the form reference
+  };
 	// Fetch banner data
   useEffect(() => {
     const fetchBanner = async () => {
@@ -95,6 +122,7 @@ const Login = ({ settings }) => {
     return <div className="loader"></div>; // Show a loader while fetching settings
   };
   if (error) return <p>Error: {error}</p>;
+	
 	return (
     <div>
       {/* Navigation Bar */}
@@ -165,7 +193,7 @@ const Login = ({ settings }) => {
                       </div>	
                       <div className="col-12">
                         <button className="btn btn-primary">Login Now</button>
-											<p>Forgot Password? <a onClick={showModal} style={{ color: '#007bff', marginTop:'20px' }}> Click Here to Reset</a>
+											<p>Forgot Password? <a onClick={() => setIsForgotPasswordOpen(true)} style={{ color: '#007bff', marginTop:'20px' }}> Click Here to Reset</a>
 												</p>									                    
                       </div>
                     </div>
@@ -176,7 +204,61 @@ const Login = ({ settings }) => {
             </div>
           </div>
         </div>
-				
+				{isForgotPasswordOpen && (
+        <div
+						className="modal fade show"
+						style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+						role="dialog"
+						aria-labelledby="modalLabel"
+						aria-hidden="true"
+					>
+					<div className="modal-dialog" role="document">
+
+						<div className="modal-content">
+							<div className="modal-header">
+            <h5 className="modal-title" id="modalLabel">
+              Reset Password
+            </h5>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={handleClose}
+              aria-label="Close"
+            ></button>
+          </div>
+						<div className="modal-body">	
+							<form onSubmit={handleForgotPassword}>
+								<div>
+									<div className="alert alert-danger forgoterrormsg d-none">Error sending password reset email. Please try again later.</div>
+									<div className="alert alert-success forgotsuccessmsg d-none">Password reset email sent. Please check your inbox.</div>
+									<label>Email:</label>
+									<input
+										type="email"
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
+										className="form-control"
+										placeholder="Enter your Email here"
+										required
+									/>
+								</div>
+								<div className="mt-2 text-center">
+									<button type="submit" className="btn btn-success" style={{marginRight:"10px"}} disabled={loading}>
+										{loading ? "Sending..." : "Submit"}
+									</button>
+									<button type="button" className="btn btn-primary ml-2" onClick={() => setIsForgotPasswordOpen(false)}>
+										Cancel
+									</button>
+								</div>
+							</form>
+						</div>
+						<div className="modal-footer">
+							&nbsp;
+						</div>
+							{/* {message && <p>{message}</p>} */}
+						</div>
+					</div> {/* end modal dialog */}
+        </div>
+      )}
       </div>
 
       {/* Footer */}

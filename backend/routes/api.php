@@ -36,6 +36,7 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
 	Route::post('RegisterUser', [ApiController::class,'RegisterUser']);
 	Route::get('isLoggedIn', [ApiController::class,'isLoggedIn']);
 	Route::get('LogoutUser', [ApiController::class,'LogoutUser'])->middleware('web');
+	Route::post('forgotPassword', [ApiController::class,'forgotPassword']);
 	Route::post('createPaymentIntent', [ApiController::class,'createPaymentIntent']);
 	Route::get('paypalCancelled', [ApiController::class,'paypalCancelled']);
 	Route::get('doPaypalReturn', [ApiController::class,'doPaypalReturn']);

@@ -250,7 +250,7 @@ const Pricing = () => {
 						onClose={handleClose}
 						onConfirm={handleConfirm}
 						title="Payment Confirmation"
-						message="You will be charged £5 for the free trial, that will be refunded later. Do you want to continue?"
+						message="You will be charged £1 for the free trial, that will be refunded later. Do you want to continue?"
 					/>
         </div>
         {/*Projects section end*/}
