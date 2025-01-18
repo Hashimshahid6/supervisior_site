@@ -15,6 +15,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\PlantChecklistController;
 use App\Http\Controllers\VehicleChecklistController;
 use App\Http\Controllers\ToolboxTalkController;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Artisan;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/test-session', function () {
     request()->session()->put('key', 'value');
     return request()->session()->get('key');
@@ -54,7 +56,7 @@ Route::get('/admin/cache-clear', function () {
     return "Cache is cleared";
 });
 
-Route::middleware(['auth','admin','web'])->group(function () {
+Route::middleware(['auth', 'admin', 'web'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //Hero Sections
@@ -80,15 +82,16 @@ Route::middleware(['auth','admin','web'])->group(function () {
 
     //users
     Route::resource('users', UsersController::class);
-		Route::get('projects/makePayment', [ProjectsController::class, 'makePayment']);
+    Route::get('projects/makePayment', [ProjectsController::class, 'makePayment']);
+    
     //projects
     Route::resource('projects', ProjectsController::class);
-        Route::delete('project-files/{id}', [ProjectsController::class, 'destroyFile'])->name('project-files.destroy');
+    Route::delete('project-files/{id}', [ProjectsController::class, 'destroyFile'])->name('project-files.destroy');
 
     //messages
     Route::resource('messages', MessagesController::class);
-    
-        //Plant Checklist
+
+    //Plant Checklist
     Route::resource('plant_checklists', PlantChecklistController::class);
 
     //Vehicle Checklist
@@ -96,4 +99,7 @@ Route::middleware(['auth','admin','web'])->group(function () {
 
     //Toolbox Talk Template
     Route::resource('toolbox_talks', ToolboxTalkController::class);
+
+    //Transactions
+    Route::resource('transactions', PaymentsController::class);
 });

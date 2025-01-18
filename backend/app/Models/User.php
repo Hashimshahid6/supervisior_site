@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Auth;
+use Hash;
 
 class User extends Authenticatable
 {
@@ -76,34 +78,39 @@ class User extends Authenticatable
         return $this->hasMany(Messages::class);
     }
 
+    public function payment()
+    {
+        return $this->hasMany(Payments::class);
+    }
+
     public static function getAllUsers()
     {
         $query = User::query();
 
         if (auth()->user()->role == 'Admin') {
-            $query->with('projects', 'package')->where('status', 'Active');
+            $query->with(['projects', 'package', 'payment'])->where('status', 'Active');
         } else {
             $query->where('status', 'Active')
                 ->where('created_by', auth()->id());
         }
 
-        if(request()->has('search') && request()->search != ''){
-            $query->where(function($q) {
-                $q->where('name', 'like', '%'.request()->search.'%')
-                  ->orWhere('email', 'like', '%'.request()->search.'%')
-                  ->orWhere('phone', 'like', '%'.request()->search.'%');
+        if (request()->has('search') && request()->search != '') {
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . request()->search . '%')
+                    ->orWhere('email', 'like', '%' . request()->search . '%')
+                    ->orWhere('phone', 'like', '%' . request()->search . '%');
             });
         }
 
-        if(request()->has('role') && request()->role != ''){
+        if (request()->has('role') && request()->role != '') {
             $query->where('role', request()->role);
         }
 
-        if(request()->has('status') && request()->status != ''){
+        if (request()->has('status') && request()->status != '') {
             $query->where('status', request()->status);
         }
 
-        if(request()->has('package_id') && request()->package_id != ''){
+        if (request()->has('package_id') && request()->package_id != '') {
             $query->where('package_id', request()->package_id);
         }
 
@@ -114,5 +121,66 @@ class User extends Authenticatable
         }
 
         return $query;
+    }
+    public static function LoginUser()
+    {
+        request()->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        // $user = Auth::user();
+        // dd($user);
+        // Log out the current user if any
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+        } // Log out the current user if any
+        // Attempt to log the user in using the 'web' guard
+        if (Auth::guard('web')->attempt(['email' => request()->email, 'password' => request()->password])) {
+            // $user = Auth::user();
+            // Manually retrieve the logged-in user
+            $user = Auth::guard('web')->user();
+
+            // Generate an API token for React frontend
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            // Set the session cookie
+            $cookie = cookie('laravel_session', session()->getId(), config('session.lifetime'), '/', config('session.domain'), config('session.secure'), true);
+
+            return response()->json([
+                'message' => 'Login successful',
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'user' => $user,
+            ])->cookie($cookie);
+        }
+
+        return response()->json(['message' => 'Invalid credentials'], 401);
+    }
+    public static function RegisterUser()
+    {
+        request()->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8|confirmed',
+        ]);
+        $avatarNumber = rand(1, 4) . '.jpg';
+        // Create a new user
+        $user = User::create([
+            'name' => request()->name,
+            'role' => 'Company',
+            'avatar' => 'avatar-' . $avatarNumber,
+            'email' => request()->email,
+            'password' => Hash::make(request()->password),
+        ]);
+
+        // Generate token for the user
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'User registered successfully',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user,
+        ], 201);
     }
 }

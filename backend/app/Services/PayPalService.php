@@ -126,8 +126,8 @@ class PayPalService
                             ]
                         ],
                         "experience_context" => [
-                            "return_url" => url('http://localhost:3000/PaypalReturn'),
-                            "cancel_url" => url('http://localhost:3000/PaypalCancel'),
+                            "return_url" => url('https://supervisesite.co.uk/PaypalReturn'),
+                            "cancel_url" => url('https://supervisesite.co.uk/PaypalCancel'),
                             "shipping_preference" => "NO_SHIPPING"
                         ]
                     ]

@@ -2,13 +2,6 @@
 @section('title')
 Plant Checklists
 @endsection
-@section('css')
-<!-- swiper css -->
-<link rel="stylesheet" href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}">
-
-<!-- nouisliderribute css -->
-<link rel="stylesheet" href="{{ URL::asset('build/libs/nouislider/nouislider.min.css') }}">
-@endsection
 @section('page-title')
 Plant Checklists
 @endsection
@@ -17,18 +10,6 @@ Plant Checklists
     @endsection
     @section('content')
     <div class="row align-items-center">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <h5 class="card-title">Plant Checklist<span class="text-muted fw-normal ms-2">({{$DailyChecklists->count()}})</span></h5>
-            </div>
-        </div>
-        @if(auth()->user()->role == 'Employee')
-        <div class="col-md-6">
-            <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
-                <a href="{{route('plant_checklists.create')}}" class="btn btn-primary"><i class="bx bx-plus me-1"></i>Add New</a>
-            </div>
-        </div>
-        @endif
     </div>
     @include('components.flash_messages')
     <!-- end row -->
@@ -37,6 +18,13 @@ Plant Checklists
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    @if(auth()->user()->role == 'Employee')
+                    <div class="col-md-6">
+                        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+                            <a href="{{route('plant_checklists.create')}}" class="btn btn-primary"><i class="bx bx-plus me-1"></i>Add New</a>
+                        </div>
+                    </div>
+                    @endif
                     <form action="{{ route('plant_checklists.index') }}" method="GET">
                         <div class="row">
                             <div class="col-lg-3">

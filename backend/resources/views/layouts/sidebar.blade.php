@@ -69,6 +69,15 @@
                         <span class="menu-item">Toolbox Talks</span>
                     </a>
                 </li>
+                @if($userRole == 'Admin' || $userRole == 'Company')
+                <li class="menu-title" data-key="t-applications">Transactions</li>
+                <li class="{{ request()->routeIs('transactions.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('transactions.index')}}">
+                        <i class="bx bx-transfer icon nav-icon"></i>
+                        <span class="menu-item">Transactions</span>
+                    </a>
+                </li>
+                @endif
                 @if($userRole == 'Admin')
                 <li class="menu-title" data-key="t-applications">Website Admin</li>
                 <li class="{{ request()->routeIs('hero_sections.*') ? 'mm-active' : '' }}">

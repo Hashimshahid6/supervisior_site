@@ -2,13 +2,6 @@
 @section('title')
 Hero Section
 @endsection
-@section('css')
-<!-- swiper css -->
-<link rel="stylesheet" href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}">
-
-<!-- nouisliderribute css -->
-<link rel="stylesheet" href="{{ URL::asset('build/libs/nouislider/nouislider.min.css') }}">
-@endsection
 @section('page-title')
 Hero Section
 @endsection
@@ -17,29 +10,14 @@ Hero Section
 <body>
     @endsection
     @section('content')
-    <div class="row align-items-center">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <h5 class="card-title">Sliders List <span class="text-muted fw-normal ms-2">( {{ $heroSections->count()
-                        }} )</span>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div>
-                <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
-                    <a href="{{route('hero_sections.create')}}" class="btn btn-primary"><i class="bx bx-plus me-1"></i>
-                        Add New</a>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+                        <a href="{{route('hero_sections.create')}}" class="btn btn-primary"><i class="bx bx-plus me-1"></i>
+                            Add New</a>
+                    </div>
                     <div class="table-responsive">
                         <table class="table align-middle">
                             <thead class="table-light">
