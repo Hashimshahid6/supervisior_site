@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Testimonials;
+use Illuminate\Support\Facades\Auth;
 
 class TestimonialsController extends Controller
 {
@@ -12,8 +13,13 @@ class TestimonialsController extends Controller
      */
     public function index()
     {
-        $testimonials = Testimonials::getTestimonials();
-        return view('testimonials.list', compact('testimonials'));
+        if(Auth::user()->role != 'Employee'){
+            $testimonials = Testimonials::getTestimonials();
+            return view('testimonials.list', compact('testimonials'));
+        }
+        else{
+            return view('errors.403');
+        }
     }
 
     /**

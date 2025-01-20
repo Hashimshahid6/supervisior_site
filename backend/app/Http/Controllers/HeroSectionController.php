@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\HeroSection;
-use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Auth;
 
 class HeroSectionController extends Controller
 {
@@ -13,8 +13,13 @@ class HeroSectionController extends Controller
      */
     public function index()
     {
-        $heroSections = HeroSection::getHeroSection();
-        return view('hero_sections.list', compact('heroSections'));
+        if(Auth::user()->role == 'Admin'){
+            $heroSections = HeroSection::getHeroSection();
+            return view('hero_sections.list', compact('heroSections'));
+        }
+        else{
+            return view('errors.403');
+        }
     }
 
     /**

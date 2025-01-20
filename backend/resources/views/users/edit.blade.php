@@ -24,7 +24,7 @@ Edit User
                         @csrf
                         @method('PUT')
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="name" name="name"
@@ -34,7 +34,7 @@ Edit User
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="price" class="form-label">Email <span
                                             class="text-danger">*</span></label>
@@ -45,7 +45,7 @@ Edit User
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="price" class="form-label">Phone <span
                                             class="text-danger">*</span></label>
@@ -56,7 +56,7 @@ Edit User
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="price" class="form-label">Password </label>
                                     <input type="password" class="form-control" id="password" name="password">
@@ -66,7 +66,7 @@ Edit User
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="price" class="form-label">Confirm Password </label>
                                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
@@ -75,7 +75,7 @@ Edit User
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="price" class="form-label">Profile Image</label>
                                     <input type="file" class="form-control" id="avatar" name="avatar">

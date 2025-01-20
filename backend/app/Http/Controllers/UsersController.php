@@ -59,6 +59,7 @@ class UsersController extends Controller
         }
 
         User::create([
+            'company_id' => Auth::user()->id,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -115,16 +116,19 @@ class UsersController extends Controller
         if ($request->password) {
             $user->password = Hash::make($request->password);
         }
+
+        $autoRenewal = $request->auto_renewal ?? 'No';
+
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => $user->password,
             'avatar' => $user->avatar,
+            'auto_renewal' => $autoRenewal,
         ]);
-        
-        // dd($test);
-        return redirect()->route('users.index')->with('success', 'Employee updated successfully.');
+
+        return redirect()->route('users.show', $id)->with('success', 'Profile updated successfully.');
     }
 
     /**

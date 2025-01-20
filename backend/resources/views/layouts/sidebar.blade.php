@@ -1,6 +1,6 @@
 @php
-    $settings = App\Models\WebsiteSettings::first();
-    $userRole = Auth::user()->role;
+$settings = App\Models\WebsiteSettings::first();
+$userRole = Auth::user()->role;
 @endphp
 
 <!-- ========== Left Sidebar Start ========== -->
@@ -9,10 +9,13 @@
     <div class="navbar-brand-box">
         <a href="javascript:void(0)" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_favicon) }}" alt="" height="30" width="30">
+                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_favicon) }}" alt="" height="30"
+                    width="30">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_logo) }}" alt="" height="70" width="70"><h4>{{ $settings->site_name }}</h4>
+                <img src="{{ URL::asset('public/images/websiteimages/'. $settings->site_logo) }}" alt="" height="70"
+                    width="70">
+                <h4>{{ $settings->site_name }}</h4>
             </span>
         </a>
     </div>
@@ -79,6 +82,24 @@
                 </li>
                 @endif
                 @if($userRole == 'Admin')
+                <li class="menu-title" data-key="t-applications">Packages</li>
+                <li class="{{ request()->routeIs('packages.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('packages.index')}}">
+                        <i class="bx bx-package icon nav-icon"></i>
+                        <span class="menu-item">Packages</span>
+                    </a>
+                </li>
+
+                {{-- Payment Settings --}}
+                <li class="menu-title" data-key="t-applications">Payment Settings</li>
+                <li class="{{ request()->routeIs('paypal-settings.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('paypal_settings.index')}}">
+                        <i class="bx bx-wallet icon nav-icon"></i>
+                        <span class="menu-item">Paypal Settings</span>
+                    </a>
+                </li>
+                @endif
+                @if($userRole == 'Admin')
                 <li class="menu-title" data-key="t-applications">Website Admin</li>
                 <li class="{{ request()->routeIs('hero_sections.*') ? 'mm-active' : '' }}">
                     <a href="{{route('hero_sections.index')}}">
@@ -110,14 +131,9 @@
                         <span class="menu-item">Testimonials</span>
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('packages.*') ? 'mm-active' : '' }}">
-                    <a href="{{route('packages.index')}}">
-                        <i class="bx bx-package icon nav-icon"></i>
-                        <span class="menu-item">Packages</span>
-                    </a>
-                </li>
                 <li class="{{ request()->routeIs('website_settings.*') ? 'mm-active' : '' }}">
-                    <a href="javascript: void(0);" class="has-arrow {{ request()->routeIs('website_settings.*') ? 'mm-active' : '' }}">
+                    <a href="javascript: void(0);"
+                        class="has-arrow {{ request()->routeIs('website_settings.*') ? 'mm-active' : '' }}">
                         <i class="bx bx-cog icon nav-icon"></i>
                         <span class="menu-item">Settings</span>
                     </a>

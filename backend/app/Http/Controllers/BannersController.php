@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Banners;
+use Illuminate\Support\Facades\Auth;
 
 class BannersController extends Controller
 {
@@ -12,8 +13,13 @@ class BannersController extends Controller
      */
     public function index()
     {
-        $banners = Banners::getBanners();
-        return view('banners.list', compact('banners'));
+        if(Auth::user()->role == 'Admin'){
+            $banners = Banners::getBanners();
+            return view('banners.list', compact('banners'));
+        }
+        else{
+            return view('errors.403');
+        }
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\WebsiteSettings;
+use Illuminate\Support\Facades\Auth;
 
 class WebsiteSettingsController extends Controller
 {
@@ -12,8 +13,13 @@ class WebsiteSettingsController extends Controller
      */
     public function index()
     {
-        $websiteSettings = WebsiteSettings::getAllWebsiteSettings();
-        return view('website_settings.list', compact('websiteSettings'));
+        if(Auth::user()->role != 'Employee'){
+            $websiteSettings = WebsiteSettings::getAllWebsiteSettings();
+            return view('website_settings.list', compact('websiteSettings'));
+        }
+        else{
+            return view('errors.403');
+        }
 
     }
 

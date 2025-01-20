@@ -33,7 +33,7 @@ Users
                         <form action="{{route('users.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label" for="name">Name <span
                                                 class="text-danger">*</span></label>
@@ -44,7 +44,7 @@ Users
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label" for="email">Email <span
                                                 class="text-danger">*</span></label>
@@ -55,7 +55,7 @@ Users
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label" for="phone">Phone <span
                                                 class="text-danger">*</span></label>
@@ -66,7 +66,7 @@ Users
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label" for="password">Password <span
                                                 class="text-danger">*</span></label>
@@ -77,7 +77,7 @@ Users
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label" for="confirm_password">Confirm Password <span
                                                 class="text-danger">*</span></label>
@@ -88,7 +88,7 @@ Users
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label" for="avatar">Profile Image</label>
                                         <input id="avatar" name="avatar" type="file" class="form-control">

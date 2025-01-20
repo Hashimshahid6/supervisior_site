@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Packages;
+use Illuminate\Support\Facades\Auth;
 
 class PackagesController extends Controller
 {
@@ -12,8 +13,13 @@ class PackagesController extends Controller
      */
     public function index()
     {
-        $packages = Packages::getAllPackages();
-        return view('packages.list', compact('packages'));
+        if(Auth::user()->role == 'Admin'){
+            $packages = Packages::getAllPackages();
+            return view('packages.list', compact('packages'));
+        }
+        else{
+            return view('errors.403');
+        }
     }
 
     /**

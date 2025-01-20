@@ -19,6 +19,7 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\PlantChecklistController;
 use App\Http\Controllers\VehicleChecklistController;
 use App\Http\Controllers\ToolboxTalkController;
+use App\Http\Controllers\PaypalSettingsController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -102,4 +103,7 @@ Route::middleware(['auth', 'admin', 'web'])->group(function () {
 
     //Transactions
     Route::resource('transactions', PaymentsController::class);
+
+    //Paypal Settings
+    Route::resource('paypal_settings', PaypalSettingsController::class);
 });

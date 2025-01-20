@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sections;
+use Illuminate\Support\Facades\Auth;
 
 class SectionsController extends Controller
 {
@@ -12,8 +13,13 @@ class SectionsController extends Controller
      */
     public function index()
     {
-        $sections = Sections::getSections();
-        return view('sections.list', compact('sections'));
+        if(Auth::user()->role != 'Employee'){
+            $sections = Sections::getSections();
+            return view('sections.list', compact('sections'));
+        }
+        else{
+            return view('errors.403');
+        }
     }
 
     /**
