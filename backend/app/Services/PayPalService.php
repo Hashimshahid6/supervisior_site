@@ -88,7 +88,9 @@ class PayPalService
             ];
             
             $response = $this->client->post('/v2/checkout/orders', [
-                'headers' => $this->getHeaders(),
+                'headers' => array_merge($this->getHeaders(), [
+										'PayPal-Request-Id' => uniqid('paypal_', true),
+								]),
                 'json' => $paymentData,
             ]);
 						// dd($response);

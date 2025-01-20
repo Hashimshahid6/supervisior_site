@@ -49,6 +49,6 @@ class LoginController extends Controller
         // return response()->json(['message' => 'Logged out successfully'], 200);
     	} // Revoke all tokens
 			auth()->logout();
-			return redirect()->route('login');
+			return redirect('/login');//->route('login');
     }
 }

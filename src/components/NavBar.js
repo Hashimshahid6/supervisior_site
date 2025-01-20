@@ -125,7 +125,7 @@ const NavBar = ({ settings }) => {
                 <div className="col-lg-12">
                   <div className="header-navigation header-navigation--header-default position-relative">
                     <div className="header-navigation__nav position-static">
-                      <nav>
+                      <nav style={{display:"flex"}}>
                         <ul>
                           <li>
                             <Link to="/" className={location.pathname === "/" ? "active" : ""}>HOME</Link>
@@ -141,36 +141,38 @@ const NavBar = ({ settings }) => {
                           </li>
                           <li>
                             <Link to="/pricing" className={location.pathname === "/pricing" ? "active" : ""}>PRICING</Link>
-                          </li>
-                          {loggedIn ? (
-                            <li
-                              style={{
+                          </li>                          
+                        </ul>
+												{loggedIn ? (
+													<ul style={{
                                 position: "absolute",
                                 right: "10px",
                                 display: "flex",
-                              }}
-                            >
+                              }}>
+                            <li>
+															
                               <a
-                                href="/admin/dashboard"
+                                href={`${process.env.PUBLIC_URL}/admin/dashboard`}
                                 style={{ marginRight: "20px" }}
                               >
                                 WELCOME{" "}
                                 {JSON.parse(localStorage.getItem("user")).name}
                               </a>
-                              <Link to="/logout">LOGOUT</Link>
+															</li><li>
+                              <Link to={`${process.env.PUBLIC_URL}/logout`}>LOGOUT</Link>
                             </li>
+														</ul>
                           ) : (
-                            <li
-                              style={{
+														<ul style={{
                                 position: "absolute",
                                 right: "10px",
                                 display: "flex",
-                              }}
-                            >
-                              <Link to="/login" className={location.pathname === "/login" ? "active" : ""}>LOGIN</Link>
+                              }}>
+                            <li>
+                              <Link to={`${process.env.PUBLIC_URL}/login`} className={location.pathname === "/login" ? "active" : ""}>LOGIN</Link>
                             </li>
+														</ul>
                           )}
-                        </ul>
                       </nav>
                     </div>
                   </div>

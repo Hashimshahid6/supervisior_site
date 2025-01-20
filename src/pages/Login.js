@@ -91,14 +91,25 @@ const Login = ({ settings }) => {
 				}
       );
 			if(response.status === 200) {
-      	console.log("Form Submitted Successfully",response.data);
+      	// console.log("Form Submitted Successfully",response.data);
 				// Save token to localStorage or cookies
 				localStorage.setItem("login_token", response.data.access_token);
-
+				// console.log(response.data.user)
 				// Optionally store user details
+				const user_loggedin = response.data.user;
 				localStorage.setItem("user", JSON.stringify(response.data.user));
       	setSubmitted(true);
-				window.location.href=`${process.env.PUBLIC_URL}/pricing`;
+				if(user_loggedin.role == 'Admin'){
+					window.location.href=`${process.env.PUBLIC_URL}/admin/dashboard`;
+				}else if(user_loggedin.role == 'Company'){
+					if(user_loggedin.package_id == '0' || user_loggedin.package_id == null){
+						window.location.href=`${process.env.PUBLIC_URL}/pricing`;
+					}else{
+						window.location.href=`${process.env.PUBLIC_URL}/admin/projects`;
+					}
+				}else if(user_loggedin.role == 'Employee'){
+					window.location.href=`${process.env.PUBLIC_URL}/admin/projects`;
+				}
 			}else{
 				alert("Error in Form Submission");
 			}

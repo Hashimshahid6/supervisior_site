@@ -77,6 +77,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Messages::class);
     }
+		public function parent()
+    {
+        return $this->belongsTo(User::class, 'company_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(User::class, 'company_id');
+    }
 
     public function payment()
     {
@@ -128,24 +137,34 @@ class User extends Authenticatable
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        // $user = Auth::user();
-        // dd($user);
-        // Log out the current user if any
-        if (Auth::guard('web')->check()) {
-            Auth::guard('web')->logout();
-        } // Log out the current user if any
+				// $user = Auth::user();
+				// dd($user);
+				// Log out the current user if any
+				if (Auth::guard('web')->check()) {
+						Auth::guard('web')->logout();
+				} // Log out the current user if any
         // Attempt to log the user in using the 'web' guard
         if (Auth::guard('web')->attempt(['email' => request()->email, 'password' => request()->password])) {
             // $user = Auth::user();
-            // Manually retrieve the logged-in user
-            $user = Auth::guard('web')->user();
-
+						// Manually retrieve the logged-in user
+        		$user = Auth::guard('web')->user()->load('parent', 'children');
+						if($user->parent != null){
+							if($user->parent->package_status == 'Inactive'){
+								return response()->json(['message' => 'Company Package expired.'], 401);
+								// logout the user again
+								if ($user) {
+									$user->tokens()->delete(); // Revoke all tokens
+								} // Revoke all tokens
+								Auth::guard('web')->logout();
+							}
+						} //
+    
             // Generate an API token for React frontend
             $token = $user->createToken('auth_token')->plainTextToken;
-
+    
             // Set the session cookie
             $cookie = cookie('laravel_session', session()->getId(), config('session.lifetime'), '/', config('session.domain'), config('session.secure'), true);
-
+    
             return response()->json([
                 'message' => 'Login successful',
                 'access_token' => $token,
@@ -156,31 +175,31 @@ class User extends Authenticatable
 
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
-    public static function RegisterUser()
-    {
-        request()->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
-        ]);
-        $avatarNumber = rand(1, 4) . '.jpg';
-        // Create a new user
-        $user = User::create([
-            'name' => request()->name,
-            'role' => 'Company',
-            'avatar' => 'avatar-' . $avatarNumber,
-            'email' => request()->email,
-            'password' => Hash::make(request()->password),
-        ]);
+		public static function RegisterUser()
+		{
+			request()->validate([
+					'name' => 'required|string|max:255',
+					'email' => 'required|email|unique:users',
+					'password' => 'required|min:8|confirmed',
+			]);
+			$avatarNumber = rand(1, 4).'.jpg';
+			// Create a new user
+			$user = User::create([
+					'name' => request()->name,
+					'role' => 'Company',
+					'avatar' => 'avatar-'.$avatarNumber,
+					'email' => request()->email,
+					'password' => Hash::make(request()->password),
+			]);
 
-        // Generate token for the user
-        $token = $user->createToken('auth_token')->plainTextToken;
+			// Generate token for the user
+			$token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'User registered successfully',
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => $user,
-        ], 201);
-    }
+			return response()->json([
+					'message' => 'User registered successfully',
+					'access_token' => $token,
+					'token_type' => 'Bearer',
+					'user' => $user,
+			], 201);
+		}
 }

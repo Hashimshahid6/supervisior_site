@@ -73,6 +73,7 @@ const Pricing = () => {
   };
 	const [submitted, setSubmitted] = useState(false);
 	const [loggedIn, setLoggedIn] = useState(false);
+	const [userRole, setUserRole] = useState(null); 
   // Fetch banner and service data
   useEffect(() => {
     const fetchData = async () => {
@@ -94,6 +95,11 @@ const Pricing = () => {
 		const checkLoginStatus = async () => {
       const loggedInStatus = await isLoggedIn();
       setLoggedIn(loggedInStatus);
+			if (loggedInStatus) {
+				// Retrieve user details from localStorage
+				const user = JSON.parse(localStorage.getItem("user"));
+				setUserRole(user?.role || null); // Set the role if user exists
+			}
     };
 
     checkLoginStatus();
@@ -156,15 +162,17 @@ const Pricing = () => {
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '2em' }}>35</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
                           { loggedIn ?
+													userRole === "Company" ?
 														<form onSubmit={(e) => handleFormSubmit(e, '1')}>
 															<input type="hidden" name="package" value="1" />
-															<input type="hidden" name="amount" value="5" />
+															<input type="hidden" name="amount" value="1" />
 															<input type="hidden" name="currency" value="GBP" />
 															<button type="submit" className="ht-btn ht-btn--round btn-1" disabled={loadingIds.includes('1')}>
 																{loadingIds.includes('1') ? "Processing..." : "START FREE TRIAL"}
 																</button>
 														</form>
-														: 
+														: ''
+														:
 														<a href={`${process.env.PUBLIC_URL}/login`} className="ht-btn ht-btn--round">START FREE TRIAL</a> 
 													}
 													{/* <a href="/supervisor_build/login" className="ht-btn ht-btn--round">
@@ -189,14 +197,17 @@ const Pricing = () => {
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '2em' }}>55</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
 													{ loggedIn ?
+														userRole === "Company" ?
 														<form onSubmit={(e) => handleFormSubmit(e, '2')}>
 															<input type="hidden" name="package" value="2" />
-															<input type="hidden" name="amount" value="5" />
+															<input type="hidden" name="amount" value="1" />
 															<input type="hidden" name="currency" value="GBP" />
 															<button type="submit" className="ht-btn ht-btn--round btn-2" disabled={loadingIds.includes('2')}>
 																{loadingIds.includes('2') ? "Processing..." : "START FREE TRIAL"}
 															</button>
 														</form>
+														:
+														''
 														: 
 														<a href={`${process.env.PUBLIC_URL}/login`} className="ht-btn ht-btn--round">START FREE TRIAL</a> 
 													}
@@ -223,14 +234,16 @@ const Pricing = () => {
                           <p className="subtitle"><small>£</small><span style={{ fontSize: '1.5em' }}>75</span> Every month</p>
                           <p className="subtitle">90 day free trial</p>
 													{ loggedIn ?
+														userRole === "Company" ?
 														<form onSubmit={(e) => handleFormSubmit(e, '3')}>
 															<input type="hidden" name="package" value="3" />
-															<input type="hidden" name="amount" value="5" />
+															<input type="hidden" name="amount" value="1" />
 															<input type="hidden" name="currency" value="GBP" />
 															<button type="submit" className="ht-btn ht-btn--round btn-3" disabled={loadingIds.includes('3')}>
 																{loadingIds.includes('3') ? "Processing..." : "START FREE TRIAL"}
 															</button>
-														</form>													 
+														</form>									
+														: ''				 
 														: 
 														<a href={`${process.env.PUBLIC_URL}/login`} className="ht-btn ht-btn--round">START FREE TRIAL</a> 
 													}

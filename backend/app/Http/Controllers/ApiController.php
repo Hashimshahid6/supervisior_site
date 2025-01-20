@@ -106,7 +106,7 @@ class ApiController extends Controller
 		} //
 		// return response()->json(['message' => $user_exist], 200);
 		$new_password = $this->generate_random_password();
-		$new_password_hashed = \Hash::make('$value');
+		$new_password_hashed = \Hash::make($new_password);
 		$user_exist->password = $new_password_hashed;
 		$user_exist->save();
 		// send email to user
