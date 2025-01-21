@@ -82,19 +82,15 @@ class PlantChecklist extends Model
     {
 
         $query = PlantChecklist::query();
-        $query->with('project', 'user');
+        $query->with(['project', 'user']);
 
         if (auth()->user()->role == 'Employee') {
-            // Employee can see only their own records
+
             $query->where('user_id', auth()->id());
         } elseif (auth()->user()->role == 'Company') {
-            // The logged-in user is the company
-            $companyId = auth()->id(); // The company's ID in the `users` table
-
-            // Get the IDs of employees belonging to this company
+            
+            $companyId = auth()->user()->id;
             $employeeIds = User::where('company_id', $companyId)->pluck('id');
-
-            // Include forms created by employees
             $query->whereIn('user_id', $employeeIds);
         }
 

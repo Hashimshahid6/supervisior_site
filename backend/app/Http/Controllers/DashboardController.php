@@ -25,8 +25,8 @@ class DashboardController extends Controller
 
         $user = auth()->user();
         if ($user->role == 'Company') {
-            $employees = User::where('created_by', $user->id)->where('role', 'Employee')->where('status', 'Active')->get();
-            $projects = Projects::where('created_by', $user->id)->where('status', 'Active')->get();
+            $employees = User::where('company_id', $user->id)->where('role', 'Employee')->where('status', 'Active')->get();
+            $projects = Projects::where('user_id', $user->id)->where('status', 'Active')->get();
             $activePackage = $user->package()->where('status', 'Active')->first();
         }//
 

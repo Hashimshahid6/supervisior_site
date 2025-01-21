@@ -29,6 +29,7 @@ class PlantChecklistController extends Controller
         }
         $perPage = $request->input('per_page', 10);
         $DailyChecklists = PlantChecklist::getAllPlantChecklist()->paginate($perPage);
+        // dd($DailyChecklists[0]);
         $PlantTypes = PlantChecklist::$PlantTypes;
 
         return view('plant_checklist.list', compact('DailyChecklists', 'projects', 'PlantTypes'));

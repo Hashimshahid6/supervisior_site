@@ -2,13 +2,6 @@
 @section('title')
 Employees
 @endsection
-@section('css')
-<!-- swiper css -->
-<link rel="stylesheet" href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}">
-
-<!-- nouisliderribute css -->
-<link rel="stylesheet" href="{{ URL::asset('build/libs/nouislider/nouislider.min.css') }}">
-@endsection
 @section('page-title')
 Employees
 @endsection
